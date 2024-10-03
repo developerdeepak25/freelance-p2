@@ -74,7 +74,8 @@ const cardsData = [
 ];
 const UpcommmingEvents = () => {
   return (
-    <SectionWrapper className="mt-24 mx-auto pb-12">
+    // <SectionWrapper className="mt-24 mx-auto pb-12">
+    <SectionWrapper className="mt-24  pb-12">
       <div className="flex flex-col gap-6">
         <h1 className="text-4xl font-bold text-my-heading">
           Upcomming Events{" "}

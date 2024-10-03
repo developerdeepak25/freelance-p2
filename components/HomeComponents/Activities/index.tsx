@@ -65,7 +65,8 @@ const Activities = () => {
   return (
     // <div className="flex justify-center w-full">
     //   <div className=" relative grid grid-cols-10">
-    <SectionWrapper className="mt-24 mx-auto">
+    // <SectionWrapper className="mt-24 mx-auto">
+    <SectionWrapper className="mt-24 ">
       <div className="flex flex-col gap-6">
         <h1 className="text-4xl font-bold text-my-heading">
           Core Activities and Programs

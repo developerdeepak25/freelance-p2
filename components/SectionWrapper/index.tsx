@@ -8,8 +8,12 @@ type Props = {
 
 const SectionWrapper = ({children,className}: Props) => {
   return (
-    <div className={cn(`max-w-[1280px]  mx-20 mx-auto  ${className}`)}>{children }</div>
-  )
+    <div className="flex justify-center mx-auto"  >
+      <div className={cn(`max-w-[1280px]  mx-20   ${className}`)}>
+        {children}
+      </div>
+    </div>
+  );
 }
 
 export default SectionWrapper
