@@ -1,3 +1,4 @@
+"use client";
 import WellBeingIcon from '@/components/icons/WellBWingIcon';
 import SectionWrapper from '@/components/SectionWrapper';
 import { Button } from '@/components/ui/button';

@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 
 type Props = {
-    children: React.ReactNode
+  children: React.ReactNode;
 };
 
 const AppLayout = ({ children }: Props) => {
@@ -11,7 +12,7 @@ const AppLayout = ({ children }: Props) => {
     <>
       <Navbar />
       <main>{children}</main>
-      <Footer/>
+      <Footer />
     </>
   );
 };

@@ -1,3 +1,4 @@
+'use client'
 import SectionWrapper from "@/components/SectionWrapper";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
