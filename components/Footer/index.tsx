@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 const navLinks = [
@@ -14,7 +13,6 @@ const navLinks = [
 ];
 
 const Footer = () => {
-  const pathname = usePathname();
 
   return (
     // <div className="bg-black-tint w-screen overflow-x-hidden mt-32">
@@ -26,7 +24,7 @@ const Footer = () => {
             {/* links */}
             <div className="flex items-center justify-center gap-8">
               {navLinks.map((link) => {
-                const isActive = pathname === link.path;
+                // const isActive = pathname === link.path;
                 return (
                   <Link
                     key={link.path}
