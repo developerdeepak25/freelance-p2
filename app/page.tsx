@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
-import Hero from "@/components/HomeComponents/Hero";
-import Activities from "@/components/HomeComponents/Activities";
-import Achievement from "@/components/HomeComponents/Achievement";
-import UpcommmingEvents from "@/components/HomeComponents/UpcommingEvents";
-import Members from "@/components/HomeComponents/Members";
+import Hero from "@/components/pages/Home/Hero";
+import Activities from "@/components/pages/Home/Activities";
+import Achievement from "@/components/pages/Home/Achievement";
+import Members from "@/components/pages/Home/Members";
+import UpcommmingEvents from "@/components/pages/Home/UpcommingEvents";
 
 // type Props = {};
 

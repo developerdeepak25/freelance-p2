@@ -1,19 +1,15 @@
 "use client";
 import { type CarouselApi } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  
-} from "@/components/ui/carousel";
-import ArrowIcon from "../icons/ArrowIcon";
+import { Carousel, CarouselContent } from "@/components/ui/carousel";
+import ArrowIcon from "../../assets/icons/ArrowIcon";
 import { cn } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
-const CardCarousel = ({children}: Props) => {
+const CardCarousel = ({ children }: Props) => {
   const [api, setApi] = useState<CarouselApi>();
   // const [current, setCurrent] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -54,9 +50,7 @@ const CardCarousel = ({children}: Props) => {
   return (
     <>
       <Carousel setApi={setApi}>
-        <CarouselContent>
-         {children}
-        </CarouselContent>
+        <CarouselContent className="-ml-10">{children}</CarouselContent>
         {/* <CarouselPrevious />
       <CarouselNext /> */}
       </Carousel>
@@ -91,7 +85,11 @@ const CarouselButton = ({
   return (
     <button
       onClick={onClick}
-      className={cn(` border-[1px]    border-black  h-14 aspect-square rounded-full grid place-items-center  ${!disabled ? "opacity-50" : ""} ${className}`)}
+      className={cn(
+        ` border-[1px]    border-black  h-14 aspect-square rounded-full grid place-items-center  ${
+          !disabled ? "opacity-50" : ""
+        } ${className}`
+      )}
     >
       <ArrowIcon />
     </button>
