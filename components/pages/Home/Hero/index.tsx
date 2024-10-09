@@ -24,24 +24,24 @@ const Hero = () => {
       backgroundImage={"/image/home-hero.png"}
       altText={"hero section image"}
     >
-      <SectionWrapper className=" h-full">
+      <SectionWrapper className=" h-full ">
         {/* Hero content */}
         <div className=" grid grid-cols-10 relative">
-          <div className=" pt-72 col-span-6 flex flex-col gap-6">
+          <div className=" pt-48 sm:pt-48 md:pt-72 col-span-10 sm:col-span-8 lg:col-span-6 flex flex-col gap-6">
             <div className="bg-gray-600/50 py-[6px] px-7 flex gap-2 items-center rounded-3xl max-w-fit">
-              <WellBeingIcon />{" "}
+              <WellBeingIcon className="grow shrink-0" />{" "}
               <p className="text-white text-xs">
                 Together for a Better Tomorrow
               </p>
             </div>
-            <h1 className="text-7xl font-black text-white">
+            <h1 className="text-4xl  sm:text-5xl lg:text-7xl font-black text-white">
               Helping Communities Grow Together
             </h1>
-            <p className="font-medium text-white pr-28">
+            <p className="font-medium text-white sm:pr-28">
               Working for the well-being of society with programs that bring
               positive change and support for those in need.
             </p>
-            <div className="flex gap-5">
+            <div className="flex gap-5  flex-col sm:flex-row">
               <Button>
                 <Link href={"/contact"}>Join Us</Link>
               </Button>

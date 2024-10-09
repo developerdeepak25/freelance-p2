@@ -1,4 +1,5 @@
 "use client";
+import Heading from "@/components/Text/Heading";
 import { CarouselItem } from "@/components/ui/carousel";
 import Image from "next/image";
 import React, { createContext, useContext, ReactNode } from "react";
@@ -39,7 +40,7 @@ const Card = ({
 }) => {
   return (
     <CardContext.Provider value={data}>
-      <CarouselItem className="basis-1/3 pl-10">
+      <CarouselItem className="md:basis-1/2 xl:basis-1/3 pl-10">
         <div className="w-full rounded-2xl overflow-hidden border-[1px] border-gray-300">
           {children}
         </div>
@@ -105,12 +106,12 @@ Card.Content = function CardContent({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="flex flex-col px-6 py-8 gap-6">{children}</div>;
+  return <div className="flex flex-col px-6 py-8 sm:gap-6 gap-4">{children}</div>;
 };
 
 Card.Title = function CardTitle() {
   const { title } = useCardContext();
-  return <div className="font-bold text-2xl">{title}</div>;
+  return <Heading variant="small">{title}</Heading>;
 };
 
 Card.Description = function CardDescription() {
@@ -128,7 +129,9 @@ Card.TimeAndLocation = function TimeAndLocation() {
         </p>
       )}
       {location && (
-        <p className="font-normal text-sm text-my-heading">Location - {location}</p>
+        <p className="font-normal text-sm text-my-heading">
+          Location - {location}
+        </p>
       )}{" "}
     </div>
   );

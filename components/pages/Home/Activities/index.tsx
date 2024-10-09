@@ -2,6 +2,7 @@
 import CardCarousel from "@/components/CardCarousel";
 import Card from "@/components/CardCarousel/Card";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
+import Heading from "@/components/Text/Heading";
 import React from "react";
 
 const cardsData = [
@@ -66,11 +67,11 @@ const Activities = () => {
     // <div className="flex justify-center w-full">
     //   <div className=" relative grid grid-cols-10">
     // <SectionWrapper className="mt-24 mx-auto">
-    <SectionWrapper className="mt-20 ">
-      <div className="flex flex-col gap-6">
-        <h1 className="text-4xl font-bold text-my-heading">
+    <SectionWrapper className="mt-20">
+      <div className="flex flex-col sm:gap-6 gap-4">
+        <Heading variant="medium">
           Core Activities and Programs
-        </h1>
+        </Heading>
         <p className="font-medium text-my-para text-lg">
           Hers is what we mostly do{" "}
         </p>

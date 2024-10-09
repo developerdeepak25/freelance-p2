@@ -16,12 +16,15 @@ const CardCarousel = ({ children }: Props) => {
   const [canScrollNext, setCanScrollNext] = useState(false);
 
   // const [count, setCount] = useState(0);
-
+  
   useEffect(() => {
     if (!api) {
       return;
     }
-
+    api.reInit({
+      align: "end", // This sets alignment to right
+      slidesToScroll: 1,
+    });
     setCanScrollNext(api.canScrollNext());
     setCanScrollPrev(api.canScrollPrev());
 
@@ -49,22 +52,24 @@ const CardCarousel = ({ children }: Props) => {
 
   return (
     <>
-      <Carousel setApi={setApi}>
-        <CarouselContent className="-ml-10">{children}</CarouselContent>
-        {/* <CarouselPrevious />
+      <div>
+        <Carousel setApi={setApi}>
+          <CarouselContent className="-ml-10">{children}</CarouselContent>
+          {/* <CarouselPrevious />
       <CarouselNext /> */}
-      </Carousel>
-      <div className="flex gap-6  justify-end pt-7">
-        <CarouselButton
-          onClick={() => handlePrevClick()}
-          className={`rotate-180  `}
-          disabled={canScrollPrev}
-        />
-        <CarouselButton
-          onClick={() => handleNextClick()}
-          // className={`${!canScrollNext ? "opacity-50" : ""}`}
-          disabled={canScrollNext}
-        />
+        </Carousel>
+        <div className="flex gap-6  justify-end pt-7">
+          <CarouselButton
+            onClick={() => handlePrevClick()}
+            className={`rotate-180  `}
+            disabled={canScrollPrev}
+          />
+          <CarouselButton
+            onClick={() => handleNextClick()}
+            // className={`${!canScrollNext ? "opacity-50" : ""}`}
+            disabled={canScrollNext}
+          />
+        </div>
       </div>
     </>
   );
@@ -86,12 +91,12 @@ const CarouselButton = ({
     <button
       onClick={onClick}
       className={cn(
-        ` border-[1px]    border-black  h-14 aspect-square rounded-full grid place-items-center  ${
+        ` border-[1px]    border-black  sm:h-14 h-10 aspect-square rounded-full grid place-items-center  ${
           !disabled ? "opacity-50" : ""
         } ${className}`
       )}
     >
-      <ArrowIcon />
+      <ArrowIcon height={10} />
     </button>
   );
 };

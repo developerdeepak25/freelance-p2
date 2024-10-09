@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Heading from "@/components/Text/Heading";
 
 interface SplitContentSectionProps {
   imageSrc: string;
@@ -23,11 +24,11 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   imageOnLeft = true,
 }) => {
   const contentSection = (
-    <div className="flex flex-col gap-4 justify-center">
-      <p className="text-primary-light uppercase text-base font-bold">
+    <div className="flex flex-col sm:gap-4 gap-3 justify-center">
+      <p className="text-primary-light uppercase text-base sm:font-bold font-medium">
         {sectionTitle}
       </p>
-      <h1 className="text-5xl font-bold text-my-heading">{heading}</h1>
+      <Heading variant="large">{heading}</Heading>
       <p className="font-normal text-my-para text-base">{description}</p>
       <div>
         <Button variant="primary-solid" onClick={onButtonClick}>
@@ -38,21 +39,21 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   );
 
   const imageSection = (
-    <div className="flex items-center">
-      <div className="w-96 h-[550px] relative overflow-hidden rounded-2xl shadow-xl shadow-gray-400">
+    <div className="flex items-center lg:flex-row flex-col order-last lg:order-first">
+      <div className="lg:w-96 w-full lg:h-[550px] md:h-[450px] h-[300px] relative overflow-hidden rounded-2xl shadow-xl shadow-gray-400">
         <Image
           src={imageSrc}
           fill={true}
           alt="section-image"
-          className="absolute top-0 left-0 right-0 bottom-0"
+          className="absolute top-0 left-0 right-0 bottom-0 object-cover lg:object-center object-bottom "
         />
       </div>
-      <div className="bg-primary-light w-5 h-5/6 rounded-r-lg shadow-xl shadow-gray-400"></div>
+      <div className="bg-primary-light lg:w-5 w-5/6  lg:h-5/6 sm:h-5 h-3 lg:rounded-r-lg rounded-b-lg shadow-xl shadow-gray-400 grow z-10"></div>
     </div>
   );
 
   return (
-    <div className="flex gap-44 px-20 mt-20 py-12">
+    <div className="flex lg:flex-row flex-col xl:gap-44 md:gap-16 gap-12 xl:px-20 px-0 mt-20 lg:py-12 py-0">
       {imageOnLeft ? (
         <>
           {imageSection}

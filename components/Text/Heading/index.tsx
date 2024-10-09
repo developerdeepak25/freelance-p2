@@ -14,8 +14,8 @@ const Heading: React.FC<HeadingProps> = ({ variant, children, className }) => {
       className={cn(
         "font-bold text-my-heading",
         {
-          "text-5xl": variant === "large",
-          "text-4xl": variant === "medium",
+          "md:text-5xl text-4xl": variant === "large",
+          "md:text-4xl text-3xl": variant === "medium",
           "text-2xl": variant === "small",
         },
         className

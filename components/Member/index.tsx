@@ -10,9 +10,9 @@ interface MemberProps {
 
 const Member: React.FC<MemberProps> = ({ name, role, imageUrl }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg">
+    <div className="flex flex-col items-center justify-center md:p-4 p-0 rounded-lg">
       {/* Image section */}
-      <div className="w-44 h-44 rounded-full overflow-hidden relative">
+      <div className="w-44 aspect-square rounded-full overflow-hidden relative">
         <Image
           src={imageUrl}
           alt={name}

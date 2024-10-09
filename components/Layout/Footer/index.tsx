@@ -38,11 +38,11 @@ const Footer = () => {
       ref={footerRef}
     >
       {/* <SectionWrapper className=" block"> */}
-      <div className="flex justify-center px-20">
+      <div className="flex justify-center sm:px-20 px-5">
         <div className="max-w-[1280px] grow">
           <div className="py-10 flex  flex-col  gap-10">
             {/* links */}
-            <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center justify-center gap-8 max-md:hidden">
               {navLinks.map((link) => {
                 // const isActive = pathname === link.path;
                 return (
@@ -66,12 +66,12 @@ const Footer = () => {
             <div className="bg-white h-[1px]"></div>
 
             {/* copyright and credits */}
-            <div className="flex justify-between">
+            <div className="flex justify-between flex-col lg:flex-row items-center gap-6 max-sm:px-2">
               {/* copyright */}
-              <p className=" text-gray-400 text-sm">
+              <p className=" text-gray-400 text-sm max-sm:text-center">
                 © 2024 mydesignpublic. All rights reserved.
               </p>
-              <p className="text-base font-normal text-gray-300">
+              <p className="text-base font-normal text-gray-300 max-sm:text-center">
                 Designed and developed by{" "}
                 <a
                   href="https://www.linkedin.com/in/deepak-aashrmiya/"

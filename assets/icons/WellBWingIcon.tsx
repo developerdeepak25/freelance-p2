@@ -8,7 +8,7 @@ interface WellBeingIconProps extends React.SVGProps<SVGSVGElement> {
 }
 
 const WellBeingIcon: React.FC<WellBeingIconProps> = ({
-  width,
+  width=20,
   height = 20,
   ...props // Spread the remaining SVG props
 }) => {

@@ -16,7 +16,7 @@ interface MemberListProps {
 const MemberList: React.FC<MemberListProps> = ({ members, className }) => {
   return (
     <div
-      className={cn("flex gap-20 flex-wrap justify-around px-20", className)}
+      className={cn("flex sm:gap-20 gap-10 flex-wrap justify-around ", className)}
     >
       {members.map((member, index) => (
         <Member key={index} {...member} />

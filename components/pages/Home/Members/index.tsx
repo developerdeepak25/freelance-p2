@@ -46,9 +46,7 @@ const Members = () => {
     <div className="bg-gray-200 w-screen flex justify-center">
       <SectionWrapper>
         <div className="py-20 flex flex-col gap-16 items-center">
-  <Heading variant="medium" >
-                Meet our core members
-    </Heading>
+          <Heading   variant="medium" className="text-center">Meet our core members</Heading>
           <MemberList members={membersData} />
           {/* <div className="flex gap-20 flex-wrap justify-around px-20">
             {membersData.map((member, index) => (
