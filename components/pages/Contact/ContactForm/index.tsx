@@ -1,7 +1,8 @@
 "use client";
-import FormButton from "@/components/FormButton";
 import { FormInput, FormTextArea } from "@/components/FormInput";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
+import Heading from "@/components/Text/Heading";
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 const OtherDetails = [
@@ -31,7 +32,13 @@ const ContactForm = () => {
     <SectionWrapper className="pt-40 pb-20">
       <div className="w-full rounded-2xl border-[1px] border-gray-300 flex">
         {/* form */}
-        <div className=" w-full py-20 px-11 flex flex-col gap-10">
+        <div className=" w-full py-12 px-11 flex flex-col gap-10">
+          <div className="pl-3">
+            <Heading variant="medium">Get in touch.</Heading>
+            <p className="font-normal text-base text-my-para">
+              Share your thoughts we would love to hear them.
+            </p>
+          </div>
           <div className="flex gap-5">
             <FormInput placeholder="FullName" type="text" />
             <FormInput placeholder="Email" type="email" />
@@ -39,7 +46,8 @@ const ContactForm = () => {
           <FormInput placeholder="Subject" type="text" />
           <FormTextArea placeholder="Description" rows={10} />
           <div>
-            <FormButton>Submit</FormButton>
+            {/* <FormButton>Submit</FormButton> */}
+            <Button>Submit</Button>
           </div>
         </div>
 
@@ -78,14 +86,9 @@ const ContactForm = () => {
             {/*  */}
           </div>
         </div>
-        
       </div>
     </SectionWrapper>
   );
-
-
-
 };
-
 
 export default ContactForm;

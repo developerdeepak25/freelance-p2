@@ -16,7 +16,7 @@ const paras: string[] = [
 const Story = () => {
   return (
     <SectionWrapper>
-      <div className="px-32 flex flex-col gap-6 mt-20">
+      <div className=" lg:px-32 flex flex-col gap-6 mt-20 ">
         <h1 className="text-4xl font-bold text-primary-light uppercase ">
           Our Story
         </h1>

@@ -1,5 +1,4 @@
 "use client";
-import Member from "@/components/Member";
 import { cn } from "@/lib/utils";
 
 interface MemberData {
@@ -11,16 +10,24 @@ interface MemberData {
 interface MemberListProps {
   members: MemberData[];
   className?: string;
+  Component: React.ComponentType<MemberData>;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ members, className }) => {
+const MemberList: React.FC<MemberListProps> = ({
+  members,
+  className,
+  Component,
+}) => {
   return (
     <div
-      className={cn("flex sm:gap-20 gap-10 flex-wrap justify-around ", className)}
+      className={cn(
+        "flex sm:gap-20 gap-16 flex-wrap justify-around ",
+        className
+      )}
     >
-      {members.map((member, index) => (
-        <Member key={index} {...member} />
-      ))}
+      {members.map((member, index) =>
+        Component ? <Component key={index} {...member} /> : null
+      )}
     </div>
   );
 };

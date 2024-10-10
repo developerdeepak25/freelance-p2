@@ -9,7 +9,7 @@ interface LocationIconProps extends React.SVGProps<SVGSVGElement> {
 
 const LocationIcon: React.FC<LocationIconProps> = ({
   width,
-  height = 151,
+  height = 150,
   ...props
 }) => {
   return (

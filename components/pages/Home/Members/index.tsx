@@ -3,6 +3,7 @@ import SectionWrapper from "@/components/Layout/SectionWrapper";
 import React from "react";
 import MemberList from "@/components/common/MemberList";
 import Heading from "@/components/Text/Heading";
+import MemberCard from "@/components/MemberCard/MemberCard";
 
 const membersData = [
   {
@@ -43,11 +44,11 @@ const membersData = [
 
 const Members = () => {
   return (
-    <div className="bg-gray-200 w-screen flex justify-center">
+    <div className="bg-gray-50 w-screen flex justify-center">
       <SectionWrapper>
         <div className="py-20 flex flex-col gap-16 items-center">
           <Heading   variant="medium" className="text-center">Meet our core members</Heading>
-          <MemberList members={membersData} />
+          <MemberList members={membersData} Component={MemberCard}/>
           {/* <div className="flex gap-20 flex-wrap justify-around px-20">
             {membersData.map((member, index) => (
               <Member

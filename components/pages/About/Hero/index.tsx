@@ -12,9 +12,11 @@ const Hero = () => {
     >
       <SectionWrapper className="w-full h-full ">
         <div className="flex flex-col items-center justify-center gap-5 h-full">
-          <h1 className="text-7xl font-black text-white">About Us</h1>
+          <h1 className="text-4xl  sm:text-5xl lg:text-7xl font-black text-white max-sm:pt-20">
+            About Us
+          </h1>
 
-          <p className="font-medium text-white text-base">
+          <p className="font-medium text-white text-base text-center">
             Driven by the belief that together, we can achieve more{" "}
           </p>
         </div>

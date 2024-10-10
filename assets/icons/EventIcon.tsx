@@ -9,7 +9,7 @@ interface EventIconProps extends React.SVGProps<SVGSVGElement> {
 
 const EventIcon: React.FC<EventIconProps> = ({
   width,
-  height = 151,
+  height = 150,
   ...props
 }) => {
   return (

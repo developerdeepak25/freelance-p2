@@ -60,7 +60,7 @@ const OrganizationStats: React.FC = () => {
   return (
     <SectionWrapper>
       <div className="py-20">
-        <div className="flex justify-around items-center  px-36 flex-wrap gap-5    ">
+        <div className="flex justify-around items-center   flex-wrap gap-16    ">
           {statsData.map((stat) => (
             <Stat
               key={stat.id}
