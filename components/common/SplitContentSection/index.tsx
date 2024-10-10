@@ -39,7 +39,8 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   );
 
   const imageSection = (
-    <div className="flex items-center lg:flex-row flex-col order-last lg:order-first">
+    // <div className="flex items-center lg:flex-row flex-col order-last lg:order-first">
+    <div className="flex items-center lg:flex-row flex-col ">
       <div className="lg:w-96 w-full lg:h-[550px] md:h-[450px] h-[300px] relative overflow-hidden rounded-2xl shadow-xl shadow-gray-400">
         <Image
           src={imageSrc}

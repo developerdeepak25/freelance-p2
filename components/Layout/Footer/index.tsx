@@ -40,7 +40,7 @@ const Footer = () => {
       {/* <SectionWrapper className=" block"> */}
       <div className="flex justify-center sm:px-20 px-5">
         <div className="max-w-[1280px] grow">
-          <div className="py-10 flex  flex-col  gap-10">
+          <div className="sm:py-10 py-5 flex  flex-col  sm:gap-10 gap-5">
             {/* links */}
             <div className="flex items-center justify-center gap-8 max-md:hidden">
               {navLinks.map((link) => {

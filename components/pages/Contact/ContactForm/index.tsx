@@ -29,17 +29,17 @@ const OtherDetails = [
 
 const ContactForm = () => {
   return (
-    <SectionWrapper className="pt-40 pb-20">
-      <div className="w-full rounded-2xl border-[1px] border-gray-300 flex">
+    <SectionWrapper className="pt-40 sm:pb-20 max-sm:px-0">
+      <div className="  w-full sm:rounded-2xl sm:border-[1px] border-gray-300 flex xl:flex-row flex-col">
         {/* form */}
-        <div className=" w-full py-12 px-11 flex flex-col gap-10">
+        <div className=" w-full py-12 px-5 sm:px-11 flex flex-col gap-10">
           <div className="pl-3">
             <Heading variant="medium">Get in touch.</Heading>
             <p className="font-normal text-base text-my-para">
               Share your thoughts we would love to hear them.
             </p>
           </div>
-          <div className="flex gap-5">
+          <div className="flex gap-5 md:flex-row flex-col">
             <FormInput placeholder="FullName" type="text" />
             <FormInput placeholder="Email" type="email" />
           </div>
@@ -53,8 +53,8 @@ const ContactForm = () => {
 
         {/* details,  and links part */}
 
-        <div className=" bg-[#F7F4F2] px-28    ">
-          <div className="flex flex-col gap-12 py-20 items-center justify-center h-full">
+        <div className=" bg-[#F7F4F2] xl:px-28 px-10    ">
+          <div className="xl:flex xl:flex-col grid lg:grid-cols-4 md:grid-cols-2 gap-12 py-20 items-center justify-center h-full">
             {OtherDetails.map((item, index) => (
               <div className="flex flex-col  items-center" key={index}>
                 <div className="font-bold text-[18px] capitalize text-center">
