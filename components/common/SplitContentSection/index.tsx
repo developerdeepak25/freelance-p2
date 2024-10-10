@@ -24,7 +24,7 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   imageOnLeft = true,
 }) => {
   const contentSection = (
-    <div className="flex flex-col sm:gap-4 gap-3 justify-center">
+    <div className="flex flex-col sm:gap-4 gap-5 justify-center">
       <p className="text-primary-light uppercase text-base sm:font-bold font-medium">
         {sectionTitle}
       </p>
@@ -54,7 +54,8 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   );
 
   return (
-    <div className="flex lg:flex-row flex-col xl:gap-44 md:gap-16 gap-12 xl:px-20 px-0 mt-20 lg:py-12 py-0">
+    // <div className="flex lg:flex-row flex-col xl:gap-44 md:gap-16 gap-12 xl:px-20 px-0 mt-20 lg:py-12 py-0">
+    <div className="flex lg:flex-row flex-col xl:gap-44 md:gap-16 gap-12 xl:px-20 px-0 mt-20 lg:py-12 py-0 max-sm:border-t-[1px] max-sm:border-gray-300 max-sm:pt-20 ">
       {imageOnLeft ? (
         <>
           {imageSection}

@@ -1,10 +1,10 @@
-'use client'
-import NoEventIcon from '@/assets/icons/NoEventIcon';
-import CardCarousel from '@/components/CardCarousel';
-import Card from '@/components/CardCarousel/Card';
-import SectionWrapper from '@/components/Layout/SectionWrapper';
-import React from 'react'
-
+"use client";
+import NoEventIcon from "@/assets/icons/NoEventIcon";
+import CardCarousel from "@/components/CardCarousel";
+import Card from "@/components/CardCarousel/Card";
+import SectionWrapper from "@/components/Layout/SectionWrapper";
+import Heading from "@/components/Text/Heading";
+import React from "react";
 
 const pastEventsData = [
   {
@@ -76,37 +76,34 @@ const pastEventsData = [
 ];
 
 const PastEvent = () => {
-    return (
-      // <SectionWrapper className="mt-24 mx-auto pb-12">
-      <SectionWrapper className="mt-20  pb-20">
-        <div className="flex flex-col gap-6">
-          <h1 className="text-4xl font-bold text-my-heading">
-            Past Events{" "}
-          </h1>
-          
-          {pastEventsData.length === 0 ? (
-            <NoEventFallback />
-          ) : (
-            <CardCarousel>
-              {pastEventsData.map((cardData, index) => (
-                <Card data={cardData} key={index}>
-                  <Card.Header>
-                    <Card.Image />
-                    {/* <Card.Category /> */}
-                  </Card.Header>
-                  <Card.Content>
-                    <Card.Title />
-                    <Card.Description />
-                    <Card.TimeAndLocation />
-                  </Card.Content>
-                </Card>
-              ))}
-            </CardCarousel>
-          )}
-        </div>
-      </SectionWrapper>
-    );
-}
+  return (
+    // <SectionWrapper className="mt-24 mx-auto pb-12">
+    <SectionWrapper className="mt-20  pb-20">
+      <div className="flex flex-col gap-6">
+        <Heading variant="medium">Past Events </Heading>
+        {pastEventsData.length === 0 ? (
+          <NoEventFallback />
+        ) : (
+          <CardCarousel>
+            {pastEventsData.map((cardData, index) => (
+              <Card data={cardData} key={index}>
+                <Card.Header>
+                  <Card.Image />
+                  {/* <Card.Category /> */}
+                </Card.Header>
+                <Card.Content>
+                  <Card.Title />
+                  <Card.Description />
+                  <Card.TimeAndLocation />
+                </Card.Content>
+              </Card>
+            ))}
+          </CardCarousel>
+        )}
+      </div>
+    </SectionWrapper>
+  );
+};
 
 const NoEventFallback = () => {
   return (
@@ -114,11 +111,9 @@ const NoEventFallback = () => {
       <div className=" p-10 bg-gray-200 rounded-full grid place-content-center w-fit">
         <NoEventIcon />
       </div>
-      <p className="text-lg font-bold text-my-para">
-        There are no events{" "}
-      </p>
+      <p className="text-lg font-bold text-my-para">There are no events </p>
     </div>
   );
 };
 
-export default PastEvent
+export default PastEvent;

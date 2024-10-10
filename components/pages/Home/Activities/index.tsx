@@ -69,10 +69,8 @@ const Activities = () => {
     // <SectionWrapper className="mt-24 mx-auto">
     <SectionWrapper className="mt-20 ">
       <div className="flex flex-col sm:gap-6 gap-4">
-        <Heading variant="medium">
-          Core Activities and Programs
-        </Heading>
-        <p className="font-medium text-my-para text-lg">
+        <Heading variant="medium">Core Activities and Programs</Heading>
+        <p className="font-medium text-my-para sm:text-lg text-base">
           Hers is what we mostly do{" "}
         </p>
         <CardCarousel>

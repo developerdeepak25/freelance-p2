@@ -3,6 +3,7 @@ import NoEventIcon from "@/assets/icons/NoEventIcon";
 import CardCarousel from "@/components/CardCarousel";
 import Card from "@/components/CardCarousel/Card";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
+import Heading from "@/components/Text/Heading";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -81,10 +82,8 @@ const UpcommmingEvents = () => {
     // <SectionWrapper className="mt-24 mx-auto pb-12">
     <SectionWrapper className={cn("  pb-0 pt-40")}>
       <div className="flex flex-col gap-6">
-        <h1 className="text-4xl font-bold text-my-heading">
-          Upcomming Events{" "}
-        </h1>
-        <p className="font-medium text-my-para text-lg">
+        <Heading variant="medium">Upcomming Events </Heading>
+        <p className="font-medium text-my-para sm:text-lg text-base">
           Stay informed about all upcoming events and become a part of them.{" "}
         </p>
         {upcommingEventsData.length === 0 ? (

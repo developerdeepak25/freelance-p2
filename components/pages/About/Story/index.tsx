@@ -23,7 +23,7 @@ const Story = () => {
         {paras.map((para, index) => (
           <p
             key={index}
-            className="text-my-para text-[18px] font-normal text-justify"
+            className="text-my-para text-[18px] font-normal "
           >
             {para}
           </p>

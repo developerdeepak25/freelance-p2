@@ -83,7 +83,7 @@ const UpcommmingEvents = () => {
         <Heading variant="medium">
           Upcomming Events{" "}
         </Heading>
-        <p className="font-medium text-my-para text-lg">
+        <p className="font-medium text-my-para sm:text-lg text-base">
           Stay informed about all upcoming events and become a part of them.{" "}
         </p>
         {upcommingEventsData.length === 0 ? (
