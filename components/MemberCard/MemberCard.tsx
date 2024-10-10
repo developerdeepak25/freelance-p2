@@ -23,11 +23,12 @@ const MemberCard: React.FC<MemberCardProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className="flex flex-col gap-2 items-center justify-center  relative bg-[#f2f2f2] rounded-2xl px-10 py-12 overflow-hidden ">
+    <div className="flex flex-col gap-2 items-center justify-center  relative bg-[#f2f2f2] rounded-2xl  px-10 py-12 overflow-hidden ">
       {/* object */}
       <div className="absolute -top-[230px]     w-[350px] aspect-square bg-[#E6E6E6] rounded-full"></div>
+
       {/* Image section */}
-      <div className="w-32 aspect-square rounded-full overflow-hidden relative border-[4px] border-[#fff]">
+      <div className="sm:w-32 w-48 aspect-square rounded-full overflow-hidden relative border-[4px] border-[#fff]">
         <Image
           src={imageUrl}
           alt={name}
@@ -43,9 +44,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
           {name}
         </p>
         {role && (
-          <p className="text-sm font-normal text-my-para text-center">
-            {role}
-          </p>
+          <p className="text-sm font-normal text-my-para text-center">{role}</p>
         )}
 
         {links && (
