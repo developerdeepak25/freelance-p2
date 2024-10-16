@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
-import Event from "@/models/Event";
+import Event, { IEvent } from "@/models/Event";
+import { FilterQuery } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -11,14 +12,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-     const searchParams = req.nextUrl.searchParams;
-     const eventQueryParam = searchParams.get("event")
-     console.log("🚀 ~ GET ~ eventQueryParam:", eventQueryParam)
+    const searchParams = req.nextUrl.searchParams;
+    const eventQueryParam = searchParams.get("event");
+    console.log("🚀 ~ GET ~ eventQueryParam:", eventQueryParam);
 
     // const url = new URL(req.url);
     // const eventQueryParam = url.searchParams.get("event");
 
-    const query: any = {};
+    // const query: any = {};
+    const query: FilterQuery<IEvent> = {};
 
     // Filter events by query parameter
     if (eventQueryParam === "past") {
@@ -53,6 +55,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-
-

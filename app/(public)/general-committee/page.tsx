@@ -3,71 +3,71 @@ import CommitteePage from "@/components/common/CommitteePage";
 import MembersTable from "@/components/MembersTable";
 import React from "react";
 
-const ExecutiveMemberData = [
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-  {
-    name: "Rajkumar Yadav",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
-    links: {
-      facebook: "https://www.facebook.com/",
-      instagram: "https://www.instagram.com/",
-      twitter: "https://twitter.com/",
-    },
-  },
-];
+// const ExecutiveMemberData = [
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+//   {
+//     name: "Rajkumar Yadav",
+//     imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+//     links: {
+//       facebook: "https://www.facebook.com/",
+//       instagram: "https://www.instagram.com/",
+//       twitter: "https://twitter.com/",
+//     },
+//   },
+// ];
 
 const Page = () => {
   return (

@@ -13,13 +13,16 @@ let cached: {
 
 // Use global cache only in development to prevent hot reload issues
 // if (process.env.NODE_ENV === "development") {
-  cached = (global as any).mongoose;
-  if (!cached) {
-    cached = (global as any).mongoose = { conn: null, promise: null };
-  }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+cached = (global as any).mongoose;
+if (!cached) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
 // } else {
-  // In production, we don't need the global cache
-  // cached = { conn: null, promise: null };
+// In production, we don't need the global cache
+// cached = { conn: null, promise: null };
 // }
 
 async function dbConnect(): Promise<typeof mongoose> {
@@ -34,7 +37,7 @@ async function dbConnect(): Promise<typeof mongoose> {
     };
 
     console.log("Connecting to MongoDB...");
-    cached.promise =  mongoose
+    cached.promise = mongoose
       .connect(MONGODB_URI, opts)
       .then((mongoose) => {
         console.log("MongoDB connected successfully");
