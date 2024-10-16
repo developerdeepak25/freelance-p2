@@ -27,6 +27,8 @@ export async function DELETE(
     );
 
     await gallery.save();
+    console.log('few things will happen here');
+    
     return NextResponse.json(
       {
         message: `Images deleted successfully for ${gallery.title.substring(
