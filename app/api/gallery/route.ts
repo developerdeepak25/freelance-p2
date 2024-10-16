@@ -28,15 +28,19 @@ export async function POST(req: NextRequest) {
     const resultsArray = Array.isArray(uploadResults)
       ? uploadResults
       : [uploadResults];
-    const imageUrls = resultsArray.map((result) => result.secure_url);
-    const cloudinaryImageIds = resultsArray.map((result) => result.public_id);
+    // const imageUrls = resultsArray.map((result) => result.secure_url);
+    // const cloudinaryImageIds = resultsArray.map((result) => result.public_id);
 
     // Create new gallery
     const galleryData: IGallery = {
       title,
       description,
-      images: imageUrls,
-      cloudinaryImagesId: cloudinaryImageIds,
+      // images: imageUrls,
+      // cloudinaryImagesId: cloudinaryImageIds,
+      imageDetails: resultsArray.map((result) => ({
+        imageUrl: result.secure_url,
+        imageId: result.public_id,
+      })),
       driveLink,
     };
 

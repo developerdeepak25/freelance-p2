@@ -37,10 +37,15 @@ export async function DELETE(
 
     // Delete images from Cloudinary
     // const deleteResults = await deleteFromCloudinary(
-    await deleteFromCloudinary(gallery.cloudinaryImagesId);
 
-    // // Delete gallery
-    // await gallery.remove();
+    const imageIds = gallery.imageDetails.map(
+      (imageDetail: { imageId: string; imageUrl: string }) =>
+        imageDetail.imageId
+    );
+    console.log("🚀 ~ imageIds:", imageIds);
+
+    // await deleteFromCloudinary(gallery.cloudinaryImagesId);
+    await deleteFromCloudinary(imageIds);
 
     return NextResponse.json(
       { message: "Gallery deleted successfully." },
@@ -88,11 +93,18 @@ export async function PUT(
       const resultsArray = Array.isArray(uploadResults)
         ? uploadResults
         : [uploadResults];
-      const imageUrls = resultsArray.map((result) => result.secure_url);
-      const cloudinaryImageIds = resultsArray.map((result) => result.public_id);
+      // const imageUrls = resultsArray.map((result) => result.secure_url);
+      // const cloudinaryImageIds = resultsArray.map((result) => result.public_id);
 
-      gallery.images.push(...imageUrls);
-      gallery.cloudinaryImagesId.push(...cloudinaryImageIds);
+      // gallery.images.push(...imageUrls);
+      // gallery.cloudinaryImagesId.push(...cloudinaryImageIds);
+
+      gallery.imageDetails = (gallery.imageDetails || []).concat(
+        resultsArray.map((result) => ({
+          imageId: result.public_id,
+          imageUrl: result.secure_url,
+        }))
+      );
     }
 
     await gallery.save();
