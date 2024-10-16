@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/admin") ||
-    (pathname.startsWith("/api/auth") && !pathname.endsWith("/login"))
+    (pathname.startsWith("/api/") && !pathname.startsWith("/api/public"))
   ) {
     const decoded = await verifyToken();
     if (!decoded) {
@@ -71,5 +71,6 @@ export async function middleware(request: NextRequest) {
 
 // Apply to specific routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/auth/:path*", "/login"],
+  // matcher: ["/dashboard/:path*", "/admin/:path*", "/api/auth/:path*", "/login"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/:path*"],
 };
