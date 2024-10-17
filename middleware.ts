@@ -9,18 +9,19 @@ interface UserJwtPayload {
 }
 
 export async function middleware(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  console.log("authHeader", authHeader); // TODO: remove it
+  // const authHeader = request.headers.get("authorization");
+  const token = request.cookies.get("accessToken")?.value;
+  // console.log("authHeader", authHeader); // TODO: remove it
   const { pathname } = request.nextUrl;
 
   // Function to verify JWT
   const verifyToken = async (): Promise<UserJwtPayload | null> => {
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return null;
-    }
-    const token = authHeader.split(" ")[1];
+    // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    //   return null;
+    // }
+    // const token = authHeader.split(" ")[1];
     try {
-      return await verifyAuth(token);
+      return await verifyAuth(token!);
     } catch (error) {
       console.error("JWT verification error:", error);
       return null;
@@ -42,11 +43,13 @@ export async function middleware(request: NextRequest) {
 
   // For protected routes (dashboard, admin, and api/auth/* except login)
   if (
-    pathname.startsWith("/dashboard") ||
     pathname.startsWith("/admin") ||
     (pathname.startsWith("/api/") && !pathname.startsWith("/api/public"))
   ) {
+    console.log(' i am working');
+    
     const decoded = await verifyToken();
+    console.log("🚀 ~ middleware ~ decoded:", decoded)
     if (!decoded) {
       // For API routes, return 401 Unauthorized instead of redirecting
       if (pathname.startsWith("/api")) {
@@ -72,5 +75,5 @@ export async function middleware(request: NextRequest) {
 // Apply to specific routes
 export const config = {
   // matcher: ["/dashboard/:path*", "/admin/:path*", "/api/auth/:path*", "/login"],
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/:path*", "/login", "/admin"],
 };

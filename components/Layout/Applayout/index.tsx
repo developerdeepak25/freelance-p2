@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Navbar from "../Navbar";
+import Navbar from "../navbars/Navbar";
 import Footer from "../Footer";
 
 type Props = {

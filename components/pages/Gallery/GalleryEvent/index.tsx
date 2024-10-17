@@ -1,4 +1,7 @@
+"use client";
+import { DeteteButton, EditButton } from "@/components/buttons/ModifiedButton";
 import Heading from "@/components/Text/Heading";
+import { useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import React from "react";
 
@@ -9,13 +12,15 @@ type GalleryEventProps = {
   seeMore: string;
 };
 const GalleryEvent = ({ title, desc, images, seeMore }: GalleryEventProps) => {
+  const { isAuthenticated } = useAppSelector((state) => state.Auth);
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between">
         <Heading variant="small">{title}</Heading>
         {/* see more - //TODO pass g-drive */}
         <p className="text-my-para text-base font-semibold uppercase border-b-2 border-primary px-1 hover:text-primary  cursor-pointer">
-          <a href={seeMore} target="_blank" rel="noopener noreferrer" >
+          <a href={seeMore} target="_blank" rel="noopener noreferrer">
             see more
           </a>
         </p>
@@ -26,10 +31,19 @@ const GalleryEvent = ({ title, desc, images, seeMore }: GalleryEventProps) => {
           <GalleryEventImage key={index} src={image} />
         ))}
       </div>
+      {/* edit and delete button */}
+      {isAuthenticated && (
+        <div className="flex justify-end gap-2">
+          <EditButton />
+          <DeteteButton />
+        </div>
+      )}
     </div>
   );
 };
 const GalleryEventImage = ({ src }: { src: string }) => {
+  const { isAuthenticated } = useAppSelector((state) => state.Auth);
+
   return (
     <div className="w-full flex flex-col gap-1">
       <div className="w-full h-80 relative overflow-hidden rounded-lg">
@@ -41,6 +55,11 @@ const GalleryEventImage = ({ src }: { src: string }) => {
           className="object-cover object-center w-full h-full"
           alt={"gallery image"}
         />
+        {isAuthenticated && (
+          <div className="absolute top-0 right-0 p-2">
+            <DeteteButton size={"icon"} />
+          </div>
+        )}
       </div>
       {/* <p className="text-base text-my-para font-bold">{caption}</p> */}
     </div>

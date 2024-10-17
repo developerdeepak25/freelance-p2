@@ -2,6 +2,8 @@
 import React from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { cn } from "@/utils/taliwind";
 
 type FormInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type FormTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -17,3 +19,33 @@ export const FormInput = ({ ...rest }: FormInputProps) => {
 export const FormTextArea = ({ ...rest }: FormTextAreaProps) => {
   return <Textarea className={commonCss} {...rest} />;
 };
+
+export const FormInputWithLabel = ({
+  name,
+  label,
+  ...rest
+}: FormInputProps & { name: string; label: string }) => {
+    // const {
+    //   register,
+    //   formState: { errors },
+    // } = useFormContext();
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={name} className="text-my-para text-base font-normal">
+        {label}
+      </Label>
+      <Input
+        id={name}
+        // {...register(name)}
+        {...rest}
+        className={cn(commonCss, "border-[1px]")}
+      />
+      {/* {errors[name] && (
+        <p className="text-red-500 text-sm">{errors[name].message}</p>
+      )} */}
+    </div>
+  );
+};
+
+
