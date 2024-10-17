@@ -59,9 +59,6 @@
 //   );
 // };
 
-
-
-
 import React, { ReactNode } from "react";
 import {
   Dialog,
@@ -89,7 +86,7 @@ export const FormModal: React.FC<FormModalProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[525px] ">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -102,5 +99,18 @@ export const FormModal: React.FC<FormModalProps> = ({
         </DialogFooter> */}
       </DialogContent>
     </Dialog>
+  );
+};
+
+export const ModalForm = ({
+  children,
+  ...rest
+}: {
+  children: React.ReactNode;
+} & React.FormHTMLAttributes<HTMLFormElement>) => {
+  return (
+    <form {...rest}>
+      <div className="flex gap-3 flex-col">{children}</div>
+    </form>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { forwardRef } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
@@ -20,32 +20,48 @@ export const FormTextArea = ({ ...rest }: FormTextAreaProps) => {
   return <Textarea className={commonCss} {...rest} />;
 };
 
-export const FormInputWithLabel = ({
-  name,
-  label,
-  ...rest
-}: FormInputProps & { name: string; label: string }) => {
-    // const {
-    //   register,
-    //   formState: { errors },
-    // } = useFormContext();
-
+export const FormInputWithLabel = forwardRef<
+  HTMLInputElement,
+  FormInputProps & { id: string; label: string; error: string | undefined }
+>(({ id, label, error, ...rest }, ref) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name} className="text-my-para text-base font-normal">
+      <Label htmlFor={id} className="text-my-para text-base font-normal">
         {label}
       </Label>
       <Input
-        id={name}
-        // {...register(name)}
+        id={id}
+        ref={ref}
         {...rest}
         className={cn(commonCss, "border-[1px]")}
       />
-      {/* {errors[name] && (
-        <p className="text-red-500 text-sm">{errors[name].message}</p>
-      )} */}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
-};
+});
 
+// Set display name for easier debugging
+FormInputWithLabel.displayName = "FormInputWithLabel";
 
+export const FormTextAreaWithLabel = forwardRef<
+  HTMLTextAreaElement,
+  FormTextAreaProps & { id: string; label: string; error: string | undefined }
+>(({ id, label, error, ...rest }, ref) => {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id} className="text-my-para text-base font-normal">
+        {label}
+      </Label>
+      <Textarea
+        id={id}
+        ref={ref}
+        {...rest}
+        className={cn(commonCss, "border-[1px]")}
+      />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+});
+
+// Set display name for easier debugging
+FormTextAreaWithLabel.displayName = "FormTextAreaWithLabel";

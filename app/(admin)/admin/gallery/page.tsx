@@ -1,142 +1,19 @@
-// "use client";
-// import { AddButton } from "@/components/buttons/ModifiedButton";
-// import { FormInputWithLabel } from "@/components/FormInput";
-// import { FormModal } from "@/components/FormModel";
-// import SectionWrapper from "@/components/Layout/SectionWrapper";
-// import GalleryEvent from "@/components/pages/Gallery/GalleryEvent";
-// import Heading from "@/components/Text/Heading";
-// import { useState } from "react";
-// import { useForm } from "react-hook-form";
-
-// const gallery = [
-//   {
-//     title: "Blood Donation",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit amet consecteturLorem ipsum dolor sit amet consectetur",
-//     // category: 'blood-donation',
-//     images: [
-//       "/image/gallery1.png",
-//       "/image/gallery3.png",
-//       "/image/gallery2.png",
-//       "/image/gallery2.png",
-//     ],
-//     seeMore: "https://google.com",
-//   },
-//   {
-//     title: "Blood Donation",
-//     description: "Lorem ipsum dolor sit amet consectetur",
-//     // category: 'blood-donation',
-//     images: [
-//       "/image/gallery1.png",
-//       "/image/gallery2.png",
-//       "/image/gallery3.png",
-//     ],
-//     seeMore: "https://google.com",
-//   },
-//   {
-//     title: "Blood Donation",
-//     description: "Lorem ipsum dolor sit amet consectetur",
-//     // category: 'blood-donation',
-//     images: [
-//       "/image/gallery1.png",
-//       "/image/gallery2.png",
-//       "/image/gallery3.png",
-//     ],
-//     seeMore: "https://google.com",
-//   },
-// ];
-
-// interface FormValues {
-//   images: FileList;
-//   title: string;
-//   description: string;
-//   driveLink: string;
-// }
-
-// const AdminGallery = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm<FormValues>();
-
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-
-//   const onSubmit = async (data: FormValues) => {
-//     // Make your API call here
-//     console.log(data);
-//     // await api.updateUser(data);
-//   };
-
-//   return (
-//     <SectionWrapper className="pt-40 pb-40">
-//       <div className="flex justify-between items-center gap-3 pb-10">
-//         <Heading variant="medium" className="text-center">
-//           Admin Gallery{" "}
-//         </Heading>
-//         {/* button to add gallery */}
-//         <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
-//       </div>
-//       <div className=" mt-10 flex flex-col items-center gap-20">
-//         {gallery.length === 0 && (
-//           // <p className="text-base text-my-para font-bold text-center">
-//           <Heading variant="medium">Nothing to show</Heading>
-//         )}
-//         {gallery.map((item, index) => (
-//           <GalleryEvent
-//             key={index}
-//             title={item.title}
-//             desc={item.description}
-//             images={item.images}
-//             seeMore={item.seeMore}
-//           />
-//         ))}
-//       </div>
-//       <FormModal
-//         isOpen={isModalOpen}
-//         onClose={() => setIsModalOpen(false)}
-//         title="Edit User"
-//         onSubmit={onSubmit}
-//         submitButtonText="Update User"
-//       >
-//         <div className="space-y-4">
-//           <form onSubmit={handleSubmit}>
-//             <FormInputWithLabel
-//               {...register("title")}
-//               // name="title"
-//               id="title"
-//               label="Name"
-//             />
-//           </form>
-//         </div>
-//       </FormModal>
-//     </SectionWrapper>
-//   );
-// };
-
-// export default AdminGallery;
-
-
-
-
 "use client";
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AddButton } from "@/components/buttons/ModifiedButton";
-import { FormInputWithLabel } from "@/components/FormInput";
-import { FormModal } from "@/components/FormModel";
+import {
+  FormInputWithLabel,
+  FormTextAreaWithLabel,
+} from "@/components/FormInput";
+import { FormModal, ModalForm } from "@/components/FormModel";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
-import GalleryEvent from "@/components/pages/Gallery/GalleryEvent";
 import Heading from "@/components/Text/Heading";
 import { Button } from "@/components/ui/button";
-
-interface GalleryItem {
-  title: string;
-  description: string;
-  images: string[];
-  seeMore: string;
-}
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import GalleryEvents from "@/components/pages/Gallery/GalleryEvents";
 
 interface FormValues {
   images: FileList;
@@ -145,36 +22,56 @@ interface FormValues {
   driveLink: string;
 }
 
-const gallery: GalleryItem[] = [
-  {
-    title: "Blood Donation",
-    description:
-      "Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit amet consecteturLorem ipsum dolor sit amet consectetur",
-    images: [
-      "/image/gallery1.png",
-      "/image/gallery3.png",
-      "/image/gallery2.png",
-      "/image/gallery2.png",
-    ],
-    seeMore: "https://google.com",
-  },
-  // ... (other gallery items)
-];
-
 const AdminGallery: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
+  useEffect(() => {
+    console.log(errors.root?.message);
+    console.log(errors.title?.message);
+    console.log(errors.description?.message);
+    console.log(errors.images?.message);
+    console.log(errors.driveLink?.message);
+  }, [errors]);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     // Make your API call here
+
+    const formData = new FormData();
+    console.log(data.images);
+
+    Array.from(data.images).forEach((image: File) => {
+      formData.append(`images`, image); // `images` is the key expected by the backend
+    });
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("driveLink", data.driveLink);
+
     console.log(data);
-    // await api.updateUser(data);
-    setIsModalOpen(false);
+    try {
+      const res = await axios.post("/api/gallery", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res);
+      console.log(res.data);
+
+      if (res.status !== 200 && res.status !== 201) {
+        toast.error("Error adding gallery item");
+        console.log(res);
+      }
+      toast.success("Gallery item added successfully");
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.error("Error adding gallery item");
+      console.log(error);
+    }
   };
 
   return (
@@ -186,7 +83,7 @@ const AdminGallery: React.FC = () => {
         <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
       </div>
       <div className="mt-10 flex flex-col items-center gap-20">
-        {gallery.length === 0 ? (
+        {/* {gallery.length === 0 ? (
           <Heading variant="medium">Nothing to show</Heading>
         ) : (
           gallery.map((item, index) => (
@@ -198,7 +95,8 @@ const AdminGallery: React.FC = () => {
               seeMore={item.seeMore}
             />
           ))
-        )}
+        )} */}
+        <GalleryEvents />
       </div>
       <FormModal
         isOpen={isModalOpen}
@@ -207,23 +105,27 @@ const AdminGallery: React.FC = () => {
         // onSubmit={()=>handleSubmit(onSubmit)}
         submitButtonText="Add Item"
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalForm onSubmit={handleSubmit(onSubmit)}>
+          {/* <div className="flex gap-3 flex-col"> */}
           <FormInputWithLabel
             {...register("title", { required: "Title is required" })}
             id="title"
             label="Title"
+            error={errors.title?.message}
           />
-          <FormInputWithLabel
+          <FormTextAreaWithLabel
             {...register("description", {
-              required: "Description is required",
+              required: false,
             })}
             id="description"
             label="Description"
+            error={errors.description?.message}
           />
           <FormInputWithLabel
-            {...register("driveLink", { required: "Drive link is required" })}
+            {...register("driveLink", { required: false })}
             id="driveLink"
-            label="Drive Link"
+            label="G-Drive Link"
+            error={errors.driveLink?.message}
           />
           <FormInputWithLabel
             {...register("images", { required: "Images are required" })}
@@ -231,11 +133,20 @@ const AdminGallery: React.FC = () => {
             label="Images"
             type="file"
             multiple
+            error={errors.images?.message}
           />
-          <Button variant={"primary-solid"} type="submit">
-            submit
+          <Button
+            disabled={isSubmitting}
+            variant={"primary-solid"}
+            type="submit"
+          >
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}{" "}
+            Submit
           </Button>
-        </form>
+          {/* </div> */}
+        </ModalForm>
       </FormModal>
     </SectionWrapper>
   );
