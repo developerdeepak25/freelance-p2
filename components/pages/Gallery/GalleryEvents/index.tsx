@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Heading from "@/components/Text/Heading";
 import React, { useEffect } from "react";
 import GalleryEvent from "../GalleryEvent";
@@ -23,15 +23,14 @@ const GalleryEvents = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await axios.get("/api/public/gallery");
+        const response = await fetch("/api/public/gallery");
         // const data = await response.json();
-        console.log(response.data);
-        setGallery(response.data);
+        const data = await response.json();
+        console.log(response, data);
+        setGallery(data);
       } catch (error) {
         setIsError(true);
 
-
-        
         console.log(error);
       } finally {
         setLoading(false);
