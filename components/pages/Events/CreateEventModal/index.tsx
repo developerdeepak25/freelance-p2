@@ -1,57 +1,63 @@
+import React from "react";
+
 import {
   FormInputWithLabel,
   FormTextAreaWithLabel,
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { GalleryEventProps } from "../GalleryEvent";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
-interface FormValues {
-  images: FileList;
+type EventFormValues = {
   title: string;
   description: string;
-  driveLink: string;
-}
-type GalleryEventEditProps = {
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalOpen: boolean;
-  editData: GalleryEventProps;
+  thumbnail: string;
+  //   cloudinaryThumbnailId: string;
+  // date: Date;
+  startDate: Date;
+  endDate: Date;
+  // time: string;
+  venue: string;
+  //   eventGalleryLink?: string;
+  highlights?: string; // will be a link
 };
-const GalleryEventEdit = ({
-  setIsModalOpen,
+const CreateEventModal = ({
   isModalOpen,
-  editData,
-}: GalleryEventEditProps) => {
+  setIsModalOpen,
+}: {
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
-    defaultValues: {
-      title: editData.title,
-      description: editData.desc,
-      driveLink: editData.seeMore,
-    },
-  });
+  } = useForm<EventFormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
+    // Make your API call here
+
     const formData = new FormData();
+    console.log(data.thumbnail);
 
-    Array.from(data.images).forEach((image: File) => {
-      formData.append(`images`, image); // `images` is the key expected by the backend
+    // Dynamically add fields to FormData
+    Object.entries(data).forEach(([key, value]) => {
+      // Check if the value is not undefined or null before adding
+      if (value !== undefined && value !== null) {
+        // Convert Date to string for FormData if necessary
+        if (value instanceof Date) {
+          formData.append(key, value.toISOString());
+        } else {
+          formData.append(key, value);
+        }
+      }
     });
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("driveLink", data.driveLink);
-
-    console.log(data);
+    console.log("filled data", data);
     try {
-      const res = await axios.put(`/api/gallery/${editData.id}`, formData, {
+      const res = await axios.post("/api/gallery", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -60,10 +66,10 @@ const GalleryEventEdit = ({
       console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
-        toast.error("Error editing gallery item");
+        toast.error("Error adding Event");
         console.log(res);
       }
-      toast.success("Gallery item edited successfully");
+      toast.success("Event added successfully");
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -84,7 +90,7 @@ const GalleryEventEdit = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Edit Gallery Item"
+      title="Add Event Item"
       // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
@@ -104,23 +110,20 @@ const GalleryEventEdit = ({
           label="Description"
           error={errors.description?.message}
         />
+
         <FormInputWithLabel
-          {...register("driveLink", { required: false })}
-          id="driveLink"
-          label="G-Drive Link"
-          error={errors.driveLink?.message}
-        />
-        <FormInputWithLabel
-          {...register("images", { required: false })}
+          {...register("thumbnail", { required: "Thumbnail are required" })}
           id="images"
-          label="Add More Images"
+          label="Images"
           type="file"
-          multiple
-          error={errors.images?.message}
+          accept="image/*"
+          error={errors.thumbnail?.message}
         />
+        
+
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
-            <Loader2 className="mr-2 h-5 aspect-square animate-spin" />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{" "}
           Submit
         </Button>
@@ -130,4 +133,4 @@ const GalleryEventEdit = ({
   );
 };
 
-export default GalleryEventEdit;
+export default CreateEventModal;

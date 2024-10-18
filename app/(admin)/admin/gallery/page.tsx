@@ -74,7 +74,9 @@ const AdminGallery: React.FC = () => {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
           console.log(errMessage);
-          return toast.error(errMessage);
+          if (errMessage) {
+            return toast.error(errMessage);
+          }
         }
       }
       toast.error("something went wrong");
@@ -89,13 +91,15 @@ const AdminGallery: React.FC = () => {
         </Heading>
         <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
       </div>
-      <div className="mt-10 flex flex-col items-center gap-20">
+      {/* gallery events wrapper */}
+      <div className="mt-20 flex flex-col items-center gap-20">
         <GalleryEvents />
       </div>
+      {/* //TODO - create a comp out of this modal  */}
       <FormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add Gallery Item"
+        title="Add Event Item"
         // onSubmit={()=>handleSubmit(onSubmit)}
         submitButtonText="Add Item"
       >
@@ -126,6 +130,7 @@ const AdminGallery: React.FC = () => {
             id="images"
             label="Images"
             type="file"
+            accept="image/*"
             multiple
             error={errors.images?.message}
           />

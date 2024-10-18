@@ -1,24 +1,34 @@
 import mongoose, { Document } from "mongoose";
 
-
-export interface IEvent extends Document{
+// export interface IEvent extends Document{
+//   eventTitle: string;
+//   description: string;
+//   thumbnail: string;
+//   cloudinaryThumbnailId: string;
+//   // date: Date;
+//   startDate: Date;
+//   endDate: Date;
+//   // time: string;
+//   venue: string;
+//   eventGalleryLink?: string;
+//   eventHighlights?: string;
+//   // duration: number;
+//   // status: string;
+//   // tags: string[];
+//   // price: number;
+//   // maxParticipants: number;
+// }
+export interface IEvent extends Document {
   eventTitle: string;
   description: string;
   thumbnail: string;
   cloudinaryThumbnailId: string;
-  // date: Date;
   startDate: Date;
   endDate: Date;
-  // time: string;
   venue: string;
   eventGalleryLink?: string;
   eventHighlights?: string;
-  // duration: number;
-  // status: string;
-  // tags: string[];
-  // price: number;
-  // maxParticipants: number;
-} 
+}
 
 const eventSchema = new mongoose.Schema<IEvent>(
   {
@@ -81,5 +91,6 @@ const eventSchema = new mongoose.Schema<IEvent>(
   }
 );
 
-const Event = mongoose.models.Event || mongoose.model<IEvent>("Event", eventSchema); 
+const Event =
+  mongoose.models.Event || mongoose.model<IEvent>("Event", eventSchema);
 export default Event;
