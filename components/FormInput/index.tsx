@@ -22,7 +22,7 @@ export const FormTextArea = ({ ...rest }: FormTextAreaProps) => {
 
 export const FormInputWithLabel = forwardRef<
   HTMLInputElement,
-  FormInputProps & { id: string; label: string; error: string | undefined }
+  FormInputProps & { id: string; label: string; error?: string | undefined }
 >(({ id, label, error, ...rest }, ref) => {
   return (
     <div className="space-y-2">
