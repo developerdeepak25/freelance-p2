@@ -55,13 +55,13 @@ import { NextRequest, NextResponse } from "next/server";
 // Delete Gallery Images
 
 // Takes gallery id, not image id, as a parameter
-export async function DELETE(
+export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const body = await req.json();
-    const { imageIds } = body; // Array of Cloudinary image IDs to delete
+    const { imageId } = body; // Single Cloudinary image ID to delete
     const gallery = await Gallery.findById(params.id);
 
     if (!gallery) {
@@ -71,13 +71,13 @@ export async function DELETE(
       );
     }
 
-    // Delete images from Cloudinary
-    await deleteFromCloudinary(imageIds);
+    // Delete the image from Cloudinary
+    await deleteFromCloudinary(imageId);
 
-    // Filter out the images that match the provided imageIds and update the gallery
+    // Filter out the image that matches the provided imageId and update the gallery
     gallery.imageDetails = gallery.imageDetails.filter(
       (imageDetail: { imageId: string; imageUrl: string }) =>
-        !imageIds.includes(imageDetail.imageId)
+        imageDetail.imageId !== imageId
     );
 
     // Save the updated gallery
@@ -85,7 +85,7 @@ export async function DELETE(
 
     return NextResponse.json(
       {
-        message: `Images deleted successfully for ${gallery.title.substring(
+        message: `Image deleted successfully for ${gallery.title.substring(
           0,
           2
         )}.`,
@@ -96,10 +96,11 @@ export async function DELETE(
     console.error(error);
     return NextResponse.json(
       {
-        error: "An error occurred while deleting the images from the gallery.",
+        error: "An error occurred while deleting the image from the gallery.",
       },
       { status: 500 }
     );
   }
 }
+
 

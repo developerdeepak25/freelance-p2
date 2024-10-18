@@ -15,4 +15,5 @@ export type Member = {
 
 export interface GallerImageType {
   imageUrl: string;
+  imageId: string;
 }

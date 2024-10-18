@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AddButton } from "@/components/buttons/ModifiedButton";
 import {
@@ -10,7 +10,7 @@ import { FormModal, ModalForm } from "@/components/FormModel";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
 import Heading from "@/components/Text/Heading";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import GalleryEvents from "@/components/pages/Gallery/GalleryEvents";
@@ -29,14 +29,14 @@ const AdminGallery: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
-  useEffect(() => {
-    console.log(errors.root?.message);
-    console.log(errors.title?.message);
-    console.log(errors.description?.message);
-    console.log(errors.images?.message);
-    console.log(errors.driveLink?.message);
-  }, [errors]);
-  
+  // useEffect(() => {
+  //   console.log(errors.root?.message);
+  //   console.log(errors.title?.message);
+  //   console.log(errors.description?.message);
+  //   console.log(errors.images?.message);
+  //   console.log(errors.driveLink?.message);
+  // }, [errors]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -69,33 +69,27 @@ const AdminGallery: React.FC = () => {
       toast.success("Gallery item added successfully");
       setIsModalOpen(false);
     } catch (error) {
-      toast.error("Error adding gallery item");
       console.log(error);
+      if (error instanceof AxiosError) {
+        if (error.status === 400) {
+          const errMessage = error.response?.data?.error;
+          console.log(errMessage);
+          return toast.error(errMessage);
+        }
+      }
+      toast.error("something went wrong");
     }
   };
 
   return (
     <SectionWrapper className="pt-40 pb-40">
-      <div className="flex justify-between items-center gap-3 pb-10">
+      <div className="flex justify-between items-center gap-3 pb-2">
         <Heading variant="medium" className="text-center">
           Admin Gallery
         </Heading>
         <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
       </div>
       <div className="mt-10 flex flex-col items-center gap-20">
-        {/* {gallery.length === 0 ? (
-          <Heading variant="medium">Nothing to show</Heading>
-        ) : (
-          gallery.map((item, index) => (
-            <GalleryEvent
-              key={index}
-              title={item.title}
-              desc={item.description}
-              images={item.images}
-              seeMore={item.seeMore}
-            />
-          ))
-        )} */}
         <GalleryEvents />
       </div>
       <FormModal

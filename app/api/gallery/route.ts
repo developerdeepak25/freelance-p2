@@ -2,6 +2,7 @@ import Gallery, { IGallery } from "@/models/Gallery";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToCloudinary } from "@/utils/cloudnaryUtils";
+import { isErrorWithMessage } from "@/utils/other";
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,7 +23,22 @@ export async function POST(req: NextRequest) {
     }
 
     // Upload images to Cloudinary
-    const uploadResults = await uploadToCloudinary(imageFiles);
+    let uploadResults;
+
+    try {
+      uploadResults = await uploadToCloudinary(imageFiles);
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+
+      // TypeScript-safe error handling
+      const errorMessage =
+        typeof error === "string"
+          ? error
+          : isErrorWithMessage(error)
+          ? error.message
+          : "An unknown error occurred while uploading images.";
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
+    }
 
     // Check if uploadResults is an array
     const resultsArray = Array.isArray(uploadResults)

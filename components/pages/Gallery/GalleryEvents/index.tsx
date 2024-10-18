@@ -29,6 +29,9 @@ const GalleryEvents = () => {
         setGallery(response.data);
       } catch (error) {
         setIsError(true);
+
+
+        
         console.log(error);
       } finally {
         setLoading(false);

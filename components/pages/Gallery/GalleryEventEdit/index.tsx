@@ -111,7 +111,7 @@ const GalleryEventEdit = ({
         />
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 h-5 aspect-square animate-spin" />
           ) : null}{" "}
           Submit
         </Button>
