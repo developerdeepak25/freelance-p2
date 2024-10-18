@@ -3,7 +3,6 @@ import Heading from "@/components/Text/Heading";
 import React, { useEffect } from "react";
 import GalleryEvent from "../GalleryEvent";
 import { Loader2 } from "lucide-react";
-import axios from "axios";
 import { GallerImageType } from "@/Types/types";
 
 interface GalleryItem {
