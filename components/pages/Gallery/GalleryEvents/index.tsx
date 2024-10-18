@@ -22,7 +22,9 @@ const GalleryEvents = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await fetch("/api/public/gallery");
+        const response = await fetch("/api/public/gallery", {
+          cache: "no-store",
+        });
         // const data = await response.json();
         const data = await response.json();
         console.log(response, data);
