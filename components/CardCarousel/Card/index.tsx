@@ -192,8 +192,8 @@ Card.Content = function CardContent({
 
 Card.Title = function CardTitle() {
   const { title } = useCardContext();
-  return <Heading variant="small">{title}</Heading>;
-  // return <Heading variant="small" className="text-nowrap text-ellipsis overflow-hidden">{title}</Heading>;
+  // return <Heading variant="small">{title}</Heading>;
+  return <Heading variant="small" className="text-nowrap text-ellipsis overflow-hidden">{title}</Heading>;
 };
 
 // Card.Description = function CardDescription() {
