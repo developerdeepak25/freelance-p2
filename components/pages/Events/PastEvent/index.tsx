@@ -1,79 +1,8 @@
 "use client";
-import NoEventIcon from "@/assets/icons/NoEventIcon";
-import CardCarousel from "@/components/CardCarousel";
-import Card from "@/components/CardCarousel/Card";
 import SectionWrapper from "@/components/Layout/SectionWrapper";
 import Heading from "@/components/Text/Heading";
 import React from "react";
-
-const pastEventsData = [
-  {
-    id: 1,
-    title: "Providing food to the poor",
-    description:
-      "For past _ years we have been providing food to the poor and to ones in need, and we had a great success in doing so. We are proud to say because of us a poor person slept with a full stomach.",
-    category: "Food",
-    image: "/image/food-donation.png", // Path to the image or URL
-    altText: "Volunteers providing food to poor people",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-  {
-    id: 2,
-    title: "Supporting Education",
-    description:
-      "We believe in providing equal education to all. Over the years, we've sponsored education for underprivileged children, giving them hope and a future.",
-    category: "Education",
-    image: "/image/blood-donatation.png",
-    altText: "Children attending school with donated supplies",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-  {
-    id: 3,
-    title: "Medical Assistance",
-    description:
-      "Offering medical assistance to those in need is at the core of our mission. Thousands of families have benefited from our free medical camps.",
-    category: "Health",
-    image: "/image/food-donation.png",
-    altText: "Doctors providing medical aid to a family",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-  {
-    id: 4,
-    title: "Clean Water Initiative",
-    description:
-      "We have worked tirelessly to bring clean drinking water to communities in need. Our water purification projects have impacted thousands of lives.",
-    category: "Water",
-    image: "/image/blood-donatation.png",
-    altText: "Volunteers installing clean water systems in villages",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-  {
-    id: 5,
-    title: "Empowering Women",
-    description:
-      "Empowering women through skill development and providing opportunities for self-reliance has been one of our key initiatives.",
-    category: "Empowerment",
-    image: "/image/food-donation.png",
-    altText: "Women learning skills in a workshop",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-  {
-    id: 6,
-    title: "Environmental Protection",
-    description:
-      "Our organization has been planting trees and organizing environmental awareness drives to fight climate change and protect our planet.",
-    category: "Environment",
-    image: "/image/blood-donatation.png",
-    altText: "Volunteers planting trees",
-    dateAndTime: "October 15, 2024 | 10:00 AM - 4:00 PM",
-    location: "Bagru Community Center, Jaipur",
-  },
-];
+import { EventsMap } from "../EventsMap";
 
 const PastEvent = () => {
   return (
@@ -81,39 +10,85 @@ const PastEvent = () => {
     <SectionWrapper className="mt-20  pb-20">
       <div className="flex flex-col gap-6">
         <Heading variant="medium">Past Events </Heading>
-        {pastEventsData.length === 0 ? (
-          <NoEventFallback />
-        ) : (
-          <CardCarousel>
-            {pastEventsData.map((cardData, index) => (
-              <Card data={cardData} key={index}>
-                <Card.Header>
-                  <Card.Image />
-                  {/* <Card.Category /> */}
-                </Card.Header>
-                <Card.Content>
-                  <Card.Title />
-                  <Card.Description />
-                  {/* <Card.TimeAndLocation /> */}
-                </Card.Content>
-              </Card>
-            ))}
-          </CardCarousel>
-        )}
+        <EventsMap type={"past"} NoEventFallbackText={"There are no events "} />
       </div>
     </SectionWrapper>
   );
 };
 
-const NoEventFallback = () => {
-  return (
-    <div className="flex flex-col justify-center items-center py-16 gap-4">
-      <div className=" p-10 bg-gray-200 rounded-full grid place-content-center w-fit">
-        <NoEventIcon />
-      </div>
-      <p className="text-lg font-bold text-my-para">There are no events </p>
-    </div>
-  );
-};
+// const PastEventMap = () => {
+//   const [event, setEvent] = React.useState<Event[]>([]);
+//   const [loading, setLoading] = React.useState(true);
+//   const [iserror, setIsError] = React.useState<boolean>(false);
+
+//   useEffect(() => {
+//     async function fetchData() {
+//       setLoading(true);
+//       try {
+//         const response = await fetch("/api/public/events?event=past", {
+//           cache: "no-store",
+//         });
+//         // const data = await response.json();
+//         const data = await response.json();
+//         console.log(response, data);
+//         setEvent(data);
+//       } catch (error) {
+//         setIsError(true);
+
+//         console.log(error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+//     fetchData();
+//   }, []);
+
+//   if (loading) {
+//     return (
+//       <div className="flex justify-center items-center">
+//         <Loader2 className="mr-2 h-7 aspect-square animate-spin" />;
+//       </div>
+//     );
+//   }
+
+//   if (iserror) {
+//     return (
+//       <div className="flex justify-center items-center">
+//         <Heading variant="medium">Something went wrong!!</Heading>;
+//       </div>
+//     );
+//   }
+
+//   return event.length === 0 ? (
+//     <NoEventFallback />
+//   ) : (
+//     <CardCarousel>
+//       {event.map((cardData, index) => (
+//         <Card data={cardData} key={index}>
+//           <Card.Header>
+//             <Card.Image />
+//             <Card.Highlights />
+//           </Card.Header>
+//           <Card.Content>
+//             <Card.Title />
+//             <Card.Description />
+//             <Card.TimeAndVenue />
+//           </Card.Content>
+//         </Card>
+//       ))}
+//     </CardCarousel>
+//   );
+// };
+
+// const NoEventFallback = () => {
+//   return (
+//     <div className="flex flex-col justify-center items-center py-16 gap-4">
+//       <div className=" p-10 bg-gray-200 rounded-full grid place-content-center w-fit">
+//         <NoEventIcon />
+//       </div>
+//       <p className="text-lg font-bold text-my-para">There are no events </p>
+//     </div>
+//   );
+// };
 
 export default PastEvent;

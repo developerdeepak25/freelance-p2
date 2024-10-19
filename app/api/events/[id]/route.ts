@@ -4,6 +4,7 @@ import {
   deleteFromCloudinary,
   uploadToCloudinary,
 } from "@/utils/cloudnaryUtils";
+import { isErrorWithMessage } from "@/utils/other";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -108,7 +109,23 @@ export async function PUT(
     // Update event
     if (thumbnailFile) {
       // Upload new thumbnail to Cloudinary
-      const uploadResult = await uploadToCloudinary(thumbnailFile);
+      // const uploadResult = await uploadToCloudinary(thumbnailFile);
+      let uploadResult;
+
+      try {
+        uploadResult = await uploadToCloudinary(thumbnailFile);
+      } catch (error) {
+        console.error("Cloudinary upload error:", error);
+
+        // TypeScript-safe error handling
+        const errorMessage =
+          typeof error === "string"
+            ? error
+            : isErrorWithMessage(error)
+            ? error.message
+            : "An unknown error occurred while uploading images.";
+        return NextResponse.json({ error: errorMessage }, { status: 400 });
+      }
 
       // Delete existing thumbnail from Cloudinary
       await deleteFromCloudinary(event.cloudinaryThumbnailId);
@@ -123,7 +140,7 @@ export async function PUT(
     }
 
     // Update event fields
-    event.eventTitle = eventData.eventTitle || event.eventTitle;
+    event.title = eventData.title || event.title;
     event.description = eventData.description || event.description;
     event.startDate = eventData.startDate
       ? new Date(eventData.startDate)
@@ -134,7 +151,7 @@ export async function PUT(
     event.venue = eventData.venue || event.venue;
     event.eventGalleryLink =
       eventData.eventGalleryLink || event.eventGalleryLink;
-    event.eventHighlights = eventData.eventHighlights || event.eventHighlights;
+    event.highlights = eventData.highlights || event.highlights;
 
     // Save updated event
     await event.save();

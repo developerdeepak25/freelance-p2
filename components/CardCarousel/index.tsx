@@ -22,7 +22,7 @@ const CardCarousel = ({ children }: Props) => {
       return;
     }
     api.reInit({
-      align: "end", // This sets alignment to right
+      align: "start", // This sets alignment to right
       slidesToScroll: 1,
     });
     setCanScrollNext(api.canScrollNext());

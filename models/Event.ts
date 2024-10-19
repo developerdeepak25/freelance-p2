@@ -19,20 +19,20 @@ import mongoose, { Document } from "mongoose";
 //   // maxParticipants: number;
 // }
 export interface IEvent extends Document {
-  eventTitle: string;
+  title: string;
   description: string;
   thumbnail: string;
   cloudinaryThumbnailId: string;
   startDate: Date;
-  endDate: Date;
+  endDate?: Date;
   venue: string;
   eventGalleryLink?: string;
-  eventHighlights?: string;
+  highlights?: string;
 }
 
 const eventSchema = new mongoose.Schema<IEvent>(
   {
-    eventTitle: {
+    title: {
       type: String,
       required: true,
     },
@@ -58,7 +58,7 @@ const eventSchema = new mongoose.Schema<IEvent>(
     },
     endDate: {
       type: Date,
-      required: true,
+      // required: true,
     },
     // time: {
     //   type: String, // You can store time as a string like '10:00 AM'
@@ -81,7 +81,7 @@ const eventSchema = new mongoose.Schema<IEvent>(
       type: String, // Google Drive link for event gallery
       required: false,
     },
-    eventHighlights: {
+    highlights: {
       type: String, // maybe Array of social media links (Twitter, Facebook, etc.) currentl taking singel link
       required: false,
     },

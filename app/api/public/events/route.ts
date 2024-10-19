@@ -3,6 +3,8 @@ import Event, { IEvent } from "@/models/Event";
 import { FilterQuery } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+export const revalidate = 10;
+
 /**
  * Get events
  *

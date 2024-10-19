@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   DateRangePicker,
   FormInputWithLabel,
@@ -12,58 +11,58 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { DateRange } from "react-day-picker";
+import { CardDataType } from "@/components/CardCarousel/Card";
 
 type EventFormValues = {
   title: string;
   description: string;
   thumbnail: string;
-  //   cloudinaryThumbnailId: string;
-  // date: Date;
-  //   startDate: Date;
-  //   endDate: Date;
   dateRange: DateRange | undefined;
-
-  // time: string;
   venue: string;
-  //   eventGalleryLink?: string;
-  highlights?: string; // will be a link
+  highlights?: string;
 };
-const CreateEventModal = ({
-  isModalOpen,
-  setIsModalOpen,
-}: {
+
+
+type EditEventModalProps = {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  editData: CardDataType;
+};
+
+const EditEventModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  editData,
+}: EditEventModalProps) => {
   const {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors, isSubmitting },
-  } = useForm<EventFormValues>();
-
-  const formValues = watch();
-  console.log("formValuse", formValues);
+  } = useForm<EventFormValues>({
+    defaultValues: {
+      title: editData.title,
+      description: editData.description,
+      venue: editData.venue || "",
+      highlights: editData.highlights || "",
+      thumbnail: editData.thumbnail,
+      dateRange: {
+        from: new Date(editData.startDate),
+        to: editData.endDate ? new Date(editData.endDate) : undefined,
+      },
+    },
+  });
 
   const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
-    // Make your API call here
-
     const formData = new FormData();
-    console.log(data.thumbnail);
 
-    // Dynamically add fields to FormData
     Object.entries(data).forEach(([key, value]) => {
-      console.log("value", value);
-
       if (value !== undefined && value !== null) {
         if (key === "dateRange" && typeof value !== "string") {
           if (value.from)
             formData.append("startDate", value.from.toISOString());
           if (value.to) formData.append("endDate", value.to.toISOString());
         } else if (value instanceof FileList) {
-          console.log("file ", value);
-
           formData.append(key, value[0]);
         } else {
           formData.append(key, String(value));
@@ -71,34 +70,29 @@ const CreateEventModal = ({
       }
     });
 
-    console.log("filled data", data, formData);
     try {
-      const res = await axios.post("/api/events", formData, {
+      const res = await axios.put(`/api/events/${editData._id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
-      console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
-        toast.error("Error adding Event");
-        console.log(res);
+        toast.error("Error updating event");
+        return;
       }
-      toast.success("Event added successfully");
+      toast.success("Event updated successfully");
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
         }
       }
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -106,12 +100,10 @@ const CreateEventModal = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Add Event Item"
-      // onSubmit={()=>handleSubmit(onSubmit)}
-      submitButtonText="Add Item"
+      title="Edit Event Item"
+      submitButtonText="Update Item"
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
-        {/* <div className="flex gap-3 flex-col"> */}
         <FormInputWithLabel
           {...register("title", { required: "Title is required" })}
           id="title"
@@ -119,18 +111,15 @@ const CreateEventModal = ({
           error={errors.title?.message}
         />
         <FormTextAreaWithLabel
-          {...register("description", {
-            required: "Description is required",
-          })}
+          {...register("description", { required: "Description is required" })}
           id="description"
           label="Description"
           error={errors.description?.message}
         />
-
         <FormInputWithLabel
-          {...register("thumbnail", { required: "Thumbnail are required" })}
-          id="images"
-          label="Images"
+          {...register("thumbnail", { required: false })}
+          id="thumbnail"
+          label="Change Thumbnail"
           type="file"
           accept="image/*"
           error={errors.thumbnail?.message}
@@ -140,7 +129,7 @@ const CreateEventModal = ({
           control={control}
           rules={{ required: "Date range is required" }}
           render={({ field }) => (
-            <div className="  flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <label
                 htmlFor="date"
                 className="text-my-para text-base font-normal"
@@ -156,31 +145,25 @@ const CreateEventModal = ({
             </div>
           )}
         />
-
         <FormInputWithLabel
           {...register("venue", { required: false })}
           id="venue"
           label="Venue"
-          //   error={errors.venue?.message}
         />
-
         <FormInputWithLabel
           {...register("highlights", { required: false })}
-          id="highlight"
+          id="highlights"
           label="Highlight"
-          //   error={errors.highlights?.message}
         />
-
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{" "}
-          Submit
+          Update
         </Button>
-        {/* </div> */}
       </ModalForm>
     </FormModal>
   );
 };
 
-export default CreateEventModal;
+export default EditEventModal;

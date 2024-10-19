@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { toast } from "sonner";
+import { useAppSelector } from "@/store/hooks";
 
 interface NavLink {
   title: string;
@@ -18,9 +20,34 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ navLinks }) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.Auth);
 
   const closeSheet = () => {
     setIsOpen(false);
+  };
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Successful logout
+        toast.success("Logged out successfully");
+        router.push("/login");
+      } else {
+        // Handle errors
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Logout failed");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Logout failed. Please try again.");
+    }
   };
 
   return (
@@ -53,6 +80,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ navLinks }) => {
               </Link>
             );
           })}
+          {isAuthenticated && <Button onClick={handleLogout}>Logout</Button>}
         </div>
       </SheetContent>
     </Sheet>

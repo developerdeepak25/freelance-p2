@@ -4,6 +4,7 @@ import {
   deleteFromCloudinary,
   uploadToCloudinary,
 } from "@/utils/cloudnaryUtils";
+import { isErrorWithMessage } from "@/utils/other";
 import { NextRequest, NextResponse } from "next/server";
 
 // DELETE endpoint to delete a gallery by ID
@@ -89,7 +90,25 @@ export async function PUT(
     // Add or replace images (if provided)
     if (imageFiles && imageFiles.length > 0) {
       // Upload new images to Cloudinary
-      const uploadResults = await uploadToCloudinary(imageFiles);
+
+      // const uploadResults = await uploadToCloudinary(imageFiles);
+       let uploadResults;
+
+       try {
+         uploadResults = await uploadToCloudinary(imageFiles);
+       } catch (error) {
+         console.error("Cloudinary upload error:", error);
+
+         // TypeScript-safe error handling
+         const errorMessage =
+           typeof error === "string"
+             ? error
+             : isErrorWithMessage(error)
+             ? error.message
+             : "An unknown error occurred while uploading images.";
+         return NextResponse.json({ error: errorMessage }, { status: 400 });
+       }
+
       const resultsArray = Array.isArray(uploadResults)
         ? uploadResults
         : [uploadResults];

@@ -4,16 +4,17 @@ import {
   CloudinaryUploadResult,
   uploadToCloudinary,
 } from "@/utils/cloudnaryUtils";
+import { isErrorWithMessage } from "@/utils/other";
 import { NextRequest, NextResponse } from "next/server";
 
 interface EventData {
-  eventTitle: string;
+  title: string;
   description: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   venue?: string;
   eventGalleryLink?: string;
-  eventHighlights?: string;
+  highlights?: string;
 }
 
 /**
@@ -44,10 +45,10 @@ export async function POST(req: NextRequest) {
 
     // Validate required fields
     const requiredFields: (keyof EventData)[] = [
-      "eventTitle",
+      "title",
       "description",
       "startDate",
-      "endDate",
+      // "endDate",
     ];
     for (const field of requiredFields) {
       if (!eventData[field]) {
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (!thumbnailFile) {
+      console.log("thumbnailFile not provided");
       return NextResponse.json(
         { error: "Please provide a thumbnail image." },
         { status: 400 }
@@ -66,7 +68,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Upload thumbnail to Cloudinary
-    const uploadResult = await uploadToCloudinary(thumbnailFile);
+    // const uploadResult = await uploadToCloudinary(thumbnailFile);
+    let uploadResult;
+
+    try {
+      uploadResult = await uploadToCloudinary(thumbnailFile);
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+
+      // TypeScript-safe error handling
+      const errorMessage =
+        typeof error === "string"
+          ? error
+          : isErrorWithMessage(error)
+          ? error.message
+          : "An unknown error occurred while uploading images.";
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
+    }
+
     let thumbnail: CloudinaryUploadResult;
 
     if (Array.isArray(uploadResult)) {
@@ -85,12 +104,13 @@ export async function POST(req: NextRequest) {
       thumbnail: thumbnail.secure_url,
       cloudinaryThumbnailId: thumbnail.public_id,
       startDate: new Date(eventData.startDate!),
-      endDate: new Date(eventData.endDate!),
+      // endDate: new Date(eventData.endDate!),
+      endDate: new Date(eventData.endDate ?? eventData.startDate!),
     });
 
     // Save event
     await event.save();
-    console.log("🚀 ~ POST ~ event:", event)
+    console.log("🚀 ~ POST ~ event:", event);
 
     // Return created event
     return NextResponse.json(event, { status: 201 });

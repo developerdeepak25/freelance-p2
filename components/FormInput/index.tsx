@@ -56,7 +56,7 @@ FormInputWithLabel.displayName = "FormInputWithLabel";
 
 export const FormTextAreaWithLabel = forwardRef<
   HTMLTextAreaElement,
-  FormTextAreaProps & { id: string; label: string; error: string | undefined }
+  FormTextAreaProps & { id: string; label: string; error?: string | undefined }
 >(({ id, label, error, ...rest }, ref) => {
   return (
     <div className="space-y-2">
@@ -97,10 +97,11 @@ export function DateRangePicker({
           <Button
             id="date"
             variant={"outline"}
-            className={cn(
-              "w-[300px] justify-start text-left font-normal",
-              !value && "text-muted-foreground"
-            )}
+            // className={cn(
+            // "w-full justify-start text-left font-normal",
+            // !value && "text-muted-foreground"
+            // )}
+            className={cn(commonCss, "border-[1px] px-5 justify-start")}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {value?.from ? (
