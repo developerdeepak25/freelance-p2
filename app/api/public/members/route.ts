@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Member from "@/models/Member";
 import dbConnect from "@/lib/dbConnect";
 
+export const revalidate = 10;
+
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
@@ -24,7 +26,7 @@ export async function GET(req: NextRequest) {
     const members = await Member.find(query)
       .select("name photo email designation profession committee socialLinks ")
       .populate("socialLinks", "platform url "); // Assuming socialLinks have platform and url fields
-    console.log("🚀 ~ GET ~ members:", members)
+    console.log("🚀 ~ GET ~ members:", members);
 
     // Return public members data
     return NextResponse.json(members, { status: 200 });

@@ -4,8 +4,8 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { cn } from "@/utils/taliwind";
-import {  format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon, Trash2 } from "lucide-react";
 // import { DateRange } from "react-day-picker";
 import {
   Popover,
@@ -15,6 +15,13 @@ import {
 import { Button } from "../ui/button";
 import { DateRange } from "react-day-picker";
 import { Calendar } from "../ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 type FormInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type FormTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -77,11 +84,6 @@ export const FormTextAreaWithLabel = forwardRef<
 // Set display name for easier debugging
 FormTextAreaWithLabel.displayName = "FormTextAreaWithLabel";
 
-
-
-
-
-
 export function DateRangePicker({
   className,
   value,
@@ -132,3 +134,135 @@ export function DateRangePicker({
     </div>
   );
 }
+
+export function DatePicker({
+  className,
+  value,
+  onChange,
+}: React.HTMLAttributes<HTMLDivElement> & {
+  value: Date | undefined;
+  onChange: (value: Date | undefined) => void;
+}) {
+  return (
+    <div className={cn("grid gap-2", className)}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn("border-[1px] px-5 justify-start")}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {value ? format(value, "LLL dd, y") : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={value}
+            onSelect={onChange}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface SimpleSelectProps {
+  options: Option[];
+  placeholder?: string;
+  className?: string;
+  value: string;
+  onValueChange: (value: string) => void;
+}
+
+export function SimpleSelect({
+  options,
+  placeholder = "Select an option",
+  className,
+  value,
+  onValueChange,
+}: SimpleSelectProps) {
+  return (
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger
+        className={cn("border-[1px] px-5 justify-start", className)}
+      >
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+export const platformOptions = [
+  { value: "facebook", label: "Facebook" },
+  { value: "twitter", label: "Twitter" },
+  // { value: "linkedin", label: "LinkedIn" },
+  { value: "instagram", label: "Instagram" },
+  // Add more platforms as needed
+];
+
+interface SocialLinkInputProps {
+  index: number;
+  platform: string;
+  url: string;
+  onPlatformChange: (index: number, value: string) => void;
+  onUrlChange: (index: number, value: string) => void;
+  onRemove: (index: number) => void;
+  usedPlatforms: string[];
+}
+
+const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
+  index,
+  platform,
+  url,
+  onPlatformChange,
+  onUrlChange,
+  onRemove,
+  usedPlatforms,
+}) => {
+  const availablePlatforms = platformOptions.filter(
+    (option) =>
+      !usedPlatforms.includes(option.value) || option.value === platform
+  );
+
+  return (
+    <div className="flex items-center space-x-2">
+      <SimpleSelect
+        options={availablePlatforms}
+        placeholder="Select Platform"
+        value={platform}
+        onValueChange={(value) => onPlatformChange(index, value)}
+      />
+      <Input
+        type="url"
+        placeholder="Enter URL"
+        value={url}
+        onChange={(e) => onUrlChange(index, e.target.value)}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={() => onRemove(index)}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+};
+
+export default SocialLinkInput;

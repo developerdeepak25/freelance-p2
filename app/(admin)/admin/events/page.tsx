@@ -15,7 +15,7 @@ const AdminEventPage = () => {
       <SectionWrapper className="pt-40">
         <div className="flex justify-between items-center gap-3 pb-2">
           <Heading variant="medium" className="text-center">
-            Admin Events
+            Admin Events Manager
           </Heading>
           <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
         </div>

@@ -1,16 +1,17 @@
 "use client";
+import { ClientMember } from "@/Types/types";
 import { cn } from "@/utils/taliwind";
 
-interface MemberData {
-  name: string;
-  role?: string;
-  imageUrl: string;
-}
+// interface Member {
+//   name: string;
+//   role?: string;
+//   imageUrl: string;
+// }
 
 interface MemberListProps {
-  members: MemberData[];
+  members: ClientMember[];
   className?: string;
-  Component: React.ComponentType<MemberData>;
+  Component: React.ComponentType<ClientMember>;
 }
 
 const MemberList: React.FC<MemberListProps> = ({
@@ -25,7 +26,8 @@ const MemberList: React.FC<MemberListProps> = ({
         className
       )}
     >
-      {members.map((member, index) =>
+      {members?.map((member, index) =>
+        // Component ? <Component key={index} {...member} /> : null
         Component ? <Component key={index} {...member} /> : null
       )}
     </div>

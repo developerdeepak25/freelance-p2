@@ -2,26 +2,30 @@
 import FacebookIcon from "@/assets/icons/FacebookIcon";
 import InstagramIcon from "@/assets/icons/InstagramIcon";
 import TwitterIcon from "@/assets/icons/TwitterIcon";
+import { ClientMember } from "@/Types/types";
 import Image from "next/image";
 import React from "react";
+import profilePic from "@/assets/profile-picture.png";
 
-interface MemberCardProps {
-  name: string;
-  role?: string;
-  imageUrl: string;
-  links?: {
-    instagram?: string;
-    twitter?: string;
-    facebook?: string;
-  };
-}
+// interface MemberCardProps {
+//   name: string;
+//   role?: string;
+//   photo: string;
+//   links?: {
+//     instagram?: string;
+//     twitter?: string;
+//     facebook?: string;
+//   };
+// }
 
-const MemberCard: React.FC<MemberCardProps> = ({
+const MemberCard: React.FC<ClientMember> = ({
   name,
-  role,
-  links,
-  imageUrl,
+  committee,
+  socialLinks,
+  photo,
 }) => {
+  console.log(photo);
+  
   return (
     <div className="flex flex-col gap-2 items-center justify-center  relative bg-[#f2f2f2] rounded-2xl  px-10 py-12 overflow-hidden ">
       {/* object */}
@@ -30,7 +34,8 @@ const MemberCard: React.FC<MemberCardProps> = ({
       {/* Image section */}
       <div className="sm:w-32 w-48 aspect-square rounded-full overflow-hidden relative border-[4px] border-[#fff]">
         <Image
-          src={imageUrl}
+          // src={photo ?? profilePic}
+          src={photo ? photo : profilePic}
           alt={name}
           className="object-cover w-full h-full absolute "
           fill={true}
@@ -43,13 +48,29 @@ const MemberCard: React.FC<MemberCardProps> = ({
         <p className="text-base font-bold text-my-heading text-center">
           {name}
         </p>
-        {role && (
-          <p className="text-sm font-normal text-my-para text-center">{role}</p>
+        {committee && (
+          <p className="text-sm font-normal text-my-para text-center">
+            {committee}
+          </p>
         )}
 
-        {links && (
+        {socialLinks && (
           <div className="flex gap-2">
-            {Object.entries(links).map(
+            {socialLinks.map((socialLink) => (
+              <a
+                key={socialLink.platform}
+                href={socialLink.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="opacity-65 hover:opacity-100"
+              >
+                {socialLink.platform === "instagram" && <InstagramIcon />}
+                {socialLink.platform === "twitter" && <TwitterIcon />}
+                {socialLink.platform === "facebook" && <FacebookIcon />}
+              </a>
+            ))}
+
+            {/* {Object.entries(links).map(
               ([platform, url]) =>
                 url && (
                   <a
@@ -64,7 +85,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
                     {platform === "facebook" && <FacebookIcon />}
                   </a>
                 )
-            )}
+            )} */}
           </div>
         )}
       </div>

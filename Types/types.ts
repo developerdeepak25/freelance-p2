@@ -1,17 +1,22 @@
-export type Member = {
-  id: string;
+export type ClientMember = {
+  _id: string;
   name: string;
-  imageUrl: string;
-  role?: string;
-  links?: {
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-  };
-  email?: string;
+  email: string;
+  phoneNo?: string;
+  photo?: string;
+  panCardNo?: string;
+  aadharCardNo?: string;
+  dateOfBirth?: Date;
+  caste?: string;
+  designation: string;
+  profession?: string;
+  committee: string;
+  socialLinks: SocialLink[];
 };
-
-
+type SocialLink = {
+  platform: string;
+  url: string;
+};
 
 export interface GallerImageType {
   imageUrl: string;

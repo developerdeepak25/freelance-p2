@@ -25,7 +25,8 @@ export interface IMember extends Document {
   name: string;
   email?: string;
   phoneNo?: string;
-  photo?: string;
+  photo: string;
+  cloudinaryPhotoId: string;
   panCardNo?: string;
   aadharCardNo?: string;
   dateOfBirth?: Date;
@@ -48,12 +49,20 @@ const memberSchema = new Schema<IMember>(
       sparse: true,
     },
     phoneNo: {
+      sparse: true,
       type: String,
       default: "",
     },
     photo: {
+      sparse: true,
       type: String,
       default: "",
+      // required: true,
+    },
+    cloudinaryPhotoId: {
+      sparse: true,
+      type: String,
+      // required: true,
     },
     panCardNo: {
       type: String,
@@ -74,7 +83,7 @@ const memberSchema = new Schema<IMember>(
     },
     designation: {
       type: String,
-      enum: DESIGNATIONS,
+      // enum: DESIGNATIONS,
       default: "Member",
       validate: {
         validator: function (this: IMember, value: string): boolean {

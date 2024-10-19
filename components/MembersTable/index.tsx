@@ -30,135 +30,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { ClientMember } from "@/Types/types";
 
- type Member = {
-  id: string | number;
-  name: string;
-  // imageUrl?: string;
-  // role?: string;
-  designation?: string;
-  sociallinks?: [
-    { type : 'twitter' | 'instagram' | 'facebook'; url: string; },
-  ]
-  email?: string;
-};
-
-
-const data: Member[] = [
+const columns: ColumnDef<ClientMember>[] = [
   {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Developer",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    sociallinks: [
-      { type: "facebook", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Designer",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Manager",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    email: "alice@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Tester",
-  },
-  {
-    id: 5,
-    name: "Charlie Wilson",
-    email: "charlie@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Analyst",
-  },
-  {
-    id: 6,
-    name: "Eva Green",
-    email: "eva@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Developer",
-  },
-  {
-    id: 7,
-    name: "David Lee",
-    email: "david@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Designer",
-  },
-  {
-    id: 8,
-    name: "Grace Taylor",
-    email: "grace@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Manager",
-  },
-  {
-    id: 9,
-    name: "Frank White",
-    email: "frank@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Tester",
-  },
-  {
-    id: 10,
-    name: "Helen Davis",
-    email: "helen@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Analyst",
-  },
-  {
-    id: 11,
-    name: "Ian Brown",
-    email: "ian@example.com",
-    sociallinks: [
-      { type: "twitter", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Developer",
-  },
-  {
-    id: 12,
-    name: "Julia Roberts",
-    email: "julia@example.com",
-    sociallinks: [
-      { type: "facebook", url: "https://twitter.com/johndoe" },
-    ],
-    designation: "Designer",
-  },
-];
-
-const columns: ColumnDef<Member>[] = [
-  {
-    accessorKey: "id",
     header: "Serial",
+    cell: ({ row }) => row.index + 1,
   },
   {
     accessorKey: "name",
@@ -178,19 +55,29 @@ const columns: ColumnDef<Member>[] = [
     ),
   },
   {
-    accessorKey: "social",
-    header: "Social",
-    cell: ({ row }) => (
-      <a
-        href={`${row.original.sociallinks?.[0].url}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center hover:text-primary"
-      >
-        <LinkIcon className="mr-2 h-4 w-4" />
-        {row.original.sociallinks?.[0].type}
-      </a>
-    ),
+    accessorKey: "socialLinks",
+    header: "Social Links",
+    cell: ({ row }) =>
+      row.original.socialLinks?.length > 0 ? (
+        <>
+          <div className="flex flex-col">
+            {row.original.socialLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center hover:text-primary"
+              >
+                <LinkIcon className="mr-2 h-4 w-4" />
+                {link.platform}
+              </a>
+            ))}
+          </div>
+        </>
+      ) : (
+        "N/A"
+      ),
   },
   {
     accessorKey: "designation",
@@ -198,7 +85,7 @@ const columns: ColumnDef<Member>[] = [
   },
 ];
 
-export default function MembersTable() {
+export default function MembersTable({ data }: { data: ClientMember[] }) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [pageSize, setPageSize] = React.useState(5);
   const [pageIndex, setPageIndex] = React.useState(0);

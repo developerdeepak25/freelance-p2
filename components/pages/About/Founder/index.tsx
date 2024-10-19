@@ -4,33 +4,80 @@ import React from "react";
 import MemberList from "@/components/common/MemberList";
 import Heading from "@/components/Text/Heading";
 import MemberCard from "@/components/MemberCard/MemberCard";
+import { ClientMember } from "@/Types/types";
 
-const foundersData = [
+const foundersData: ClientMember[] = [
   {
+    _id: "1",
+    designation: "Founder",
+    email: "VJfzT@example.com",
     name: "Rajkumar Yadav",
-    role: "Founder",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+    committee: "Founder",
+    socialLinks: [
+      {
+        platform: "linkedin",
+        url: "/image/ghfgf-fghfgh.com",
+      },
+    ],
+    photo: "/image/member-img.png",
   },
   {
+    _id: "1",
+    designation: "Founder",
+    email: "VJfzT@example.com",
     name: "Rajkumar Yadav",
-    role: "Founder",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+    committee: "Founder",
+    socialLinks: [
+      {
+        platform: "linkedin",
+        url: "/image/ghfgf-fghfgh.com",
+      },
+    ],
+    photo: "/image/member-img.png",
   },
   {
+    _id: "1",
+    designation: "Founder",
+    email: "VJfzT@example.com",
     name: "Rajkumar Yadav",
-    role: "Founder",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+    committee: "Founder",
+    socialLinks: [
+      {
+        platform: "linkedin",
+        url: "/image/ghfgf-fghfgh.com",
+      },
+    ],
+    photo: "/image/member-img.png",
   },
   {
+    _id: "1",
+    designation: "Founder",
+    email: "VJfzT@example.com",
     name: "Rajkumar Yadav",
-    role: "Founder",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+    committee: "Founder",
+    socialLinks: [
+      {
+        platform: "linkedin",
+        url: "/image/ghfgf-fghfgh.com",
+      },
+    ],
+    photo: "/image/member-img.png",
   },
   {
+    _id: "1",
+    designation: "Founder",
+    email: "VJfzT@example.com",
     name: "Rajkumar Yadav",
-    role: "Founder",
-    imageUrl: "/image/member-img.png", // Replace with actual image URL or path
+    committee: "Founder",
+    socialLinks: [
+      {
+        platform: "linkedin",
+        url: "/image/ghfgf-fghfgh.com",
+      },
+    ],
+    photo: "/image/member-img.png",
   },
+  
 ];
 
 const Founders = () => {
