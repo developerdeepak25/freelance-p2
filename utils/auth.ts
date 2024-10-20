@@ -1,8 +1,13 @@
-import { SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
 
-interface UserJwtPayload {
-  jti: string;
-  iat: number;
+// interface UserJwtPayload {
+//   jti: string;
+//   iat: number;
+//   exp: number; 
+//   userId: string;
+// }
+export interface UserJwtPayload extends JWTPayload {
+  userId: string;
 }
 
 type PayloadType = {
@@ -35,8 +40,17 @@ export const generateRefreshToken = async (payload: PayloadType) => {
 
   return token;
 };
-export const getJwtSecretKey = () => {
-  const secret = process.env.JWT_ACCESS_SECRET;
+export const getJwtAccessSecretKey = () => {
+  const secret = JWT_ACCESS_SECRET;
+
+  if (!secret || secret.length === 0) {
+    throw new Error("The environment variable JWT_SECRET_KEY is not set.");
+  }
+
+  return secret;
+};
+export const getJwtRefreshSecretKey = () => {
+  const secret = JWT_REFRESH_SECRET;
 
   if (!secret || secret.length === 0) {
     throw new Error("The environment variable JWT_SECRET_KEY is not set.");
@@ -45,11 +59,11 @@ export const getJwtSecretKey = () => {
   return secret;
 };
 
-export const verifyAuth = async (token: string) => {
+export const verifyAuth = async (token: string, type: "access" | "refresh") => {
   try {
-    const verified = await jwtVerify(
+    const verified = await jwtVerify<UserJwtPayload>(
       token,
-      new TextEncoder().encode(getJwtSecretKey())
+      new TextEncoder().encode( type === "access" ? getJwtAccessSecretKey() : getJwtRefreshSecretKey())
     );
     return verified.payload as UserJwtPayload;
   } catch (error) {
@@ -57,3 +71,26 @@ export const verifyAuth = async (token: string) => {
     throw new Error("Your token has expired.");
   }
 };
+
+
+export async function refreshAccessToken(
+  refreshToken: string
+): Promise<string | null> {
+  try {
+    // const { payload } = await jwtVerify(refreshToken, 
+    //   new TextEncoder().encode(getJwtRefreshSecretKey()));
+    const  payload  = await verifyAuth(refreshToken, "refresh");
+
+    // Create a new access token
+    // const newAccessToken = await new SignJWT({ userId: payload.userId })
+    //   .setProtectedHeader({ alg: "HS256" })
+    //   .setExpirationTime("15m")
+    //   .sign(JWT_ACCESS_SECRET);
+    const newAccessToken = await generateAccessToken({ userId: payload.userId });
+
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    return null;
+  }
+}

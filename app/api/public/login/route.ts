@@ -13,8 +13,8 @@ const cookieOptions: Partial<ResponseCookie> = {
   // path: "/",
   secure: true,
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-};
-
+  // maxAge: 60, // ! tempereraly set to 10s
+}
 // route for login
 
 export async function POST(req: Request) {
@@ -37,7 +37,8 @@ export async function POST(req: Request) {
     cookies().set("refreshToken", refreshToken, cookieOptions);
     cookies().set("accessToken", accessToken, {
       ...cookieOptions,
-      maxAge: 5 * 60 * 1000,
+      // maxAge: 10 , // tempereraly set to 10s
+      maxAge: 15 * 60 , //set to 15min
     });
 
     return NextResponse.json(
