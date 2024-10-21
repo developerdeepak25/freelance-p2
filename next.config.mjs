@@ -10,7 +10,7 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**", // Allows all paths from the domain
-        search: "",
+        // search: "",
       },
     ],
   },
