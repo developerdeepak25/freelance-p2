@@ -13,7 +13,7 @@ const AdminEventPage = () => {
   return (
     <>
       <SectionWrapper className="pt-40">
-        <div className="flex justify-between items-center gap-3 pb-2">
+        <div className="flex max-sm:flex-col flex-row justify-between max-sm:items-start items-center  gap-3 pb-2">
           <Heading variant="medium" className="text-center">
             Admin Events Manager
           </Heading>

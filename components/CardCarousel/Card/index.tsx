@@ -186,7 +186,7 @@ Card.Content = function CardContent({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col px-6 py-8 sm:gap-6 gap-4">{children}</div>
+    <div className="flex flex-col sm:px-6 px-3 sm:py-8 py-4 sm:gap-6 gap-4">{children}</div>
   );
 };
 

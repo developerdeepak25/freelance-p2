@@ -30,13 +30,37 @@ const commonCss =
   "px-5 py-3 text-my-para font-bold text-base rounded-[8px] border-2 border-gray-300";
 // "px-10 py-7 text-my-para font-bold text-base rounded-[40px] border-2 border-gray-300";
 
-export const FormInput = ({ ...rest }: FormInputProps) => {
-  return <Input className={commonCss} {...rest} />;
-};
 
-export const FormTextArea = ({ ...rest }: FormTextAreaProps) => {
-  return <Textarea className={commonCss} {...rest} />;
-};
+export const FormInput = forwardRef<
+  HTMLInputElement,
+  FormInputProps & { error?: string }
+>(({ error, ...rest }, ref) => {
+  return (
+    <div className="space-y-2">
+      <Input ref={ref} className={commonCss} {...rest} />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+});
+
+// Set display name for debugging
+FormInput.displayName = "FormInput";
+
+// Basic FormTextArea Component
+export const FormTextArea = forwardRef<
+  HTMLTextAreaElement,
+  FormTextAreaProps & { error?: string }
+>(({ error, ...rest }, ref) => {
+  return (
+    <div className="space-y-2">
+      <Textarea ref={ref} className={commonCss} {...rest} />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+});
+
+// Set display name for debugging
+FormTextArea.displayName = "FormTextArea";
 
 export const FormInputWithLabel = forwardRef<
   HTMLInputElement,
