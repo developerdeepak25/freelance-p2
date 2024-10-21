@@ -86,7 +86,7 @@ const AdminGallery: React.FC = () => {
   return (
     <SectionWrapper className="pt-40 pb-40">
       <div className="flex max-sm:flex-col flex-row justify-between max-sm:items-start items-center  gap-3 pb-2">
-        <Heading variant="medium" className="text-center">
+        <Heading variant="medium">
           Admin Gallery Manager
         </Heading>
         <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
