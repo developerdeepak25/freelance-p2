@@ -33,10 +33,10 @@ const commonCss =
 
 export const FormInput = forwardRef<
   HTMLInputElement,
-  FormInputProps & { error?: string }
->(({ error, ...rest }, ref) => {
+  FormInputProps & { error?: string, wrapperClassName?: string }
+>(({ error, wrapperClassName, ...rest }, ref) => {
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", wrapperClassName)}>
       <Input ref={ref} className={commonCss} {...rest} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
@@ -49,10 +49,10 @@ FormInput.displayName = "FormInput";
 // Basic FormTextArea Component
 export const FormTextArea = forwardRef<
   HTMLTextAreaElement,
-  FormTextAreaProps & { error?: string }
->(({ error, ...rest }, ref) => {
+  FormTextAreaProps & { error?: string, wrapperClassName?: string }
+>(({ error, wrapperClassName, ...rest }, ref) => {
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", wrapperClassName)}>
       <Textarea ref={ref} className={commonCss} {...rest} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>

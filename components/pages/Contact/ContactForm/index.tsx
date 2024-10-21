@@ -176,17 +176,16 @@ const ContactForm = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-5"
           >
-            <div className="flex gap-5 md:flex-row flex-col">
+            <div className="flex gap-5 md:flex-row flex-col justify-stretch">
               <FormInput
                 placeholder="FullName"
                 type="text"
                 {...register("fullName", { required: "Full name is required" })}
                 error={errors.fullName?.message}
+                wrapperClassName="grow"
               />
-              {/* {errors.fullName && (
-                <p className="text-red-500">{errors.fullName.message}</p>
-              )} */}
               <FormInput
+                wrapperClassName="grow"
                 placeholder="Email"
                 type="email"
                 {...register("email", {
