@@ -31,7 +31,7 @@ const MemberListMap = () => {
       setLoading(true);
       try {
         const response = await fetch("/api/public/members?committee=executive", {
-          cache: "no-store",
+          cache: "no-store",  
         });
         // const data = await response.json();
         const data = await response.json();
