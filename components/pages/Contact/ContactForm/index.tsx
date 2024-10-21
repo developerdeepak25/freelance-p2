@@ -200,7 +200,6 @@ const ContactForm = () => {
               {...register("subject", { required: "Subject is required" })}
               error={errors.subject?.message}
             />
-
             <FormTextArea
               placeholder="Description"
               rows={10}
@@ -209,7 +208,6 @@ const ContactForm = () => {
               })}
               error={errors.description?.message}
             />
-
             <div>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && (
