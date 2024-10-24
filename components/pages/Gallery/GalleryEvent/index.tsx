@@ -3,11 +3,12 @@ import { DeteteButton, EditButton } from "@/components/buttons/ModifiedButton";
 import Heading from "@/components/Text/Heading";
 import { useAppSelector } from "@/store/hooks";
 import { GallerImageType } from "@/Types/types";
-import Image from "next/image";
+// import Image from "next/image";
 import React, { useState } from "react";
 import GalleryEventEdit from "../GalleryEventEdit";
 import axios from "axios";
 import { toast } from "sonner";
+import ImageWithSkeleton from "@/components/ImageWithSkelton";
 
 export type GalleryEventProps = {
   title: string;
@@ -51,11 +52,11 @@ const GalleryEvent = ({
   return (
     <>
       <div className="flex flex-col gap-3 w-full">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-baseline">
           <Heading variant="small">{title}</Heading>
           {/* see more - //TODO pass g-drive */}
           {seeMore && (
-            <p className="text-my-para text-base font-semibold uppercase border-b-2 border-primary px-1 hover:text-primary  cursor-pointer">
+            <p className="text-my-para text-base font-semibold uppercase border-b-2 border-primary px-1 hover:text-primary  cursor-pointer h-fit">
               <a href={seeMore} target="_blank" rel="noopener noreferrer">
                 see more
               </a>
@@ -119,7 +120,7 @@ const GalleryEventImage = ({
   return (
     <div className="w-full flex flex-col gap-1">
       <div className="w-full h-80 relative overflow-hidden rounded-lg">
-        <Image
+        <ImageWithSkeleton
           src={imageData.imageUrl}
           width={320}
           height={320}

@@ -88,16 +88,6 @@ const Members = () => {
         <div className="py-20 flex flex-col gap-16 items-center">
           <Heading   variant="medium" className="text-center">Meet our core members</Heading>
           <MemberList members={membersData} Component={MemberCard}/>
-          {/* <div className="flex gap-20 flex-wrap justify-around px-20">
-            {membersData.map((member, index) => (
-              <Member
-                key={index}
-                name={member.name}
-                role={member.role}
-                imageUrl={member.imageUrl}
-              />
-            ))}
-          </div> */}
         </div>
       </SectionWrapper>
     </div>

@@ -1,6 +1,7 @@
 
 import { NavLinks } from "../Navlinks";
 import MobileMenu from "../MobileMenu";
+import NavLogo from "../NavLogo";
 
 const navLinks = [
   { title: "Home", path: "/" },
@@ -20,8 +21,11 @@ const Navbar = () => {
         {/* <div className="max-w-[1280px] grow"> */}
         <div className="max-w-[1280px] grow h-full flex justify-between items-center">
           {/* logo */}
-          <div className="text-4xl font-black">Logo.</div>
+          {/* <div className="text-4xl font-black">Logo.</div> */}
+          <NavLogo/>
+
           {/* links */}
+
           <div className=" gap-7 hidden  lg:flex ">
              <NavLinks navLinks={navLinks} />
           </div>

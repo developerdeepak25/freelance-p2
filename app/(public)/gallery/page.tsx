@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import Gallery from "@/components/pages/Gallery/Gallery";
 import React from "react";
 

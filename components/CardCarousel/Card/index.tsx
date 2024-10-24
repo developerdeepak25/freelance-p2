@@ -1,5 +1,6 @@
 "use client";
 import { DeteteButton, EditButton } from "@/components/buttons/ModifiedButton";
+import ImageWithSkeleton from "@/components/ImageWithSkelton";
 import EditEventModal from "@/components/pages/Events/EditEventModal";
 import Heading from "@/components/Text/Heading";
 import { CarouselItem } from "@/components/ui/carousel";
@@ -7,7 +8,6 @@ import { useAppSelector } from "@/store/hooks";
 import axios, { AxiosError } from "axios";
 import { format } from "date-fns";
 import { SquareArrowOutUpRight } from "lucide-react";
-import Image from "next/image";
 import React, { createContext, useContext, ReactNode, useState } from "react";
 import { toast } from "sonner";
 
@@ -22,27 +22,6 @@ export type CardDataType = {
   venue?: string;
   highlights?: string;
 };
-// type CardDataType = {
-//   id: number;
-//   title: string;
-//   description: string;
-//   category: string;
-//   image: string;
-//   altText: string;
-//   dateAndTime?: string;
-//   location?: string;
-// };
-
-// Sample card data
-// const cardData: CardDataType = {
-//   id: 1,
-//   title: "Providing food to the poor",
-//   description:
-//     "For past _ years we have been providing food to the poor and to ones in need, and we had a great success in doing so. We are proud to say because of us a poor person slept with a full stomach.",
-//   category: "Food",
-//   image: "/image/food-donation.png",
-//   altText: "Volunteers providing food to poor people",
-// };
 
 // Create a context for the card data
 const CardContext = createContext<CardDataType | null>(null);
@@ -155,7 +134,7 @@ Card.Header = function CardHeader({ children }: { children: React.ReactNode }) {
 Card.Image = function CardImage() {
   const { thumbnail, title } = useCardContext();
   return (
-    <Image
+    <ImageWithSkeleton
       src={thumbnail}
       alt={title}
       className="object-cover absolute top-0 left-0 right-0 bottom-0"

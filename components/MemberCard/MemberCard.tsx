@@ -3,9 +3,9 @@ import FacebookIcon from "@/assets/icons/FacebookIcon";
 import InstagramIcon from "@/assets/icons/InstagramIcon";
 import TwitterIcon from "@/assets/icons/TwitterIcon";
 import { ClientMember } from "@/Types/types";
-import Image from "next/image";
 import React from "react";
 import profilePic from "@/assets/profile-picture.png";
+import ImageWithSkeleton from "../ImageWithSkelton";
 
 // interface MemberCardProps {
 //   name: string;
@@ -33,7 +33,7 @@ const MemberCard: React.FC<ClientMember> = ({
 
       {/* Image section */}
       <div className="sm:w-32 w-48 aspect-square rounded-full overflow-hidden relative border-[4px] border-[#fff]">
-        <Image
+        <ImageWithSkeleton
           // src={photo ?? profilePic}
           src={photo ? photo : profilePic}
           alt={name}
