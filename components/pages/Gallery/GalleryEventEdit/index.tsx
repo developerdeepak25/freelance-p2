@@ -49,19 +49,18 @@ const GalleryEventEdit = ({
     formData.append("description", data.description);
     formData.append("driveLink", data.driveLink);
 
-    console.log(data);
     try {
       const res = await axios.put(`/api/gallery/${editData.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error editing gallery item");
-        console.log(res);
+        // console.log(res);
       }
       toast.success("Gallery item edited successfully");
       setIsModalOpen(false);
@@ -70,7 +69,7 @@ const GalleryEventEdit = ({
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
+          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }

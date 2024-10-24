@@ -144,7 +144,6 @@ export async function PUT(
     }
 
     const formData = await req.formData();
-    console.log("formdata", formData);
 
     const memberData: Partial<IMember> = {};
     let photoFile: File | null = null;
@@ -160,7 +159,7 @@ export async function PUT(
         memberData[key as keyof IMember] = value;
       }
     });
-    console.log("memberData", memberData);
+    // console.log("memberData", memberData);
 
     // Find member by ID
     const member = await Member.findById(memberId);
@@ -207,7 +206,6 @@ export async function PUT(
         } else {
           photo = uploadResult;
         }
-        console.log("photo", photo);
 
         memberData.photo = photo.secure_url;
         memberData.cloudinaryPhotoId = photo.public_id;
@@ -264,7 +262,7 @@ export async function PUT(
     // Save updated member
     await member.save();
     await member.populate("socialLinks");
-    console.log("🚀 ~ PUT ~ updated member:", member);
+    // console.log("🚀 ~ PUT ~ updated member:", member);
 
     // Return updated member
     return NextResponse.json(member, { status: 200 });

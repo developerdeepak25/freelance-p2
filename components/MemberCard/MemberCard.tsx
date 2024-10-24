@@ -24,7 +24,6 @@ const MemberCard: React.FC<ClientMember> = ({
   socialLinks,
   photo,
 }) => {
-  console.log(photo);
   
   return (
     <div className="flex flex-col gap-2 items-center justify-center  relative bg-[#f2f2f2] rounded-2xl  px-10 py-12 overflow-hidden ">

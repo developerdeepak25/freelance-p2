@@ -95,7 +95,6 @@ Card.Header = function CardHeader({ children }: { children: React.ReactNode }) {
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
@@ -219,9 +218,9 @@ Card.Description = function CardDescription() {
 Card.TimeAndVenue = function TimeAndVenue() {
   // const { dateAndTime, location } = useCardContext();
   const { startDate, endDate, venue } = useCardContext();
-  console.log("startDate", startDate);
+  // console.log("startDate", startDate);
   const sdate = new Date(startDate);
-  console.log(sdate);
+  // console.log(sdate);
 
   return (
     <div className="flex flex-col gap-2">

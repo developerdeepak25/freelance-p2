@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
     const members = await Member.find(query)
       .select("name photo email designation profession committee socialLinks ")
       .populate("socialLinks", "platform url "); // Assuming socialLinks have platform and url fields
-    console.log("🚀 ~ GET ~ members:", members);
 
     // Return public members data
     return NextResponse.json(members, { status: 200 });

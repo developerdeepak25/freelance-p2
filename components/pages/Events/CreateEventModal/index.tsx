@@ -39,22 +39,19 @@ const CreateEventModal = ({
     register,
     handleSubmit,
     control,
-    watch,
+    // watch,
     formState: { errors, isSubmitting },
   } = useForm<EventFormValues>();
 
-  const formValues = watch();
-  console.log("formValuse", formValues);
+  // const formValues = watch();
 
   const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
     // Make your API call here
 
     const formData = new FormData();
-    console.log(data.thumbnail);
 
     // Dynamically add fields to FormData
     Object.entries(data).forEach(([key, value]) => {
-      console.log("value", value);
 
       if (value !== undefined && value !== null) {
         if (key === "dateRange" && typeof value !== "string") {
@@ -62,8 +59,6 @@ const CreateEventModal = ({
             formData.append("startDate", value.from.toISOString());
           if (value.to) formData.append("endDate", value.to.toISOString());
         } else if (value instanceof FileList) {
-          console.log("file ", value);
-
           formData.append(key, value[0]);
         } else {
           formData.append(key, String(value));
@@ -71,19 +66,19 @@ const CreateEventModal = ({
       }
     });
 
-    console.log("filled data", data, formData);
+    // console.log("filled data", data, formData);
     try {
       const res = await axios.post("/api/events", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error adding Event");
-        console.log(res);
+        // console.log(res);
       }
       toast.success("Event added successfully");
       setIsModalOpen(false);
@@ -92,7 +87,7 @@ const CreateEventModal = ({
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
+          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }

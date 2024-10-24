@@ -20,7 +20,6 @@ const cookieOptions: Partial<ResponseCookie> = {
 export async function POST(req: Request) {
   const body = await req.json();
   const { userId, password } = body;
-  console.log("userid", userId, password);
 
   // did this becuse there will be only one use which can login and he being a member is not neceserry
   try {
@@ -32,7 +31,6 @@ export async function POST(req: Request) {
     }
     const accessToken = await generateAccessToken({ userId });
     const refreshToken = await generateRefreshToken({ userId });
-    console.log("🚀 ~ POST ~ refreshToken:", refreshToken);
 
     cookies().set("refreshToken", refreshToken, cookieOptions);
     cookies().set("accessToken", accessToken, {

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     const formData = await req.formData();
-    console.log("formdata", formData);
+    // console.log("formdata", formData);
 
     const eventData: Partial<EventData> = {};
     let thumbnailFile: File | null = null;
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         eventData[key as keyof EventData] = value;
       }
     });
-    console.log("eventData", eventData);
+    // console.log("eventData", eventData);
 
     // Validate required fields
     const requiredFields: (keyof EventData)[] = [
@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
     } else {
       thumbnail = uploadResult;
     }
-    console.log("thumbnail", thumbnail);
+    // console.log("thumbnail", thumbnail);
 
     // Create new event
     const event = new Event({
@@ -110,7 +110,6 @@ export async function POST(req: NextRequest) {
 
     // Save event
     await event.save();
-    console.log("🚀 ~ POST ~ event:", event);
 
     // Return created event
     return NextResponse.json(event, { status: 201 });

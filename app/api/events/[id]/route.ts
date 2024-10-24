@@ -93,12 +93,10 @@ export async function PUT(
 
     const formData = await req.formData();
     const eventData: Partial<IEvent> = {};
-    console.log("eventData", eventData);
     let thumbnailFile: File | null = null;
 
     // Process form data
     formData.forEach((value, key) => {
-      console.log("value", value);
       if (key === "thumbnail" && value instanceof File) {
         thumbnailFile = value;
       } else if (typeof value === "string") {

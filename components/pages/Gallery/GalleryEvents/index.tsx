@@ -27,7 +27,7 @@ const GalleryEvents = () => {
         });
         // const data = await response.json();
         const data = await response.json();
-        console.log(response, data);
+        // console.log(response, data);
         setGallery(data);
       } catch (error) {
         setIsError(true);

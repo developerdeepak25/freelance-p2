@@ -4,7 +4,7 @@ import MemberList from "@/components/common/MemberList";
 import MemberCard from "@/components/MemberCard/MemberCard";
 import Heading from "@/components/Text/Heading";
 import { ClientMember } from "@/Types/types";
-import {  Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React, { useEffect } from "react";
 
 const Page = () => {
@@ -14,12 +14,11 @@ const Page = () => {
       title="Executive committee Members"
       subTitle="Meet the pillors of our organization Meet the pillors of our organization"
     >
-        {/* <MemberList members={member} Component={MemberCard} /> */}
-        <MemberListMap/>
+      {/* <MemberList members={member} Component={MemberCard} /> */}
+      <MemberListMap />
     </CommitteePage>
   );
 };
-
 
 const MemberListMap = () => {
   const [members, setMembers] = React.useState<ClientMember[]>([]);
@@ -30,12 +29,14 @@ const MemberListMap = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await fetch("/api/public/members?committee=executive", {
-          cache: "no-store",  
-        });
+        const response = await fetch(
+          "/api/public/members?committee=executive",
+          {
+            cache: "no-store",
+          }
+        );
         // const data = await response.json();
         const data = await response.json();
-        console.log(response, data);
         setMembers(data);
       } catch (error) {
         setIsError(true);
@@ -71,6 +72,5 @@ const MemberListMap = () => {
 
   return <MemberList members={members} Component={MemberCard} />;
 };
-
 
 export default Page;

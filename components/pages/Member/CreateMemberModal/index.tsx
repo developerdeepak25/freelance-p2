@@ -74,7 +74,7 @@ const MemberCreateModal = ({
   });
 
   const formValues = watch();
-  console.log("formValuse", formValues);
+  // console.log("formValuse", formValues);
     const usedPlatforms =
       formValues.socialLinks?.map((link) => link.platform) || [];
 
@@ -83,24 +83,9 @@ const MemberCreateModal = ({
     // Make your API call here
 
     const formData = new FormData();
-    console.log(data.photo);
+    // console.log(data.photo);
 
-    // Dynamically add fields to FormData
-    // Object.entries(data).forEach(([key, value]) => {
-    //   if (key === "socialLinks" && Array.isArray(value)) {
-    //     value.forEach((link, i) => {
-    //       formData.append(`socialLinks[${i}][platform]`, link.platform);
-    //       formData.append(`socialLinks[${i}][url]`, link.url);
-    //     });
-    //   } else if (key === "photo" && value instanceof FileList) {
-    //     formData.append(key, value[0]);
-    //   } else if (key === "dateOfBirth" && value instanceof Date) {
-    //     formData.append(key, value.toISOString());
-    //   } else if (value !== undefined && value !== null) {
-    //     formData.append(key, String(value));
-    //   }
-    // });
-
+   
     Object.entries(data).forEach(([key, value]) => {
       if (key === "socialLinks" && Array.isArray(value)) {
         // Convert the socialLinks array to a JSON string
@@ -110,20 +95,19 @@ const MemberCreateModal = ({
       } else if (key === "dateOfBirth" && value instanceof Date) {
         formData.append(key, value.toISOString());
       } else if (value !== undefined && value !== null && value !== "") {
-        console.log('undefiend' , value);
         formData.append(key, String(value));
       }
     });
 
-    console.log("filled data", data, formData);
+    // console.log("filled data", data, formData);
     try {
       const res = await axios.post("/api/members", formData);
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error adding Member");
-        console.log(res);
+        // console.log(res);
       }
       toast.success("Member added successfully");
       setIsModalOpen(false);
@@ -132,7 +116,7 @@ const MemberCreateModal = ({
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
+          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }

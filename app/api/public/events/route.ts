@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
     const searchParams = req.nextUrl.searchParams;
     const eventQueryParam = searchParams.get("event");
-    console.log("🚀 ~ GET ~ eventQueryParam:", eventQueryParam);
+    // console.log("🚀 ~ GET ~ eventQueryParam:", eventQueryParam);
 
     // const url = new URL(req.url);
     // const eventQueryParam = url.searchParams.get("event");

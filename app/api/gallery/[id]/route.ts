@@ -43,7 +43,7 @@ export async function DELETE(
       (imageDetail: { imageId: string; imageUrl: string }) =>
         imageDetail.imageId
     );
-    console.log("🚀 ~ imageIds:", imageIds);
+    // console.log("🚀 ~ imageIds:", imageIds);
 
     // await deleteFromCloudinary(gallery.cloudinaryImagesId);
     await deleteFromCloudinary(imageIds);
@@ -71,7 +71,7 @@ export async function PUT(
     await dbConnect();
 
     const galleryId = params.id;
-    console.log("galleryId", galleryId);
+    // console.log("galleryId", galleryId);
 
     const formData = await req.formData();
     const title = formData.get("title") as string;
@@ -79,7 +79,7 @@ export async function PUT(
     const driveLink = formData.get("driveLink") as string;
     const imageFiles = formData.getAll("images") as File[];
 
-    console.log(imageFiles);
+    // console.log(imageFiles);
 
     const gallery = await Gallery.findById(galleryId);
     // Update gallery fields

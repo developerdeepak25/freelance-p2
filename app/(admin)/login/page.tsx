@@ -41,16 +41,13 @@ const AdminLoginPage = () => {
       if (!response.ok) {
         throw new Error("Login failed");
       }
-      console.log("response", response);
 
-      const data = await response.json();
-      console.log("data", data);
+      // const data = await response.json();
 
       //   set state
       dispatch(login());
 
       // Handle successful login
-      console.log("Login successful", data);
       // Redirect to admin dashboard or home page
       router.push("/admin");
       toast.success("Login successful");

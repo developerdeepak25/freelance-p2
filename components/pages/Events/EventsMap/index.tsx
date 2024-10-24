@@ -36,7 +36,7 @@ export const EventsMap = ({type, NoEventFallbackText}:EventsMapProps) => {
         });
         // const data = await response.json();
         const data = await response.json();
-        console.log(response, data);
+        // console.log(response, data);
         setEvent(data);
       } catch (error) {
         setIsError(true);

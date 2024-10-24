@@ -29,21 +29,12 @@ const AdminGallery: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
-  // useEffect(() => {
-  //   console.log(errors.root?.message);
-  //   console.log(errors.title?.message);
-  //   console.log(errors.description?.message);
-  //   console.log(errors.images?.message);
-  //   console.log(errors.driveLink?.message);
-  // }, [errors]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     // Make your API call here
 
     const formData = new FormData();
-    console.log(data.images);
 
     Array.from(data.images).forEach((image: File) => {
       formData.append(`images`, image); // `images` is the key expected by the backend
@@ -52,28 +43,22 @@ const AdminGallery: React.FC = () => {
     formData.append("description", data.description);
     formData.append("driveLink", data.driveLink);
 
-    console.log(data);
     try {
       const res = await axios.post("/api/gallery", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
-      console.log(res.data);
-
+   
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error adding gallery item");
-        console.log(res);
       }
       toast.success("Gallery item added successfully");
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }

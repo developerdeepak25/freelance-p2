@@ -107,7 +107,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
 
       if (res.status !== 200) {
         toast.error("Error updating Member");
-        console.log(res);
+        // console.log(res);
       } else {
         toast.success("Member updated successfully");
         setIsModalOpen(false);

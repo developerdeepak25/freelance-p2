@@ -1,11 +1,5 @@
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 
-// interface UserJwtPayload {
-//   jti: string;
-//   iat: number;
-//   exp: number; 
-//   userId: string;
-// }
 export interface UserJwtPayload extends JWTPayload {
   userId: string;
 }
@@ -77,15 +71,7 @@ export async function refreshAccessToken(
   refreshToken: string
 ): Promise<string | null> {
   try {
-    // const { payload } = await jwtVerify(refreshToken, 
-    //   new TextEncoder().encode(getJwtRefreshSecretKey()));
     const  payload  = await verifyAuth(refreshToken, "refresh");
-
-    // Create a new access token
-    // const newAccessToken = await new SignJWT({ userId: payload.userId })
-    //   .setProtectedHeader({ alg: "HS256" })
-    //   .setExpirationTime("15m")
-    //   .sign(JWT_ACCESS_SECRET);
     const newAccessToken = await generateAccessToken({ userId: payload.userId });
 
     return newAccessToken;

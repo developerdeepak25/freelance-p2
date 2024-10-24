@@ -195,7 +195,6 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
             <EditButton
               size={"icon"}
               onClick={() => {
-                console.log("clicked");
                 setIsEditModalOpen(true);
                 setEditMember(row.original);
               }}

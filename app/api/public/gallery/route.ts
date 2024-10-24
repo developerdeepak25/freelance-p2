@@ -10,8 +10,6 @@ export async function GET() {
     await dbConnect();
 
     const galleries = await Gallery.find().sort({ createdAt: -1 });
-    console.log(galleries);
-    
 
     return NextResponse.json(galleries);
   } catch (error) {

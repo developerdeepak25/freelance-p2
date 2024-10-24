@@ -59,7 +59,6 @@ reset,
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
