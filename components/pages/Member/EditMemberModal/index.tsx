@@ -173,7 +173,9 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
           label="Aadhar Card Number"
         />
         <FormInputWithLabel
-          {...register("designation", { required: "Designation is required" })}
+          {...register("designation", 
+            // { required: "Designation is required" }
+          )}
           id="designation"
           label="Designation"
           error={errors.designation?.message}
@@ -186,7 +188,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         <Controller
           name="dateOfBirth"
           control={control}
-          rules={{ required: "DOB is required" }}
+          // rules={{ required: "DOB is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -233,7 +235,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         <Controller
           name="caste"
           control={control}
-          rules={{ required: "Caste is required" }}
+          // rules={{ required: "Caste is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -265,7 +267,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
               key={field.id}
               name={`socialLinks.${index}`}
               control={control}
-              rules={{ required: "Social link is required" }}
+              // rules={{ required: "Social link is required" }}
               render={({ field }) => (
                 <SocialLinkInput
                   index={index}

@@ -62,7 +62,7 @@ const MemberTableMap = () => {
     return (
       <div className="flex justify-center items-center h-[400px]">
         <Loader2
-          className=" aspect-square animate-spin"
+          className="aspect-square animate-spin"
           height={40}
           width={40}
         />

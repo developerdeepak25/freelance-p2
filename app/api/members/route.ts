@@ -112,6 +112,8 @@ export async function POST(req: NextRequest) {
 
     // Handle social links
     if (socialLinksData) {
+      console.log("🚀 ~ POST ~ socialLinksData:", socialLinksData);
+
       try {
         const socialLinks = JSON.parse(socialLinksData) as ISocialLink[];
         if (Array.isArray(socialLinks)) {
@@ -133,6 +135,13 @@ export async function POST(req: NextRequest) {
         }
       } catch (error) {
         console.error("Social links processing error:", error);
+        if (error instanceof Error) {
+          let errorMsg = error.message;
+          if (errorMsg === "Invalid social link data") {
+            errorMsg = "Please provide valid social links.";
+          }
+          return NextResponse.json({ error: errorMsg }, { status: 400 });
+        }
         return NextResponse.json(
           { error: "An error occurred while processing social links." },
           { status: 400 }

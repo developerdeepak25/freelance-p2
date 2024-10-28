@@ -48,7 +48,7 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
           className="absolute top-0 left-0 right-0 bottom-0 object-cover lg:object-center object-bottom "
         />
       </div>
-      <div className="bg-primary-light lg:w-5 w-5/6  lg:h-5/6 sm:h-5 h-3 lg:rounded-r-lg rounded-b-lg shadow-xl shadow-gray-400 grow z-10"></div>
+      <div className="bg-primary-light lg:w-5 w-5/6  lg:h-5/6 sm:h-5 h-3 lg:rounded-r-lg lg:rounded-bl-none rounded-b-lg shadow-xl shadow-gray-400 grow z-10"></div>
     </div>
   );
 

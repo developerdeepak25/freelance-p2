@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useAppDispatch } from "@/store/hooks";
 import { login, resetAuth } from "@/store/slices/authSlice";
@@ -9,18 +9,12 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-      dispatch(login());
-      return () => {
-        dispatch(resetAuth());
-      };
-    }, [dispatch]);
-  return (
-    <>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      {/* <nav>this is a nav</nav> */}
-      {children}
-    </>
-  );
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(login());
+    return () => {
+      dispatch(resetAuth());
+    };
+  }, [dispatch]);
+  return <>{children}</>;
 }

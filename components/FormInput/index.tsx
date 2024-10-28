@@ -247,6 +247,7 @@ interface SocialLinkInputProps {
   onUrlChange: (index: number, value: string) => void;
   onRemove: (index: number) => void;
   usedPlatforms: string[];
+  error?: string;
 }
 
 const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
@@ -257,6 +258,7 @@ const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
   onUrlChange,
   onRemove,
   usedPlatforms,
+  // error
 }) => {
   const availablePlatforms = platformOptions.filter(
     (option) =>

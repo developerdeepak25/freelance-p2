@@ -8,7 +8,6 @@ export default function DashboardLayout({
   return (
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
-      {/* <nav>this is a nav</nav> */}
       <AdminNavbar />
       {children}
     </section>

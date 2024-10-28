@@ -75,9 +75,8 @@ const MemberCreateModal = ({
 
   const formValues = watch();
   // console.log("formValuse", formValues);
-    const usedPlatforms =
-      formValues.socialLinks?.map((link) => link.platform) || [];
-
+  const usedPlatforms =
+    formValues.socialLinks?.map((link) => link.platform) || [];
 
   const onSubmit: SubmitHandler<MemberFormValues> = async (data) => {
     // Make your API call here
@@ -85,7 +84,6 @@ const MemberCreateModal = ({
     const formData = new FormData();
     // console.log(data.photo);
 
-   
     Object.entries(data).forEach(([key, value]) => {
       if (key === "socialLinks" && Array.isArray(value)) {
         // Convert the socialLinks array to a JSON string
@@ -174,7 +172,9 @@ const MemberCreateModal = ({
           label="Aadhar Card Number"
         />
         <FormInputWithLabel
-          {...register("designation", { required: "Designation is required" })}
+          {...register("designation", 
+            // { required: "Designation is required" }
+          )}
           id="designation"
           label="Designation"
           error={errors.designation?.message}
@@ -187,7 +187,7 @@ const MemberCreateModal = ({
         <Controller
           name="dateOfBirth"
           control={control}
-          rules={{ required: "DOB is required" }}
+          // rules={{ required: "DOB is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -234,7 +234,7 @@ const MemberCreateModal = ({
         <Controller
           name="caste"
           control={control}
-          rules={{ required: "Caste is required" }}
+          // rules={{ required: "Caste is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -266,7 +266,7 @@ const MemberCreateModal = ({
               key={field.id}
               name={`socialLinks.${index}`}
               control={control}
-              rules={{ required: "Social link is required" }}
+              // rules={{ required: "Social link is required" }}
               render={({ field }) => (
                 <SocialLinkInput
                   index={index}
@@ -295,7 +295,6 @@ const MemberCreateModal = ({
             </Button>
           )}
         </div>
-        
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
