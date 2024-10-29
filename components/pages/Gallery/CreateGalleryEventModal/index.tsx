@@ -4,11 +4,10 @@ import {
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { GalleryEventProps } from "../GalleryEvent";
-import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 interface FormValues {
@@ -17,29 +16,25 @@ interface FormValues {
   description: string;
   driveLink: string;
 }
-type GalleryEventEditProps = {
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalOpen: boolean;
-  editData: GalleryEventProps;
-};
-const GalleryEventEdit = ({
-  setIsModalOpen,
+
+const CreateGalleryEventModal = ({
   isModalOpen,
-  editData,
-}: GalleryEventEditProps) => {
+  setIsModalOpen,
+}: {
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
-    defaultValues: {
-      title: editData.title,
-      description: editData.desc,
-      driveLink: editData.seeMore,
-    },
-  });
+  } = useForm<FormValues>();
+
+  //  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // Make your API call here
+
     const formData = new FormData();
 
     Array.from(data.images).forEach((image: File) => {
@@ -50,26 +45,21 @@ const GalleryEventEdit = ({
     formData.append("driveLink", data.driveLink);
 
     try {
-      const res = await axios.put(`/api/gallery/${editData.id}`, formData, {
+      const res = await axios.post("/api/gallery", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      // console.log(res);
-      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
-        toast.error("Error editing gallery item");
-        // console.log(res);
+        toast.error("Error adding gallery item");
       }
-      toast.success("Gallery item edited successfully");
+      toast.success("Gallery item added successfully");
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
@@ -83,7 +73,7 @@ const GalleryEventEdit = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Edit Gallery Item"
+      title="Add Event Item"
       // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
@@ -110,16 +100,17 @@ const GalleryEventEdit = ({
           error={errors.driveLink?.message}
         />
         <FormInputWithLabel
-          {...register("images", { required: false })}
+          {...register("images", { required: "Images are required" })}
           id="images"
-          label="Add More Images"
+          label="Images"
           type="file"
+          accept="image/*"
           multiple
           error={errors.images?.message}
         />
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
-            <Loader2 className="mr-2 h-5 aspect-square animate-spin" />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{" "}
           Submit
         </Button>
@@ -129,4 +120,4 @@ const GalleryEventEdit = ({
   );
 };
 
-export default GalleryEventEdit;
+export default CreateGalleryEventModal;

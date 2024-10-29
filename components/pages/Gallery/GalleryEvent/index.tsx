@@ -5,7 +5,7 @@ import { useAppSelector } from "@/store/hooks";
 import { GallerImageType } from "@/Types/types";
 // import Image from "next/image";
 import React, { useState } from "react";
-import GalleryEventEdit from "../GalleryEventEdit";
+import GalleryEventEdit from "../EditGalleryEventModal";
 import axios from "axios";
 import { toast } from "sonner";
 import ImageWithSkeleton from "@/components/ImageWithSkelton";

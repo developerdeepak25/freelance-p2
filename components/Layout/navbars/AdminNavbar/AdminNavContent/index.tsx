@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 import { NavLinks } from "../../Navlinks";
@@ -17,7 +17,6 @@ interface MobileMenuProps {
 
 const AdminNavContent = ({ navLinks }: MobileMenuProps) => {
   const router = useRouter();
-  const pathname = usePathname();
   //   const { isAuthenticated } = useAppSelector((state) => state.Auth);
   // const dispatch = useAppDispatch();
 
@@ -53,17 +52,17 @@ const AdminNavContent = ({ navLinks }: MobileMenuProps) => {
   };
 
   // Only render the button if user is authenticated and not on the login page
-  if (pathname !== "/login") {
+  // if (pathname !== "/login") {
     return (
       <>
         <NavLinks navLinks={navLinks} />
         <Button onClick={handleLogout}>Logout</Button>
       </>
     );
-  }
+  // }
 
   // Return null if conditions are not met
-  return null;
+  // return null;
 };
 
 export default AdminNavContent;

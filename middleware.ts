@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyAuth, refreshAccessToken, UserJwtPayload } from "./utils/auth";
 
-
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
@@ -26,14 +25,14 @@ export async function middleware(request: NextRequest) {
       // console.log("newAccessToken", newAccessToken);
 
       if (newAccessToken) {
-        const response = NextResponse.next();
-        response.cookies.set("accessToken", newAccessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          // maxAge: 10, //! 10s temperolly
-          maxAge: 15 * 60,
-        });
+        // const response = NextResponse.next();
+        // response.cookies.set("accessToken", newAccessToken, {
+        //   httpOnly: true,
+        //   secure: process.env.NODE_ENV === "production",
+        //   sameSite: "strict",
+        //   // maxAge: 10, //! 10s temperolly
+        //   maxAge: 15 * 60,
+        // });
         return newAccessToken;
       }
     } catch (error) {
@@ -64,16 +63,70 @@ export async function middleware(request: NextRequest) {
     let decoded = token ? await verifyToken(token) : null;
 
     // If access token is invalid or expired, try to refresh
+    //   if (!decoded && refreshToken) {
+    //     const newAccessToken = await handleTokenRefresh();
+    //     if (newAccessToken) {
+    //       token = newAccessToken;
+    //       decoded = await verifyToken(newAccessToken);
+    //     }
+    //   }
+
+    //   if (!decoded) {
+    //     // For API routes, return 401 Unauthorized instead of redirecting
+    //     if (pathname.startsWith("/api")) {
+    //       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    //     }
+    //     // For non-API routes, redirect to login
+    //     return NextResponse.redirect(new URL("/login", request.url));
+    //   }
+
+    //   // Authenticated, attach user data and continue
+    //   const requestHeaders = new Headers(request.headers);
+    //   requestHeaders.set("x-user-data", JSON.stringify(decoded));
+    //   return NextResponse.next({
+    //     request: {
+    //       headers: requestHeaders,
+    //     },
+    //   });
+    // }
+
     if (!decoded && refreshToken) {
-      const newAccessToken = await handleTokenRefresh();
-      if (newAccessToken) {
-        token = newAccessToken;
-        decoded = await verifyToken(newAccessToken);
+      const newToken = await handleTokenRefresh();
+
+      if (newToken) {
+        token = newToken;
+        decoded = await verifyToken(newToken);
+
+        if (decoded) {
+          // Create response with the new token
+          const response = NextResponse.next();
+          response.cookies.set({
+            name: "accessToken",
+            value: newToken,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 15 * 60, // 15 minutes
+            path: "/", // Important: Set the path to ensure cookie is available everywhere
+          });
+
+          // Add user data to headers
+          const requestHeaders = new Headers(request.headers);
+          requestHeaders.set("x-user-data", JSON.stringify(decoded));
+
+          // Return response with both new cookie and headers
+          return NextResponse.next({
+            request: {
+              headers: requestHeaders,
+            },
+            headers: response.headers,
+          });
+        }
       }
     }
 
     if (!decoded) {
-      // For API routes, return 401 Unauthorized instead of redirecting
+      // For API routes, return 401 Unauthorized
       if (pathname.startsWith("/api")) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
@@ -81,9 +134,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // Authenticated, attach user data and continue
+    // If we have a valid token but didn't need to refresh
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-user-data", JSON.stringify(decoded));
+
     return NextResponse.next({
       request: {
         headers: requestHeaders,
