@@ -10,18 +10,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { GalleryEventProps } from "../GalleryEvent";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
+import {
+  EditGalleryEventFormValues,
+  editGalleryEventSchema,
+} from "@/schema/gallerySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface FormValues {
-  images: FileList;
-  title: string;
-  description: string;
-  driveLink: string;
-}
 type EditGalleryEventModalProps = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalOpen: boolean;
   editData: GalleryEventProps;
 };
+
 const EditGalleryEventModal = ({
   setIsModalOpen,
   isModalOpen,
@@ -31,7 +31,8 @@ const EditGalleryEventModal = ({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
+  } = useForm<EditGalleryEventFormValues>({
+    resolver: zodResolver(editGalleryEventSchema),
     defaultValues: {
       title: editData.title,
       description: editData.desc,
@@ -39,15 +40,21 @@ const EditGalleryEventModal = ({
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<EditGalleryEventFormValues> = async (data) => {
     const formData = new FormData();
 
-    Array.from(data.images).forEach((image: File) => {
-      formData.append(`images`, image); // `images` is the key expected by the backend
+    if (data.images instanceof FileList) {
+      Array.from(data.images).forEach((image: File) => {
+        formData.append(`images`, image); // `images` is the key expected by the backend
+      });
+    }
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (!(value instanceof FileList || key === "images")) {
+          formData.append(key, value);
+        }
+      }
     });
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("driveLink", data.driveLink);
 
     try {
       const res = await axios.put(`/api/gallery/${editData.id}`, formData, {

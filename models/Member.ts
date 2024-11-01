@@ -45,7 +45,7 @@ const memberSchema = new Schema<IMember>(
     },
     email: {
       type: String,
-      unique: true,
+      // unique: true,
       sparse: true,
     },
     phoneNo: {
@@ -66,12 +66,12 @@ const memberSchema = new Schema<IMember>(
     },
     panCardNo: {
       type: String,
-      unique: true,
+      // unique: true,
       sparse: true,
     },
     aadharCardNo: {
       type: String,
-      unique: true,
+      // unique: true,
       sparse: true,
     },
     dateOfBirth: {

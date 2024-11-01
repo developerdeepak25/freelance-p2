@@ -100,9 +100,12 @@ export async function PUT(
       if (key === "thumbnail" && value instanceof File) {
         thumbnailFile = value;
       } else if (typeof value === "string") {
+        console.log("key", key, "value", value);
         eventData[key as keyof IEvent] = value;
       }
     });
+    console.log(eventData);
+    
 
     // Update event
     if (thumbnailFile) {
@@ -146,10 +149,12 @@ export async function PUT(
     event.endDate = eventData.endDate
       ? new Date(eventData.endDate)
       : event.endDate;
-    event.venue = eventData.venue || event.venue;
+    // event.venue = eventData.venue || event.venue;
+    event.venue =  eventData.venue ;
     event.eventGalleryLink =
       eventData.eventGalleryLink || event.eventGalleryLink;
-    event.highlights = eventData.highlights || event.highlights;
+    // event.highlights = eventData.highlights || event.highlights;
+    event.highlights = eventData.highlights ;
 
     // Save updated event
     await event.save();

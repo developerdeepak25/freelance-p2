@@ -17,6 +17,8 @@ import SocialLinkInput, {
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
+import { memberSchema } from "@/schema/memberSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type SocialLink = {
   platform: string;
@@ -70,11 +72,13 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
     watch,
     formState: { errors, isSubmitting },
   } = useForm<MemberFormValues>({
+    resolver: zodResolver(memberSchema),
     defaultValues: {
       ...memberData,
       dateOfBirth: memberData.dateOfBirth
         ? new Date(memberData.dateOfBirth)
         : undefined,
+      photo: undefined,
     },
   });
 
@@ -84,6 +88,8 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
   });
 
   const formValues = watch();
+  console.log("formValues", formValues);
+
   const usedPlatforms =
     formValues.socialLinks?.map((link) => link.platform) || [];
 
@@ -97,7 +103,8 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         formData.append(key, value[0]);
       } else if (key === "dateOfBirth" && value instanceof Date) {
         formData.append(key, value.toISOString());
-      } else if (value !== undefined && value !== null && value !== "") {
+      // } else if (value !== undefined && value !== null && value !== "") {
+      } else if (value !== undefined && value !== null ) {
         formData.append(key, String(value));
       }
     });
@@ -161,19 +168,23 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
           label="Change Photo"
           type="file"
           accept="image/*"
+          error={errors.photo?.message}
         />
         <FormInputWithLabel
           {...register("panCardNo")}
           id="panCardNo"
           label="PAN Card Number"
+          error={errors.panCardNo?.message}
         />
         <FormInputWithLabel
           {...register("aadharCardNo")}
           id="aadharCardNo"
           label="Aadhar Card Number"
+          error={errors.aadharCardNo?.message}
         />
         <FormInputWithLabel
-          {...register("designation", 
+          {...register(
+            "designation"
             // { required: "Designation is required" }
           )}
           id="designation"
@@ -184,6 +195,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
           {...register("profession")}
           id="profession"
           label="Profession"
+          error={errors.profession?.message}
         />
         <Controller
           name="dateOfBirth"
@@ -281,6 +293,10 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
                   }
                   onRemove={() => remove(index)}
                   usedPlatforms={usedPlatforms}
+                  error={
+                    errors.socialLinks?.[index]?.platform?.message ||
+                    errors.socialLinks?.[index]?.url?.message
+                  }
                 />
               )}
             />

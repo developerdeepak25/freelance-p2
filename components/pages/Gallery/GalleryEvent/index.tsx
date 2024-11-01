@@ -43,8 +43,7 @@ const GalleryEvent = ({
     } catch (error) {
       toast.error("Error deleting gallery event");
       console.error(error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -53,7 +52,9 @@ const GalleryEvent = ({
     <>
       <div className="flex flex-col gap-3 w-full">
         <div className="flex justify-between items-baseline">
-          <Heading variant="small">{title}</Heading>
+          <Heading variant="small" className=" break-words">
+            {title}
+          </Heading>
           {/* see more - //TODO pass g-drive */}
           {seeMore && (
             <p className="text-my-para text-base font-semibold uppercase border-b-2 border-primary px-1 hover:text-primary  cursor-pointer h-fit">
@@ -63,7 +64,9 @@ const GalleryEvent = ({
             </p>
           )}
         </div>
-        <p className="text-my-para text-base font-semibold">{desc}</p>
+        <p className="text-my-para text-base font-semibold break-words">
+          {desc}
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-4">
           {images?.map((image, index) => (
             <GalleryEventImage key={index} imageData={image} gallerId={id} />
@@ -73,7 +76,11 @@ const GalleryEvent = ({
         {isAuthenticated && (
           <div className="flex justify-end gap-2">
             <EditButton onClick={() => setIsModalOpen(true)} />
-            <DeteteButton onClick={handleDelete} isLoading={isLoading} disabled={isLoading} />
+            <DeteteButton
+              onClick={handleDelete}
+              isLoading={isLoading}
+              disabled={isLoading}
+            />
           </div>
         )}
       </div>

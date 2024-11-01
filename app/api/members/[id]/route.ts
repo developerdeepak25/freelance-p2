@@ -1,7 +1,10 @@
 import dbConnect from "@/lib/dbConnect";
 import Member, { IMember } from "@/models/Member";
 import SocialLink, { ISocialLink, PLATFORMS } from "@/models/SocialLink";
-import { deleteFromCloudinary, uploadToCloudinary } from "@/utils/cloudnaryUtils";
+import {
+  deleteFromCloudinary,
+  uploadToCloudinary,
+} from "@/utils/cloudnaryUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -151,15 +154,23 @@ export async function PUT(
 
     // Process form data
     formData.forEach((value, key) => {
+      console.log("formdatat", value, key);
       if (key === "photo" && value instanceof File) {
+        console.log("photo", value, key);
         photoFile = value;
       } else if (key === "socialLinks" && typeof value === "string") {
         socialLinksData = value;
-      } else if (typeof value === "string") {
+      } else if (
+        typeof value === "string" &&
+        key !== "photo" &&
+        key !== "socialLinks"
+      ) {
+        console.log("strind", value, key);
         memberData[key as keyof IMember] = value;
+        // memberData[key as keyof IMember] = value === "" ? null : value;
       }
     });
-    // console.log("memberData", memberData);
+    console.log("memberData", memberData);
 
     // Find member by ID
     const member = await Member.findById(memberId);
@@ -172,8 +183,8 @@ export async function PUT(
     // Check for existing unique fields
     const uniqueFields: (keyof IMember)[] = [
       "email",
-      "panCardNo",
-      "aadharCardNo",
+      // "panCardNo",
+      // "aadharCardNo",
     ];
     for (const field of uniqueFields) {
       if (memberData[field] && memberData[field] !== member[field]) {
@@ -194,7 +205,7 @@ export async function PUT(
     if (photoFile) {
       try {
         const uploadResult = await uploadToCloudinary(photoFile);
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let photo: any;
 
@@ -274,10 +285,6 @@ export async function PUT(
     );
   }
 }
-
-
-
-
 
 /**
  * Delete a member

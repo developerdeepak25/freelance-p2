@@ -317,7 +317,7 @@ const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
   onUrlChange,
   onRemove,
   usedPlatforms,
-  // error
+  error
 }) => {
   const availablePlatforms = platformOptions.filter(
     (option) =>
@@ -325,27 +325,30 @@ const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
   );
 
   return (
-    <div className="flex items-center space-x-2">
-      <SimpleSelect
-        options={availablePlatforms}
-        placeholder="Select Platform"
-        value={platform}
-        onValueChange={(value) => onPlatformChange(index, value)}
-      />
-      <Input
-        type="url"
-        placeholder="Enter URL"
-        value={url}
-        onChange={(e) => onUrlChange(index, e.target.value)}
-      />
-      <Button
-        type="button"
-        variant="outline"
-        size="icon"
-        onClick={() => onRemove(index)}
-      >
-        <Trash2 className="h-4 w-4" />
-      </Button>
+    <div className="flex flex-col  space-y-2">
+      <div className="flex items-center space-x-2 w-full">
+        <SimpleSelect
+          options={availablePlatforms}
+          placeholder="Select Platform"
+          value={platform}
+          onValueChange={(value) => onPlatformChange(index, value)}
+        />
+        <Input
+          type="url"
+          placeholder="Enter URL"
+          value={url}
+          onChange={(e) => onUrlChange(index, e.target.value)}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          onClick={() => onRemove(index)}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 };

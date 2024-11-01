@@ -4,18 +4,16 @@ import {
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
+import {
+  CreateGalleryEventFormValues,
+  createGalleryEventSchema,
+} from "@/schema/gallerySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-interface FormValues {
-  images: FileList;
-  title: string;
-  description: string;
-  driveLink: string;
-}
 
 const CreateGalleryEventModal = ({
   isModalOpen,
@@ -28,21 +26,32 @@ const CreateGalleryEventModal = ({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>();
-
+  } = useForm<CreateGalleryEventFormValues>({
+    resolver: zodResolver(createGalleryEventSchema),
+  });
   //  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<CreateGalleryEventFormValues> = async (
+    data
+  ) => {
     // Make your API call here
 
     const formData = new FormData();
 
-    Array.from(data.images).forEach((image: File) => {
+    Array.from(data.images!).forEach((image: File) => {
       formData.append(`images`, image); // `images` is the key expected by the backend
     });
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("driveLink", data.driveLink);
+    // formData.append("title", data.title);
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (!(value instanceof FileList || key === "images")) {
+          formData.append(key, value);
+        }
+      }
+    });
+
+    // formData.append("description", data.description);
+    // formData.append("driveLink", data.driveLink);
 
     try {
       const res = await axios.post("/api/gallery", formData, {

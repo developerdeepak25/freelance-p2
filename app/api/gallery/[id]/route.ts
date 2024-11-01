@@ -78,6 +78,8 @@ export async function PUT(
     const description = formData.get("description") as string;
     const driveLink = formData.get("driveLink") as string;
     const imageFiles = formData.getAll("images") as File[];
+    console.log(title, description, driveLink, imageFiles);
+    
 
     // console.log(imageFiles);
 
@@ -85,7 +87,8 @@ export async function PUT(
     // Update gallery fields
     gallery.title = title || gallery.title;
     gallery.description = description || gallery.description;
-    gallery.driveLink = driveLink || gallery.driveLink;
+    // gallery.driveLink = driveLink || gallery.driveLink;
+    gallery.driveLink =  driveLink;
 
     // Add or replace images (if provided)
     if (imageFiles && imageFiles.length > 0) {

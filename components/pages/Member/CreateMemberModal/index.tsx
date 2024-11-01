@@ -1,4 +1,5 @@
 import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import SocialLinkInput, {
   DatePicker,
@@ -17,25 +18,7 @@ import {
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2, Plus } from "lucide-react";
-type SocialLink = {
-  platform: string;
-  url: string;
-};
-
-export type MemberFormValues = {
-  name: string;
-  email?: string;
-  phoneNo?: string;
-  photo?: FileList;
-  panCardNo?: string;
-  aadharCardNo?: string;
-  dateOfBirth?: Date;
-  caste?: string;
-  designation: string;
-  profession?: string;
-  committee: string;
-  socialLinks: SocialLink[];
-};
+import { MemberFormValues, memberSchema } from "@/schema/memberSchema";
 
 const committeeOptions = [
   { value: "GENERAL", label: "General" },
@@ -64,29 +47,26 @@ const MemberCreateModal = ({
     watch,
     formState: { errors, isSubmitting },
   } = useForm<MemberFormValues>({
+    resolver: zodResolver(memberSchema),
     defaultValues: {
       socialLinks: [],
     },
   });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "socialLinks",
   });
 
   const formValues = watch();
-  // console.log("formValuse", formValues);
   const usedPlatforms =
     formValues.socialLinks?.map((link) => link.platform) || [];
 
   const onSubmit: SubmitHandler<MemberFormValues> = async (data) => {
-    // Make your API call here
-
     const formData = new FormData();
-    // console.log(data.photo);
 
     Object.entries(data).forEach(([key, value]) => {
       if (key === "socialLinks" && Array.isArray(value)) {
-        // Convert the socialLinks array to a JSON string
         formData.append("socialLinks", JSON.stringify(value));
       } else if (key === "photo" && value instanceof FileList) {
         formData.append(key, value[0]);
@@ -97,15 +77,11 @@ const MemberCreateModal = ({
       }
     });
 
-    // console.log("filled data", data, formData);
     try {
       const res = await axios.post("/api/members", formData);
-      // console.log(res);
-      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error adding Member");
-        // console.log(res);
       }
       toast.success("Member added successfully");
       setIsModalOpen(false);
@@ -114,7 +90,6 @@ const MemberCreateModal = ({
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
@@ -129,21 +104,17 @@ const MemberCreateModal = ({
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       title="Add Member"
-      // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
-        {/* <div className="flex gap-3 flex-col"> */}
         <FormInputWithLabel
-          {...register("name", { required: "Name is required" })}
+          {...register("name")}
           id="name"
           label="Name"
           error={errors.name?.message}
         />
         <FormInputWithLabel
-          {...register("email", {
-            required: "Email is required",
-          })}
+          {...register("email")}
           id="email"
           label="Email"
           error={errors.email?.message}
@@ -160,21 +131,22 @@ const MemberCreateModal = ({
           label="Photo"
           type="file"
           accept="image/*"
+          error={errors.photo?.message}
         />
         <FormInputWithLabel
           {...register("panCardNo")}
           id="panCardNo"
           label="PAN Card Number"
+          error={errors.panCardNo?.message}
         />
         <FormInputWithLabel
           {...register("aadharCardNo")}
           id="aadharCardNo"
           label="Aadhar Card Number"
+          error={errors.aadharCardNo?.message}
         />
         <FormInputWithLabel
-          {...register("designation", 
-            // { required: "Designation is required" }
-          )}
+          {...register("designation")}
           id="designation"
           label="Designation"
           error={errors.designation?.message}
@@ -183,11 +155,11 @@ const MemberCreateModal = ({
           {...register("profession")}
           id="profession"
           label="Profession"
+          error={errors.profession?.message}
         />
         <Controller
           name="dateOfBirth"
           control={control}
-          // rules={{ required: "DOB is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -204,11 +176,10 @@ const MemberCreateModal = ({
               )}
             </div>
           )}
-        />{" "}
+        />
         <Controller
           name="committee"
           control={control}
-          rules={{ required: "Committee is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -234,7 +205,6 @@ const MemberCreateModal = ({
         <Controller
           name="caste"
           control={control}
-          // rules={{ required: "Caste is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -264,22 +234,31 @@ const MemberCreateModal = ({
           {fields.map((field, index) => (
             <Controller
               key={field.id}
-              name={`socialLinks.${index}`}
+              name={`socialLinks.${index}` as const}
               control={control}
-              // rules={{ required: "Social link is required" }}
-              render={({ field }) => (
+              render={({ field: socialField }) => (
                 <SocialLinkInput
                   index={index}
-                  platform={field.value.platform}
-                  url={field.value.url}
+                  platform={socialField.value.platform}
+                  url={socialField.value.url}
                   onPlatformChange={(index, value) =>
-                    field.onChange({ ...field.value, platform: value })
+                    socialField.onChange({
+                      ...socialField.value,
+                      platform: value,
+                    })
                   }
                   onUrlChange={(index, value) =>
-                    field.onChange({ ...field.value, url: value })
+                    socialField.onChange({
+                      ...socialField.value,
+                      url: value,
+                    })
                   }
                   onRemove={() => remove(index)}
                   usedPlatforms={usedPlatforms}
+                  error={
+                    errors.socialLinks?.[index]?.platform?.message ||
+                    errors.socialLinks?.[index]?.url?.message
+                  }
                 />
               )}
             />
@@ -294,6 +273,11 @@ const MemberCreateModal = ({
               <Plus className="h-4 w-4 mr-2" /> Add Social Link
             </Button>
           )}
+          {errors.socialLinks && (
+            <span className="text-red-500 text-sm">
+              {errors.socialLinks.message}
+            </span>
+          )}
         </div>
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (
@@ -301,7 +285,6 @@ const MemberCreateModal = ({
           ) : null}{" "}
           Submit
         </Button>
-        {/* </div> */}
       </ModalForm>
     </FormModal>
   );

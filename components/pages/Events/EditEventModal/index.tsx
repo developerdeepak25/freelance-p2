@@ -10,18 +10,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { DateRange } from "react-day-picker";
+// import { DateRange } from "react-day-picker";
 import { CardDataType } from "@/components/CardCarousel/Card";
-
-type EventFormValues = {
-  title: string;
-  description: string;
-  thumbnail: string;
-  dateRange: DateRange | undefined;
-  venue: string;
-  highlights?: string;
-};
-
+import { EditEventFormValues, editEventSchema } from "@/schema/eventSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type EditEventModalProps = {
   isModalOpen: boolean;
@@ -39,13 +31,13 @@ const EditEventModal = ({
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<EventFormValues>({
+  } = useForm<EditEventFormValues>({
+    resolver: zodResolver(editEventSchema),
     defaultValues: {
       title: editData.title,
       description: editData.description,
       venue: editData.venue || "",
       highlights: editData.highlights || "",
-      thumbnail: editData.thumbnail,
       dateRange: {
         from: new Date(editData.startDate),
         to: editData.endDate ? new Date(editData.endDate) : undefined,
@@ -53,18 +45,25 @@ const EditEventModal = ({
     },
   });
 
-  const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<EditEventFormValues> = async (data) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
-        if (key === "dateRange" && typeof value !== "string") {
-          if (value.from)
-            formData.append("startDate", value.from.toISOString());
-          if (value.to) formData.append("endDate", value.to.toISOString());
-        } else if (value instanceof FileList) {
+        if (value instanceof FileList && value.length > 0) {
           formData.append(key, value[0]);
-        } else {
+        } else if (
+          key === "dateRange" &&
+          typeof value !== "string" &&
+          !(value instanceof FileList)
+        ) {
+          if (value.from) {
+            formData.append("startDate", value.from.toISOString());
+          }
+          if (value.to) {
+            formData.append("endDate", value.to.toISOString());
+          }
+        } else if (!(value instanceof FileList)) {
           formData.append(key, String(value));
         }
       }
@@ -85,7 +84,7 @@ const EditEventModal = ({
       setIsModalOpen(false);
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.status === 400) {
+        if (error.response?.status === 400) {
           const errMessage = error.response?.data?.error;
           if (errMessage) {
             return toast.error(errMessage);
@@ -105,20 +104,19 @@ const EditEventModal = ({
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
         <FormInputWithLabel
-          {...register("title", { required: "Title is required" })}
+          {...register("title")}
           id="title"
           label="Title"
           error={errors.title?.message}
         />
-        {/* <FormTextAreaWithLabel */}
         <AutoResizeFormTextAreaWithLabel
-          {...register("description", { required: "Description is required" })}
+          {...register("description")}
           id="description"
           label="Description"
           error={errors.description?.message}
         />
         <FormInputWithLabel
-          {...register("thumbnail", { required: false })}
+          {...register("thumbnail")}
           id="thumbnail"
           label="Change Thumbnail"
           type="file"
@@ -128,7 +126,6 @@ const EditEventModal = ({
         <Controller
           name="dateRange"
           control={control}
-          rules={{ required: "Date range is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label
@@ -140,21 +137,25 @@ const EditEventModal = ({
               <DateRangePicker value={field.value} onChange={field.onChange} />
               {errors.dateRange && (
                 <p className="mt-1 text-sm text-red-600">
-                  {errors.dateRange.message}
+                  {errors.dateRange?.message ||
+                    errors.dateRange?.from?.message ||
+                    errors.dateRange?.to?.message}
                 </p>
               )}
             </div>
           )}
         />
         <FormInputWithLabel
-          {...register("venue", { required: false })}
+          {...register("venue")}
           id="venue"
           label="Venue"
+          error={errors.venue?.message}
         />
         <FormInputWithLabel
-          {...register("highlights", { required: false })}
+          {...register("highlights")}
           id="highlights"
           label="Highlight"
+          error={errors.highlights?.message}
         />
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
           {isSubmitting ? (

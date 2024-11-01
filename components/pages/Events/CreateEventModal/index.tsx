@@ -11,23 +11,9 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { DateRange } from "react-day-picker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createEventSchema, EditEventFormValues } from "@/schema/eventSchema";
 
-type EventFormValues = {
-  title: string;
-  description: string;
-  thumbnail: string;
-  //   cloudinaryThumbnailId: string;
-  // date: Date;
-  //   startDate: Date;
-  //   endDate: Date;
-  dateRange: DateRange | undefined;
-
-  // time: string;
-  venue: string;
-  //   eventGalleryLink?: string;
-  highlights?: string; // will be a link
-};
 const CreateEventModal = ({
   isModalOpen,
   setIsModalOpen,
@@ -39,103 +25,91 @@ const CreateEventModal = ({
     register,
     handleSubmit,
     control,
-    // watch,
     formState: { errors, isSubmitting },
-  } = useForm<EventFormValues>();
+  } = useForm<EditEventFormValues>({
+    resolver: zodResolver(createEventSchema),
+  });
 
-  // const formValues = watch();
-
-  const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
-    // Make your API call here
-
+  const onSubmit: SubmitHandler<EditEventFormValues> = async (data) => {
     const formData = new FormData();
 
-    // Dynamically add fields to FormData
     Object.entries(data).forEach(([key, value]) => {
-
       if (value !== undefined && value !== null) {
-        if (key === "dateRange" && typeof value !== "string") {
+        if (value instanceof FileList) {
+          formData.append(key, value[0]);
+        } else if (key === "dateRange" && typeof value !== "string") {
           if (value.from)
             formData.append("startDate", value.from.toISOString());
           if (value.to) formData.append("endDate", value.to.toISOString());
-        } else if (value instanceof FileList) {
-          formData.append(key, value[0]);
         } else {
           formData.append(key, String(value));
         }
       }
     });
 
-    // console.log("filled data", data, formData);
     try {
       const res = await axios.post("/api/events", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      // console.log(res);
-      // console.log(res.data);
 
       if (res.status !== 200 && res.status !== 201) {
         toast.error("Error adding Event");
-        // console.log(res);
       }
       toast.success("Event added successfully");
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       if (error instanceof AxiosError) {
         if (error.status === 400) {
           const errMessage = error.response?.data?.error;
-          // console.log(errMessage);
           if (errMessage) {
             return toast.error(errMessage);
           }
         }
       }
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
+  // Rest of your component remains the same
   return (
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       title="Add Event"
-      // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
-        {/* <div className="flex gap-3 flex-col"> */}
         <FormInputWithLabel
-          {...register("title", { required: "Title is required" })}
+          {...register("title")}
           id="title"
           label="Title"
           error={errors.title?.message}
         />
+
         <AutoResizeFormTextAreaWithLabel
-          {...register("description", {
-            required: "Description is required",
-          })}
+          {...register("description")}
           id="description"
           label="Description"
           error={errors.description?.message}
         />
 
         <FormInputWithLabel
-          {...register("thumbnail", { required: "Thumbnail are required" })}
+          {...register("thumbnail")}
           id="images"
           label="Images"
           type="file"
           accept="image/*"
           error={errors.thumbnail?.message}
         />
+
         <Controller
           name="dateRange"
           control={control}
-          rules={{ required: "Date range is required" }}
           render={({ field }) => (
-            <div className="  flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <label
                 htmlFor="date"
                 className="text-my-para text-base font-normal"
@@ -145,7 +119,9 @@ const CreateEventModal = ({
               <DateRangePicker value={field.value} onChange={field.onChange} />
               {errors.dateRange && (
                 <p className="mt-1 text-sm text-red-600">
-                  {errors.dateRange.message}
+                  {errors.dateRange?.message ||
+                    errors.dateRange?.from?.message ||
+                    errors.dateRange?.to?.message}
                 </p>
               )}
             </div>
@@ -153,17 +129,17 @@ const CreateEventModal = ({
         />
 
         <FormInputWithLabel
-          {...register("venue", { required: false })}
+          {...register("venue")}
           id="venue"
           label="Venue"
-          //   error={errors.venue?.message}
+          error={errors.venue?.message}
         />
 
         <FormInputWithLabel
-          {...register("highlights", { required: false })}
+          {...register("highlights")}
           id="highlight"
           label="Highlight"
-          //   error={errors.highlights?.message}
+          error={errors.highlights?.message}
         />
 
         <Button disabled={isSubmitting} variant={"primary-solid"} type="submit">
@@ -172,7 +148,6 @@ const CreateEventModal = ({
           ) : null}{" "}
           Submit
         </Button>
-        {/* </div> */}
       </ModalForm>
     </FormModal>
   );
