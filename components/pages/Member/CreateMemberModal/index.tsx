@@ -128,7 +128,7 @@ const MemberCreateModal = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Add Event Item"
+      title="Add Member"
       // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >

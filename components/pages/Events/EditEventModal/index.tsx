@@ -1,8 +1,8 @@
 import React from "react";
 import {
+  AutoResizeFormTextAreaWithLabel,
   DateRangePicker,
   FormInputWithLabel,
-  FormTextAreaWithLabel,
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
@@ -100,7 +100,7 @@ const EditEventModal = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Edit Event Item"
+      title="Edit Event"
       submitButtonText="Update Item"
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
@@ -110,7 +110,8 @@ const EditEventModal = ({
           label="Title"
           error={errors.title?.message}
         />
-        <FormTextAreaWithLabel
+        {/* <FormTextAreaWithLabel */}
+        <AutoResizeFormTextAreaWithLabel
           {...register("description", { required: "Description is required" })}
           id="description"
           label="Description"

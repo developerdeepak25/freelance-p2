@@ -1,5 +1,9 @@
 "use client";
-import React, { forwardRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useRef,
+} from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
@@ -30,10 +34,9 @@ const commonCss =
   "px-5 py-3 text-my-para font-bold text-base rounded-[8px] border-2 border-gray-300";
 // "px-10 py-7 text-my-para font-bold text-base rounded-[40px] border-2 border-gray-300";
 
-
 export const FormInput = forwardRef<
   HTMLInputElement,
-  FormInputProps & { error?: string, wrapperClassName?: string }
+  FormInputProps & { error?: string; wrapperClassName?: string }
 >(({ error, wrapperClassName, ...rest }, ref) => {
   return (
     <div className={cn("space-y-2", wrapperClassName)}>
@@ -49,7 +52,7 @@ FormInput.displayName = "FormInput";
 // Basic FormTextArea Component
 export const FormTextArea = forwardRef<
   HTMLTextAreaElement,
-  FormTextAreaProps & { error?: string, wrapperClassName?: string }
+  FormTextAreaProps & { error?: string; wrapperClassName?: string }
 >(({ error, wrapperClassName, ...rest }, ref) => {
   return (
     <div className={cn("space-y-2", wrapperClassName)}>
@@ -88,7 +91,7 @@ FormInputWithLabel.displayName = "FormInputWithLabel";
 export const FormTextAreaWithLabel = forwardRef<
   HTMLTextAreaElement,
   FormTextAreaProps & { id: string; label: string; error?: string | undefined }
->(({ id, label, error, ...rest }, ref) => {
+>(({ id, label, error, className, ...rest }, ref) => {
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="text-my-para text-base font-normal">
@@ -98,7 +101,7 @@ export const FormTextAreaWithLabel = forwardRef<
         id={id}
         ref={ref}
         {...rest}
-        className={cn(commonCss, "border-[1px]")}
+        className={cn(commonCss, "border-[1px]", className)}
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
@@ -107,6 +110,62 @@ export const FormTextAreaWithLabel = forwardRef<
 
 // Set display name for easier debugging
 FormTextAreaWithLabel.displayName = "FormTextAreaWithLabel";
+
+export const AutoResizeFormTextAreaWithLabel = forwardRef<
+  HTMLTextAreaElement,
+  FormTextAreaProps & { id: string; label: string; error?: string | undefined }
+>(({ id, label, error, className, ...rest }, ref) => {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustHeight();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    adjustHeight();
+    if (rest.onChange) {
+      rest.onChange(e);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id} className="text-my-para text-base font-normal">
+        {label}
+      </Label>
+      <Textarea
+        id={id}
+        ref={(node) => {
+          textareaRef.current = node;
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
+        }}
+        {...rest}
+        onChange={handleChange}
+        className={cn(
+          commonCss,
+          "min-h-[100px] h-auto overflow-hidden",
+          className
+        )}
+      />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+});
+
+// Set display name for easier debugging
+AutoResizeFormTextAreaWithLabel.displayName = "AutoResizeFormTextAreaWithLabel";
 
 export function DateRangePicker({
   className,

@@ -62,34 +62,6 @@ export async function middleware(request: NextRequest) {
     let token = accessToken;
     let decoded = token ? await verifyToken(token) : null;
 
-    // If access token is invalid or expired, try to refresh
-    //   if (!decoded && refreshToken) {
-    //     const newAccessToken = await handleTokenRefresh();
-    //     if (newAccessToken) {
-    //       token = newAccessToken;
-    //       decoded = await verifyToken(newAccessToken);
-    //     }
-    //   }
-
-    //   if (!decoded) {
-    //     // For API routes, return 401 Unauthorized instead of redirecting
-    //     if (pathname.startsWith("/api")) {
-    //       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    //     }
-    //     // For non-API routes, redirect to login
-    //     return NextResponse.redirect(new URL("/login", request.url));
-    //   }
-
-    //   // Authenticated, attach user data and continue
-    //   const requestHeaders = new Headers(request.headers);
-    //   requestHeaders.set("x-user-data", JSON.stringify(decoded));
-    //   return NextResponse.next({
-    //     request: {
-    //       headers: requestHeaders,
-    //     },
-    //   });
-    // }
-
     if (!decoded && refreshToken) {
       const newToken = await handleTokenRefresh();
 

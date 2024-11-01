@@ -1,6 +1,6 @@
 import {
+  AutoResizeFormTextAreaWithLabel,
   FormInputWithLabel,
-  FormTextAreaWithLabel,
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
@@ -73,7 +73,7 @@ const CreateGalleryEventModal = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Add Event Item"
+      title="Add gallery Event"
       // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
@@ -85,7 +85,7 @@ const CreateGalleryEventModal = ({
           label="Title"
           error={errors.title?.message}
         />
-        <FormTextAreaWithLabel
+        <AutoResizeFormTextAreaWithLabel
           {...register("description", {
             required: false,
           })}

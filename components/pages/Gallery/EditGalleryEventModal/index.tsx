@@ -1,6 +1,6 @@
 import {
+  AutoResizeFormTextAreaWithLabel,
   FormInputWithLabel,
-  FormTextAreaWithLabel,
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
@@ -83,7 +83,7 @@ const EditGalleryEventModal = ({
     <FormModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title="Edit Gallery Item"
+      title="Edit Gallery Event"
       // onSubmit={()=>handleSubmit(onSubmit)}
       submitButtonText="Add Item"
     >
@@ -95,7 +95,7 @@ const EditGalleryEventModal = ({
           label="Title"
           error={errors.title?.message}
         />
-        <FormTextAreaWithLabel
+        <AutoResizeFormTextAreaWithLabel
           {...register("description", {
             required: false,
           })}
@@ -121,7 +121,7 @@ const EditGalleryEventModal = ({
           {isSubmitting ? (
             <Loader2 className="mr-2 h-5 aspect-square animate-spin" />
           ) : null}{" "}
-          Submit
+          Update
         </Button>
         {/* </div> */}
       </ModalForm>

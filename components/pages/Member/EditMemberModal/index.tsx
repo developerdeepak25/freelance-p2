@@ -301,7 +301,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
           {isSubmitting ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{" "}
-          Update Member
+          Update
         </Button>
       </ModalForm>
     </FormModal>
