@@ -8,8 +8,8 @@ import { EventsMap } from "../EventsMap";
 
 const UpcomingEvents = () => {
   return (
-    // <SectionWrapper className="mt-24 mx-auto pb-12">
-    <SectionWrapper className="mt-20  pb-20">
+    // <SectionWrapper className="mt-20  pb-20">
+    <SectionWrapper className="mt-20">
       <div className="flex flex-col gap-6">
         <Heading variant="medium">Upcoming Events </Heading>
         <p className="font-medium text-my-para sm:text-lg text-base">
