@@ -83,7 +83,7 @@ const membersData : ClientMember[] = [
 
 const Members = () => {
   return (
-    <div className="bg-gray-50 w-screen flex justify-center">
+    <div className="bg-gray-50 w-screen flex justify-center mt-20">
       <SectionWrapper>
         <div className="py-20 flex flex-col gap-16 items-center">
           <Heading   variant="medium" className="text-center">Meet our core members</Heading>
