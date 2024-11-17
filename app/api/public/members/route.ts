@@ -24,7 +24,9 @@ export async function GET(req: NextRequest) {
     // Query members with field selection
     const query = committee ? { committee } : {};
     const members = await Member.find(query)
-      .select("name photo email designation profession committee socialLinks ")
+      .select(
+        "name photo email designation profession committee socialLinks phoneNo"
+      )
       .populate("socialLinks", "platform url "); // Assuming socialLinks have platform and url fields
 
     // Return public members data
