@@ -45,7 +45,11 @@ export async function POST(req: NextRequest) {
     // console.log("memberData", memberData);
 
     // Validate required fields
-    const requiredFields: (keyof IMember)[] = ["name", "committee"];
+    const requiredFields: (keyof IMember)[] = [
+      "name",
+      "committee",
+      "aadharCardNo",
+    ];
     for (const field of requiredFields) {
       if (!memberData[field]) {
         return NextResponse.json(

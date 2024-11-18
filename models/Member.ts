@@ -72,6 +72,7 @@ const memberSchema = new Schema<IMember>(
     aadharCardNo: {
       type: String,
       // unique: true,
+      required: true,
       sparse: true,
     },
     dateOfBirth: {

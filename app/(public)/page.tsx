@@ -2,9 +2,9 @@
 import React from "react";
 import Hero from "@/components/pages/Home/Hero";
 import Members from "@/components/pages/Home/Members";
-import Story from "@/components/pages/About/Story";
-import Mission from "@/components/pages/About/Mission";
-import OrganizationStats from "@/components/pages/About/OrganizationStats.tsx";
+import Story from "@/components/pages/Home/Story";
+import Mission from "@/components/pages/Home/Mission";
+// import OrganizationStats from "@/components/pages/About/OrganizationStats.tsx";
 import UpcomingEvents from "@/components/pages/Events/UpcomingEvents";
 
 // type Props = {};
@@ -20,7 +20,7 @@ export default function Home() {
         <Mission />
         <UpcomingEvents />
         <Members />
-        <OrganizationStats />
+        {/* <OrganizationStats /> */}
       </div>
     </>
   );

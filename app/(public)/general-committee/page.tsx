@@ -10,8 +10,8 @@ const Page = () => {
   return (
     <CommitteePage
       // membersData={ExecutiveMemberData}
-      title="General committee Members"
-      subTitle="Meet the pillors of our organization Meet the pillors of our organization"
+      title="General Committee Members"
+      // subTitle="Meet the pillors of our organization Meet the pillors of our organization"
     >
       <MemberTableMap />
     </CommitteePage>

@@ -1,7 +1,4 @@
 "use client";
-import FacebookIcon from "@/assets/icons/FacebookIcon";
-import InstagramIcon from "@/assets/icons/InstagramIcon";
-import TwitterIcon from "@/assets/icons/TwitterIcon";
 import { ClientMember } from "@/Types/types";
 import React from "react";
 import profilePic from "@/assets/profile-picture.png";
@@ -21,7 +18,8 @@ import ImageWithSkeleton from "../ImageWithSkelton";
 const MemberCard: React.FC<ClientMember> = ({
   name,
   committee,
-  socialLinks,
+  // socialLinks,
+  phoneNo,
   photo,
 }) => {
   console.log("photo", photo);
@@ -54,9 +52,10 @@ const MemberCard: React.FC<ClientMember> = ({
           </p>
         )}
 
-        {socialLinks && (
-          <div className="flex gap-2">
-            {socialLinks.map((socialLink) => (
+        {phoneNo && (
+          <p className="text-sm font-normal text-my-para text-center">
+            {phoneNo}
+            {/* {socialLinks.map((socialLink) => (
               <a
                 key={socialLink.platform}
                 href={socialLink.url}
@@ -68,8 +67,7 @@ const MemberCard: React.FC<ClientMember> = ({
                 {socialLink.platform === "twitter" && <TwitterIcon />}
                 {socialLink.platform === "facebook" && <FacebookIcon />}
               </a>
-            ))}
-
+            ))} */}
             {/* {Object.entries(links).map(
               ([platform, url]) =>
                 url && (
@@ -86,7 +84,7 @@ const MemberCard: React.FC<ClientMember> = ({
                   </a>
                 )
             )} */}
-          </div>
+          </p>
         )}
       </div>
     </div>

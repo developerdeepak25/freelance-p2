@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import Image from "next/image";
 import Heading from "@/components/Text/Heading";
@@ -7,7 +7,8 @@ interface SplitContentSectionProps {
   imageSrc: string;
   sectionTitle: string;
   heading: string;
-  description: string;
+  // description: string;
+  descBullets: string[];
   // buttonText: string;
   // onButtonClick: () => void;
   imageOnLeft?: boolean;
@@ -17,7 +18,7 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
   imageSrc,
   sectionTitle,
   heading,
-  description,
+  descBullets,
   // buttonText,
   // onButtonClick,
   imageOnLeft = true,
@@ -28,7 +29,17 @@ const SplitContentSection: React.FC<SplitContentSectionProps> = ({
         {sectionTitle}
       </p>
       <Heading variant="large">{heading}</Heading>
-      <p className="font-normal text-my-para text-base">{description}</p>
+      <ul className="flex flex-col gap-2">
+        {descBullets.map((bullet, index) => (
+          <li key={index} className="font-normal text-my-para text-base flex">
+            <span className="text-my-heading text-2xl pr-2 leading-none">
+              -{" "}
+            </span>{" "}
+            {bullet}
+          </li>
+        ))}
+      </ul>
+      {/* <p className="font-normal text-my-para text-base">{description}</p> */}
       <div>
         {/* <Button variant="primary-solid" onClick={onButtonClick}>
           {buttonText}

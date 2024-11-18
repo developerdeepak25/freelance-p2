@@ -1,3 +1,5 @@
+// ? This enpoint is not actually used but can be used to have good consistency in backend and frontend
+
 import dbConnect from "@/lib/dbConnect";
 import { CAST, COMMITTEES, DESIGNATIONS } from "@/models/Member";
 import {  NextResponse } from "next/server";

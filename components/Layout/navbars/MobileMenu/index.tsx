@@ -53,14 +53,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ navLinks }) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="lg:hidden">
+        {/* <Button variant="outline" size="icon" className="lg:hidden"> */}
+        <Button variant="outline" size="icon" className="xl:hidden">
           <MenuIcon className="h-6 w-6" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="lg:hidden w-[90%] sm:max-w-[550px] grid items-center"
+        // className="lg:hidden w-[90%] sm:max-w-[550px] grid items-center"
+        className="xl:hidden w-[90%] sm:max-w-[550px] grid items-center"
       >
         <div className="grid w-full p-4 gap-4 place-content-center">
           {navLinks.map((link) => {

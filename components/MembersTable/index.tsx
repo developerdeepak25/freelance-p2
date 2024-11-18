@@ -18,7 +18,8 @@ const columns: ColumnDef<ClientMember>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+    // header: "Name",
+    header: "Member Name",
   },
   {
     accessorKey: "email",

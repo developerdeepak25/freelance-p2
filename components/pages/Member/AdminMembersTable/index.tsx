@@ -58,7 +58,8 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
     },
     {
       accessorKey: "name",
-      header: "Name",
+      // header: "Name",
+      header: "Member Name",
       cell: ({ row }) => row.original.name || "N/A",
     },
     {

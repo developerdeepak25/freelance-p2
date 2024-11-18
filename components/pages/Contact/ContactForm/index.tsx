@@ -8,6 +8,8 @@ import Heading from "@/components/Text/Heading";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import TwitterIcon from "@/assets/icons/TwitterIcon";
+import FacebookIcon from "@/assets/icons/FacebookIcon";
 
 const OtherDetails = [
   {
@@ -150,24 +152,28 @@ reset,
               <div className="font-bold text-[18px] capitalize text-center">
                 Social
               </div>
-              <p className="font-normal text-base text-my-para text-center underline">
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Twitter
-                </a>
-              </p>
-              <p className="font-normal text-base text-my-para text-center underline">
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Facebook
-                </a>
-              </p>
+              <div className="flex gap-2">
+                <p className="font-normal text-base text-my-para text-center underline opacity-85 hover:opacity-100">
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {/* Twitter */}
+                    <TwitterIcon height={26} />
+                  </a>
+                </p>
+                <p className="font-normal text-base text-my-para text-center underline opacity-85 hover:opacity-100">
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {/* Facebook */}
+                    <FacebookIcon height={26} />
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </div>

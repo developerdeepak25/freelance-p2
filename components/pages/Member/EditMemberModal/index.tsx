@@ -143,15 +143,17 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
     >
       <ModalForm onSubmit={handleSubmit(onSubmit)}>
         <FormInputWithLabel
-          {...register("name", { required: "Name is required" })}
+          // {...register("name", { required: "Name is required" })}
+          {...register("name")}
           id="name"
           label="Name"
           error={errors.name?.message}
         />
         <FormInputWithLabel
-          {...register("email", {
-            required: "Email is required",
-          })}
+          // {...register("email", {
+          //   required: "Email is required",
+          // })}
+          {...register("email")}
           id="email"
           label="Email"
           error={errors.email?.message}
@@ -221,7 +223,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         <Controller
           name="committee"
           control={control}
-          rules={{ required: "Committee is required" }}
+          // rules={{ required: "Committee is required" }}
           render={({ field }) => (
             <div className="flex flex-col gap-2">
               <label

@@ -21,8 +21,14 @@ const Hero = () => {
     //     <div className="bg-hero-gradient absolute top-0 left-0 right-0 w-full h-full"></div>
     //   </div>
     <HeroWrapperWithImageAndGradient
-      backgroundImage={"/image/home-hero.png"}
-      altText={"hero section image"}
+      images={[
+        "/image/home-hero.png",
+        "/image/home-hero2.jpg",
+        "/image/home-hero3.jpeg",
+        "/image/home-hero4.jpg",
+      ]}
+      // altText={"hero section image"}
+      interval={5000}
     >
       <SectionWrapper className=" h-full ">
         {/* Hero content */}

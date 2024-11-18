@@ -11,8 +11,8 @@ const Page = () => {
   return (
     <CommitteePage
       // membersData={ExecutiveMemberData}
-      title="Executive committee Members"
-      subTitle="Meet the pillors of our organization Meet the pillors of our organization"
+      title="Executive Committee Members"
+      // subTitle="Meet the pillors of our organization Meet the pillors of our organization"
     >
       {/* <MemberList members={member} Component={MemberCard} /> */}
       <MemberListMap />

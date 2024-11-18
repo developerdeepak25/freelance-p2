@@ -5,8 +5,10 @@ import Link from "next/link";
 const navLinks = [
   { title: "Home", path: "/" },
   // { title: "About", path: "/about" },
-  { title: "Executive Committee", path: "/executive-committee" },
-  { title: "General Committee", path: "/general-committee" },
+  // { title: "Executive Committee", path: "/executive-committee" },
+  // { title: "General Committee", path: "/general-committee" },
+  { title: "Executive Members", path: "/executive-committee" },
+  { title: "General Members", path: "/general-committee" },
   { title: "Gallery", path: "/gallery" },
   { title: "Events", path: "/events" },
   { title: "Contact Us", path: "/contact" },

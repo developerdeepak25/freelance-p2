@@ -16,7 +16,8 @@ export const memberSchema = z.object({
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name must be less than 100 characters"),
 
-  email: z.string().email("Invalid email format").optional(),
+  // email: z.string().email("Invalid email format").optional(),
+  email: z.string().email("Invalid email format"),
 
   phoneNo: z
     .string()
@@ -48,10 +49,13 @@ export const memberSchema = z.object({
     // .regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "Invalid PAN Card format")
     .optional(),
 
+  // aadharCardNo: z
+  //   .string(),
+  // .regex(/^[0-9]{12}$/, "Aadhar Card must be 12 digits")
+  // .optional(),
   aadharCardNo: z
     .string()
-    // .regex(/^[0-9]{12}$/, "Aadhar Card must be 12 digits")
-    .optional(),
+    .min(12, "Aadhar Card must be 12 digits"),
 
   dateOfBirth: z
     .date()
