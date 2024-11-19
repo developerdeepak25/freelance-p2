@@ -69,7 +69,13 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
       header: "Membership Expirey",
       cell: ({ row }) => {
         return row.original.memberShipExpiresAt ? (
-          <span className={isPastTimestamp(row.original.memberShipExpiresAt)? "text-red-500" : ""}>
+          <span
+            className={
+              isPastTimestamp(row.original.memberShipExpiresAt)
+                ? "text-red-500"
+                : ""
+            }
+          >
             {format(new Date(row.original.memberShipExpiresAt), "dd/MM/yyyy")}
           </span>
         ) : row.original.isMemberShipLifeTime ? (
@@ -78,6 +84,30 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
           "N/A"
         );
       },
+    },
+    {
+      accessorKey: "committee",
+      header: () => (
+        <div className="flex items-center">
+          {/* Committee */}
+          <Select
+            value={filterCommittee}
+            onValueChange={setFilterCommittee}
+            // className="ml-2"
+          >
+            <SelectTrigger className=" border-none p-0 gap-1 ">
+              <SelectValue placeholder="All Committees" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">committee</SelectItem>
+              <SelectItem value="EXECUTIVE">Executive</SelectItem>
+              <SelectItem value="GENERAL">General</SelectItem>
+              <SelectItem value="CORE">Core</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
+      cell: ({ row }) => row.original.committee || "N/A",
     },
     {
       accessorKey: "email",
@@ -145,29 +175,6 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
       accessorKey: "profession",
       header: "Profession",
       cell: ({ row }) => row.original.profession || "N/A",
-    },
-    {
-      accessorKey: "committee",
-      header: () => (
-        <div className="flex items-center">
-          {/* Committee */}
-          <Select
-            value={filterCommittee}
-            onValueChange={setFilterCommittee}
-            // className="ml-2"
-          >
-            <SelectTrigger className=" border-none p-0 gap-1 ">
-              <SelectValue placeholder="All Committees" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">committee</SelectItem>
-              <SelectItem value="EXECUTIVE">Executive</SelectItem>
-              <SelectItem value="GENERAL">General</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      ),
-      cell: ({ row }) => row.original.committee || "N/A",
     },
     {
       accessorKey: "socialLinks",

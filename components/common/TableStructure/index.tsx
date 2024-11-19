@@ -65,7 +65,7 @@ const TableStructure = <TData extends RowData>({
                   className={index % 2 === 0 ? "bg-gray-50" : ""}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

@@ -16,7 +16,7 @@ export const DESIGNATIONS = [
 // export const CAST = ["general", "obc", "SC", "ST", "MBC"] as const;
 export const CAST = ["general", "OBC", "SC", "ST", "MBC"] as const;
 
-export const COMMITTEES = ["EXECUTIVE", "GENERAL"] as const;
+export const COMMITTEES = ["EXECUTIVE", "GENERAL", "CORE"] as const;
 
 type Designation = (typeof DESIGNATIONS)[number];
 type Cast = (typeof CAST)[number];

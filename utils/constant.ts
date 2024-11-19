@@ -9,6 +9,7 @@ export const ACCEPTED_IMAGE_TYPES = [
 export const COMMITTEEOPTIONS = [
   { value: "GENERAL", label: "General" },
   { value: "EXECUTIVE", label: "Executive" },
+  { value: "CORE", label: "Core" },
 ];
 
 export const CASTEOPTIONS = [

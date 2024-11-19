@@ -74,7 +74,7 @@ export const memberSchema = z.object({
     .max(100, "Profession must be less than 100 characters")
     .optional(),
 
-  committee: z.enum(["GENERAL", "EXECUTIVE"], {
+  committee: z.enum(["GENERAL", "EXECUTIVE", "CORE"], {
     errorMap: () => ({ message: "Invalid committee selection" }),
   }),
 

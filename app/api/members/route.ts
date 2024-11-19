@@ -202,7 +202,7 @@ export async function GET(req: NextRequest) {
     const committee = searchParams.get("committee")?.toUpperCase();
 
     // Validate committee query parameter
-    const validCommittees = ["GENERAL", "EXECUTIVE"];
+    const validCommittees = ["GENERAL", "EXECUTIVE", "CORE"];
     const isInvalidCommittee =
       committee && !validCommittees.includes(committee);
 
