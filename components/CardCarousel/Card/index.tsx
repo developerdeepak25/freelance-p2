@@ -227,8 +227,9 @@ Card.TimeAndVenue = function TimeAndVenue() {
       {(startDate || endDate) && (
         <p className="font-normal text-sm text-my-heading">
           {/* Date - {dateAndTime} */}
-          {format(sdate, "MMM d")}
-          {endDate && <span> - {format(endDate, "MMM d")}</span>}
+          {format(sdate, "MMM dd yyyy")}
+          {/* {endDate && <span> - {format(endDate, "MMM d")}</span>} */}
+          {endDate && <span> - {format(endDate, "MMM dd yyyy")}</span>}
         </p>
       )}
       {venue && (
