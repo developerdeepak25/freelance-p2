@@ -34,6 +34,10 @@ export async function POST(req: NextRequest) {
         photoFile = value;
       } else if (key === "socialLinks" && typeof value === "string") {
         socialLinksData = value;
+      } else if (key === "isMemberShipLifeTime" && typeof value === "string") {
+        if (value) {
+          memberData[key as keyof IMember] = JSON.parse(value);
+        }
       } else if (
         typeof value === "string" &&
         value !== "" &&
@@ -108,7 +112,7 @@ export async function POST(req: NextRequest) {
 
     console.log(
       "memberData.memberShipExpiresAt",
-      memberData.memberShipExpiresAt,
+      memberData.memberShipExpiresAt
       // typeof JSON.parse(memberData.isMemberShipLifeTime)
     );
 
@@ -119,7 +123,8 @@ export async function POST(req: NextRequest) {
       dateOfBirth: memberData.dateOfBirth
         ? new Date(memberData.dateOfBirth)
         : undefined,
-      ...(isMemberShipLifeTime && JSON.parse(isMemberShipLifeTime)
+      // ...(isMemberShipLifeTime && JSON.parse(isMemberShipLifeTime)
+      ...(isMemberShipLifeTime 
         ? { memberShipExpiresAt: null }
         : memberShipExpiresAt
         ? { memberShipExpiresAt: new Date(memberShipExpiresAt) }
