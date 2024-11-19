@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         memberData[key as keyof IMember] = value;
       }
     });
-    // console.log("memberData", memberData);
+    console.log("memberData", memberData);
 
     // Validate required fields
     const requiredFields: (keyof IMember)[] = [
@@ -106,12 +106,28 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    console.log(
+      "memberData.memberShipExpiresAt",
+      memberData.memberShipExpiresAt,
+      // typeof JSON.parse(memberData.isMemberShipLifeTime)
+    );
+
     // Create new member
+    const { isMemberShipLifeTime, memberShipExpiresAt } = memberData;
     const newMember = new Member({
       ...memberData,
       dateOfBirth: memberData.dateOfBirth
         ? new Date(memberData.dateOfBirth)
         : undefined,
+      ...(isMemberShipLifeTime && JSON.parse(isMemberShipLifeTime)
+        ? { memberShipExpiresAt: null }
+        : memberShipExpiresAt
+        ? { memberShipExpiresAt: new Date(memberShipExpiresAt) }
+        : {}),
+      isMemberShipLifeTime:
+        isMemberShipLifeTime && typeof isMemberShipLifeTime === "string"
+          ? JSON.parse(isMemberShipLifeTime)
+          : false,
     });
 
     // Handle social links

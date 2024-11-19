@@ -13,7 +13,8 @@ export const DESIGNATIONS = [
   "Member",
 ] as const;
 
-export const CAST = ["general", "obc", "SC", "ST", "others"] as const;
+// export const CAST = ["general", "obc", "SC", "ST", "MBC"] as const;
+export const CAST = ["general", "OBC", "SC", "ST", "MBC"] as const;
 
 export const COMMITTEES = ["EXECUTIVE", "GENERAL"] as const;
 
@@ -28,13 +29,17 @@ export interface IMember extends Document {
   photo: string;
   cloudinaryPhotoId: string;
   panCardNo?: string;
-  aadharCardNo?: string;
+  aadharCardNo: string;
+  janAadharCardNo?: string;
   dateOfBirth?: Date;
   caste?: Cast;
   designation: Designation | string;
   profession?: string;
   committee: Committee;
   socialLinks?: Types.ObjectId[];
+  isMemberShipLifeTime: boolean;
+  memberShipExpiresAt?: Date | null;
+  // isMembershipValid: boolean;
 }
 
 const memberSchema = new Schema<IMember>(
@@ -75,6 +80,10 @@ const memberSchema = new Schema<IMember>(
       required: true,
       sparse: true,
     },
+    janAadharCardNo: {
+      type: String,
+      sparse: true,
+    },
     dateOfBirth: {
       type: Date,
     },
@@ -105,6 +114,32 @@ const memberSchema = new Schema<IMember>(
       enum: COMMITTEES,
       required: true,
     },
+    isMemberShipLifeTime: {
+      type: Boolean,
+      default: false,
+    },
+    memberShipExpiresAt: {
+      type: Date,
+      // validate: {
+      //   validator: function (value: Date): boolean {
+      //     return !this.isMemberShipLifeTime || value == null;
+      //   },
+      // },
+      default: function (this: IMember): Date | null {
+        // `this` refers to the current document being created
+        return this.isMemberShipLifeTime
+          ? null
+          : (() => {
+              const currentDate = new Date();
+              currentDate.setFullYear(currentDate.getFullYear() + 1); // Default to 1 year in the future
+              return currentDate;
+            })();
+      },
+    },
+    // isMembershipValid: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     socialLinks: [
       {
         type: Schema.Types.ObjectId,
@@ -116,6 +151,14 @@ const memberSchema = new Schema<IMember>(
     timestamps: true,
   }
 );
+
+
+memberSchema.pre("save", function (next) {
+  if (this.isMemberShipLifeTime) {
+    this.memberShipExpiresAt = null;
+  }
+  next();
+});
 
 const Member: Model<IMember> =
   mongoose.models.Member || mongoose.model<IMember>("Member", memberSchema);
@@ -133,3 +176,4 @@ export default Member;
 //     console.log("Admin member created:", adminMember);
 //   }
 // });
+

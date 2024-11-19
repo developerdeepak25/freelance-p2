@@ -1,9 +1,5 @@
 "use client";
-import React, {
-  forwardRef,
-  useEffect,
-  useRef,
-} from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
@@ -263,6 +259,7 @@ interface SimpleSelectProps {
   className?: string;
   value: string;
   onValueChange: (value: string) => void;
+  defaultValue?: string;
 }
 
 export function SimpleSelect({
@@ -271,9 +268,14 @@ export function SimpleSelect({
   className,
   value,
   onValueChange,
+  defaultValue = undefined,
 }: SimpleSelectProps) {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      onValueChange={onValueChange}
+      defaultValue={defaultValue}
+    >
       <SelectTrigger
         className={cn("border-[1px] px-5 justify-start", className)}
       >
@@ -317,7 +319,7 @@ const SocialLinkInput: React.FC<SocialLinkInputProps> = ({
   onUrlChange,
   onRemove,
   usedPlatforms,
-  error
+  error,
 }) => {
   const availablePlatforms = platformOptions.filter(
     (option) =>

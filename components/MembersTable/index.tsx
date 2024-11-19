@@ -5,9 +5,7 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import {
-  Mail,
-  Link as LinkIcon} from "lucide-react";
+import { Mail, Link as LinkIcon } from "lucide-react";
 import { ClientMember } from "@/Types/types";
 import TableStructure from "../common/TableStructure";
 
@@ -70,7 +68,15 @@ export default function MembersTable({ data }: { data: ClientMember[] }) {
   const [pageSize, setPageSize] = React.useState(5);
   const [pageIndex, setPageIndex] = React.useState(0);
 
+  // const filteredMembers = data.filter((member) => {
+  //   return (
+  //     member.isMemberShipLifeTime ||
+  //     !isPastTimestamp(member.memberShipExpiresAt!)
+  //   );
+  // });
+
   const table = useReactTable({
+    // data,
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),

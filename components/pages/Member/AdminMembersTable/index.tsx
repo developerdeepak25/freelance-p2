@@ -18,31 +18,25 @@ import { EditButton } from "@/components/buttons/ModifiedButton";
 import EditMemberModal from "../EditMemberModal";
 import MemberDeletionButton from "../MemberDeletionButton";
 import TableStructure from "@/components/common/TableStructure";
+import { MemberFormValues } from "@/schema/memberSchema";
+import { isPastTimestamp } from "@/utils/other";
 
 // Define Member type (from your backend data structure)
 export type Member = {
   _id: string;
-  name: string;
-  email: string;
-  phoneNo?: string;
-  photo?: FileList;
-  panCardNo?: string;
-  aadharCardNo?: string;
-  dateOfBirth?: Date;
-  caste?: string;
-  designation: string;
-  profession?: string;
-  committee: string;
-  socialLinks: SocialLink[];
-};
+  createdAt: Date;
+  memberShipExpiresAt: Date;
+  isMemberShipLifeTime: boolean;
+} & MemberFormValues;
 
-type SocialLink = {
-  platform: string;
-  url: string;
-};
+// type SocialLink = {
+//   platform: string;
+//   url: string;
+// };
 
 // The table component
 export default function AdminMembersTable({ data }: { data: Member[] }) {
+  // console.log("admin table ", data)
   const [rowSelection, setRowSelection] = React.useState({});
   const [pageSize, setPageSize] = React.useState(5);
   const [pageIndex, setPageIndex] = React.useState(0);
@@ -61,6 +55,29 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
       // header: "Name",
       header: "Member Name",
       cell: ({ row }) => row.original.name || "N/A",
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Joining Date",
+      cell: ({ row }) =>
+        row.original.createdAt
+          ? format(new Date(row.original.createdAt), "dd/MM/yyyy")
+          : "N/A",
+    },
+    {
+      accessorKey: "memberShipExpiresAt",
+      header: "Membership Expirey",
+      cell: ({ row }) => {
+        return row.original.memberShipExpiresAt ? (
+          <span className={isPastTimestamp(row.original.memberShipExpiresAt)? "text-red-500" : ""}>
+            {format(new Date(row.original.memberShipExpiresAt), "dd/MM/yyyy")}
+          </span>
+        ) : row.original.isMemberShipLifeTime ? (
+          "Lifetime"
+        ) : (
+          "N/A"
+        );
+      },
     },
     {
       accessorKey: "email",
@@ -100,6 +117,11 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
       accessorKey: "aadharCardNo",
       header: "Aadhar Card Number",
       cell: ({ row }) => row.original.aadharCardNo || "N/A",
+    },
+    {
+      accessorKey: "janAadharCardNo",
+      header: "Jan Aadhar Card Number",
+      cell: ({ row }) => row.original.janAadharCardNo || "N/A",
     },
     {
       accessorKey: "dateOfBirth",
@@ -151,10 +173,10 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
       accessorKey: "socialLinks",
       header: "Social Links",
       cell: ({ row }) =>
-        row.original.socialLinks?.length > 0 ? (
+        (row.original.socialLinks?.length ?? 0) > 0 ? (
           <>
             <div className="flex flex-col">
-              {row.original.socialLinks.map((link, index) => (
+              {row.original.socialLinks?.map((link, index) => (
                 <a
                   key={index}
                   href={link.url}
@@ -224,7 +246,11 @@ export default function AdminMembersTable({ data }: { data: Member[] }) {
 
   return (
     <>
-      <TableStructure table={table} pageSize={pageSize} setPageSize={setPageSize} />
+      <TableStructure
+        table={table}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+      />
       {isEditModalOpen && (
         <EditMemberModal
           setIsModalOpen={setIsEditModalOpen}

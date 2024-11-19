@@ -53,16 +53,15 @@ export const memberSchema = z.object({
   //   .string(),
   // .regex(/^[0-9]{12}$/, "Aadhar Card must be 12 digits")
   // .optional(),
-  aadharCardNo: z
-    .string()
-    .min(12, "Aadhar Card must be 12 digits"),
+  aadharCardNo: z.string().length(12, "Aadhar Card must be 12 digits"),
+  janAadharCardNo: z.string().optional(),
 
   dateOfBirth: z
     .date()
     .max(new Date(), "Date of birth cannot be in the future")
     .optional(),
 
-  caste: z.enum(["general", "obc", "SC", "ST", "others"]).optional(),
+  caste: z.enum(["general", "OBC", "SC", "ST", "MBC"]).optional(),
 
   designation: z
     .string()
@@ -77,6 +76,10 @@ export const memberSchema = z.object({
 
   committee: z.enum(["GENERAL", "EXECUTIVE"], {
     errorMap: () => ({ message: "Invalid committee selection" }),
+  }),
+
+  memberShip: z.enum(["0", "1", "2", "3", "lifeTime"], {
+    errorMap: () => ({ message: "Invalid memberShip selection" }),
   }),
 
   socialLinks: z

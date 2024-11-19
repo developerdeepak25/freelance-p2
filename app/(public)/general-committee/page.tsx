@@ -38,6 +38,17 @@ const MemberTableMap = () => {
         });
         // const data = await response.json();
         const data = await response.json();
+        console.log(data);
+
+        // filrweing members whos membership is expired
+        // const filteredMembers = data.filter((member) => {
+        //   return (
+        //     member.isMemberShipLifeTime ||
+        //     !isPastTimestamp(member.memberShipExpiresAt)
+        //   );
+        // });
+        // console.log("filteredMembers", filteredMembers);
+
         setMembers(data);
       } catch (error) {
         setIsError(true);

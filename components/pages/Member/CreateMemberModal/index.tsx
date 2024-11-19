@@ -19,19 +19,22 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2, Plus } from "lucide-react";
 import { MemberFormValues, memberSchema } from "@/schema/memberSchema";
+import { CASTEOPTIONS, COMMITTEEOPTIONS } from "@/utils/constant";
+import { getFutureTimestamp } from "@/utils/other";
 
-const committeeOptions = [
-  { value: "GENERAL", label: "General" },
-  { value: "EXECUTIVE", label: "Executive" },
-];
+// const committeeOptions = [
+//   { value: "GENERAL", label: "General" },
+//   { value: "EXECUTIVE", label: "Executive" },
+// ];
 
-const casteOptions = [
-  { value: "general", label: "General" },
-  { value: "obc", label: "Obc" },
-  { value: "SC", label: "Sc" },
-  { value: "ST", label: "St" },
-  { value: "others", label: "Others" },
-];
+// const casteOptions = [
+//   { value: "general", label: "General" },
+//   { value: "obc", label: "Obc" },
+//   { value: "SC", label: "Sc" },
+//   { value: "ST", label: "St" },
+//   { value: "MBC", label: "MBC" },
+//   // { value: "others", label: "Others" },
+// ];
 
 const MemberCreateModal = ({
   isModalOpen,
@@ -50,6 +53,7 @@ const MemberCreateModal = ({
     resolver: zodResolver(memberSchema),
     defaultValues: {
       socialLinks: [],
+      memberShip: '1'
     },
   });
 
@@ -72,6 +76,17 @@ const MemberCreateModal = ({
         formData.append(key, value[0]);
       } else if (key === "dateOfBirth" && value instanceof Date) {
         formData.append(key, value.toISOString());
+      } else if (key === "memberShip" && typeof value === "string") {
+        // console.log("valus got for membership field", value, key);
+        //  if value is lifeTIme we will send a fiedl name isMemberShipLifeTime as true to server
+        if (value === "lifeTime") {
+          formData.append("isMemberShipLifeTime", JSON.stringify(true));
+        } else {
+          // if it is number of years we will futre timstamp from current time
+          const yearstamp = getFutureTimestamp(value);
+          console.log("yearstamp", yearstamp, key);
+          formData.append("memberShipExpiresAt", String(yearstamp));
+        }
       } else if (value !== undefined && value !== null && value !== "") {
         formData.append(key, String(value));
       }
@@ -146,6 +161,12 @@ const MemberCreateModal = ({
           error={errors.aadharCardNo?.message}
         />
         <FormInputWithLabel
+          {...register("janAadharCardNo")}
+          id="janAadharCardNo"
+          label="Jan Aadhar Card Number"
+          error={errors.janAadharCardNo?.message}
+        />
+        <FormInputWithLabel
           {...register("designation")}
           id="designation"
           label="Designation"
@@ -189,7 +210,7 @@ const MemberCreateModal = ({
                 Committee
               </label>
               <SimpleSelect
-                options={committeeOptions}
+                options={COMMITTEEOPTIONS}
                 placeholder="Select committee"
                 value={field.value}
                 onValueChange={field.onChange}
@@ -197,6 +218,37 @@ const MemberCreateModal = ({
               {errors.committee && (
                 <span className="text-red-500 text-sm">
                   {errors.committee.message}
+                </span>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="memberShip"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="memberShip"
+                className="text-my-para text-base font-normal"
+              >
+                Membership (in year)
+              </label>
+              <SimpleSelect
+                options={[
+                  { value: "1", label: "1" },
+                  { value: "2", label: "2" },
+                  { value: "3", label: "3" },
+                  { value: "lifeTime", label: "Life time" },
+                ]}
+                placeholder="Select Membership"
+                value={field.value}
+                onValueChange={field.onChange}
+                // defaultValue="1"
+              />
+              {errors.memberShip && (
+                <span className="text-red-500 text-sm">
+                  {errors.memberShip.message}
                 </span>
               )}
             </div>
@@ -214,7 +266,7 @@ const MemberCreateModal = ({
                 Caste
               </label>
               <SimpleSelect
-                options={casteOptions}
+                options={CASTEOPTIONS}
                 placeholder="Select Caste"
                 value={field.value ?? ""}
                 onValueChange={field.onChange}

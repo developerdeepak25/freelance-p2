@@ -27,7 +27,6 @@ const MemberList: React.FC<MemberListProps> = ({
       )}
     >
       {members?.map((member, index) =>
-        // Component ? <Component key={index} {...member} /> : null
         Component ? <Component key={index} {...member} /> : null
       )}
     </div>

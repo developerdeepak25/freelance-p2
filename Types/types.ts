@@ -12,6 +12,8 @@ export type ClientMember = {
   profession?: string;
   committee: string;
   socialLinks: SocialLink[];
+  isMemberShipLifeTime: boolean;
+  memberShipExpiresAt: Date | null;
 };
 type SocialLink = {
   platform: string;

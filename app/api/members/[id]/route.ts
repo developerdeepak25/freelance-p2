@@ -7,7 +7,6 @@ import {
 } from "@/utils/cloudnaryUtils";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -25,6 +24,14 @@ export async function PUT(
       );
     }
 
+    // Find member by ID
+    const member = await Member.findById(memberId);
+
+    // Validate member existence
+    if (!member) {
+      return NextResponse.json({ error: "Member not found." }, { status: 404 });
+    }
+
     const formData = await req.formData();
 
     const memberData: Partial<IMember> = {};
@@ -39,6 +46,15 @@ export async function PUT(
         photoFile = value;
       } else if (key === "socialLinks" && typeof value === "string") {
         socialLinksData = value;
+      } else if (!(value instanceof File) && key === "isMemberShipLifeTime") {
+        // parsing is important for boolean values
+        memberData[key as keyof IMember] = JSON.parse(value);
+      } else if (key === "memberShipExpiresAt") {
+        // if this check was not ther and if user sends a falsey('',null,etc) value that value would have stored in DB overwrting older timestamp we will overwrite it only when new timestamp is provided
+        if (value) {
+          memberData[key as keyof IMember] = value;
+          memberData["isMemberShipLifeTime"] = false;
+        }
       } else if (
         typeof value === "string" &&
         key !== "photo" &&
@@ -50,20 +66,22 @@ export async function PUT(
       }
     });
     console.log("memberData", memberData);
+    console.log(
+      "memberData",
+      typeof memberData.isMemberShipLifeTime,
+      typeof memberData.memberShipExpiresAt
+    );
 
-    // Find member by ID
-    const member = await Member.findById(memberId);
-
-    // Validate member existence
-    if (!member) {
-      return NextResponse.json({ error: "Member not found." }, { status: 404 });
-    }
+    // validating membership data
+    // if (memberData?.isMemberShipLifeTime) {
+    //   memberData.memberShipExpiresAt = null;
+    // }else if
 
     // Check for existing unique fields
     const uniqueFields: (keyof IMember)[] = [
       "email",
-      // "panCardNo",
-      // "aadharCardNo",
+      "panCardNo", // under testing
+      "aadharCardNo", // under testing
     ];
     for (const field of uniqueFields) {
       if (memberData[field] && memberData[field] !== member[field]) {

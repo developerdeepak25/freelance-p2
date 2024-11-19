@@ -17,47 +17,34 @@ import SocialLinkInput, {
 } from "@/components/FormInput";
 import { FormModal, ModalForm } from "@/components/FormModel";
 import { Button } from "@/components/ui/button";
-import { memberSchema } from "@/schema/memberSchema";
+import {
+  MemberFormValues as ZodInferedMemberFormValues,
+  memberSchema,
+} from "@/schema/memberSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CASTEOPTIONS, COMMITTEEOPTIONS } from "@/utils/constant";
+import {
+  getFutureTimestamp,
+  increadTimeStampByAYear,
+  isPastTimestamp,
+} from "@/utils/other";
 
-type SocialLink = {
-  platform: string;
-  url: string;
-};
+// type SocialLink = {
+//   platform: string;
+//   url: string;
+// };
 
-export type MemberFormValues = {
+type MemberFormValues = {
   _id: string;
-  name: string;
-  email?: string;
-  phoneNo?: string;
-  photo?: FileList;
-  panCardNo?: string;
-  aadharCardNo?: string;
-  dateOfBirth?: Date;
-  caste?: string;
-  designation: string;
-  profession?: string;
-  committee: string;
-  socialLinks: SocialLink[];
-};
-
-const committeeOptions = [
-  { value: "GENERAL", label: "General" },
-  { value: "EXECUTIVE", label: "Executive" },
-];
-
-const casteOptions = [
-  { value: "general", label: "General" },
-  { value: "obc", label: "Obc" },
-  { value: "SC", label: "Sc" },
-  { value: "ST", label: "St" },
-  { value: "others", label: "Others" },
-];
+} & ZodInferedMemberFormValues;
 
 type EditMemberModalProps = {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  memberData: MemberFormValues;
+  memberData: MemberFormValues & {
+    isMemberShipLifeTime: boolean;
+    memberShipExpiresAt: Date | null;
+  };
 };
 
 const EditMemberModal: React.FC<EditMemberModalProps> = ({
@@ -79,8 +66,10 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         ? new Date(memberData.dateOfBirth)
         : undefined,
       photo: undefined,
+      memberShip: "0",
     },
   });
+  console.log("memberData", memberData);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -103,14 +92,32 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
         formData.append(key, value[0]);
       } else if (key === "dateOfBirth" && value instanceof Date) {
         formData.append(key, value.toISOString());
-      // } else if (value !== undefined && value !== null && value !== "") {
-      } else if (value !== undefined && value !== null ) {
+        // } else if (value !== undefined && value !== null && value !== "") {
+      } else if (key === "memberShip" && typeof value === "string") {
+        if (value === "0") return;
+        if (value === "lifeTime") {
+          formData.append("isMemberShipLifeTime", JSON.stringify(true));
+        } else {
+          const { memberShipExpiresAt } = memberData;
+          // if it is number of years we will futre timstamp from current time
+          if (!memberShipExpiresAt || isPastTimestamp(memberShipExpiresAt)) {
+            formData.append(
+              "memberShipExpiresAt",
+              String(getFutureTimestamp(value))
+            );
+            return;
+          }
+          const yearstamp = increadTimeStampByAYear(memberShipExpiresAt, value);
+          console.log("yearstamp", yearstamp, key);
+          formData.append("memberShipExpiresAt", String(yearstamp));
+        }
+      } else if (value !== undefined && value !== null) {
         formData.append(key, String(value));
       }
     });
 
     try {
-      const res = await axios.put(`/api/members/${memberData._id}`, formData);
+      const res = await axios.put(`/api/members/${memberData?._id}`, formData);
 
       if (res.status !== 200) {
         toast.error("Error updating Member");
@@ -185,6 +192,12 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
           error={errors.aadharCardNo?.message}
         />
         <FormInputWithLabel
+          {...register("janAadharCardNo")}
+          id="janAadharCardNo"
+          label="Jan Aadhar Card Number"
+          error={errors.janAadharCardNo?.message}
+        />
+        <FormInputWithLabel
           {...register(
             "designation"
             // { required: "Designation is required" }
@@ -233,7 +246,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
                 Committee
               </label>
               <SimpleSelect
-                options={committeeOptions}
+                options={COMMITTEEOPTIONS}
                 placeholder="Select committee"
                 value={field.value}
                 onValueChange={field.onChange}
@@ -241,6 +254,38 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
               {errors.committee && (
                 <span className="text-red-500 text-sm">
                   {errors.committee.message}
+                </span>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="memberShip"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="memberShip"
+                className="text-my-para text-base font-normal"
+              >
+                Membership Increase by (in year)
+              </label>
+              <SimpleSelect
+                options={[
+                  { value: "0", label: "0" },
+                  { value: "1", label: "1" },
+                  { value: "2", label: "2" },
+                  { value: "3", label: "3" },
+                  { value: "lifeTime", label: "Life time" },
+                ]}
+                placeholder="Select Membership"
+                value={field.value}
+                onValueChange={field.onChange}
+                // defaultValue="1"
+              />
+              {errors.memberShip && (
+                <span className="text-red-500 text-sm">
+                  {errors.memberShip.message}
                 </span>
               )}
             </div>
@@ -259,7 +304,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({
                 Caste
               </label>
               <SimpleSelect
-                options={casteOptions}
+                options={CASTEOPTIONS}
                 placeholder="Select Caste"
                 value={field.value ?? ""}
                 onValueChange={field.onChange}
